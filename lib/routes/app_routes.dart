@@ -42,6 +42,3 @@ class AppRoutes {
     );
   }
 }
-
-
-// height: kToolbarHeight * 0.8,

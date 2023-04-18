@@ -22,13 +22,14 @@ class ErrorPage extends StatelessWidget {
           const SizedBox(height: 25),
           Image.asset(
             'assets/images/error_SW.png',
+            height: kToolbarHeight * 5,
             errorBuilder: (BuildContext context, Object exception,
                 StackTrace? stackTrace) {
               print('Error al cargar la imagen: $exception');
               return const Text('Error al cargar la imagen');
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 50),
           const Text(
             'Ups, aquí no hay nada',
             style: TextStyle(
@@ -36,13 +37,13 @@ class ErrorPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF2C2C2C)),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           const Text(
             'Por favor intente más tarde,\n si el problema persiste contacte con un administrador',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20, color: Color(0xFF2C2C2C)),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 60),
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
@@ -52,12 +53,12 @@ class ErrorPage extends StatelessWidget {
               ),
             ),
             child: Container(
-              width: 150,
-              height: 50,
+              width: 230,
+              height: 70,
               alignment: Alignment.center,
               child: const Text(
                 'Reintentar',
-                style: TextStyle(color: Color(0xFF5D2A42)),
+                style: TextStyle(fontSize: 23, color: Color(0xFF5D2A42)),
               ),
             ),
           ),
