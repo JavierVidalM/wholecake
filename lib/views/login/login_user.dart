@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LoginUser extends StatefulWidget {
+  const LoginUser({super.key});
   @override
   LoginUserState createState() => LoginUserState();
 }
