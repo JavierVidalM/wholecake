@@ -1,12 +1,12 @@
-import 'package:wholecake/views/pages.dart';
 import 'package:flutter/material.dart';
+import 'package:wholecake/views/views.dart';
 
 class AppRoutes {
   static const initialRoute = 'LoginMain';
 
   static Map<String, Widget Function(BuildContext)> routes = {
     //Pantallas del Login
-    'LoginMain': (BuildContext context) => const LoginMain(),
+    'LoginMain': (dynamic context) => const LoginMain(),
     'LoginUser': (BuildContext context) => const LoginUser(),
     'SigninUser': (BuildContext context) => const SigninUser(),
 
@@ -22,8 +22,8 @@ class AppRoutes {
     'ProductsAdd': (BuildContext context) => const ProductsAdd(),
     'ProductsEdit': (BuildContext context) => const ProductsEdit(),
 
-    'ProvidersAdd': (BuildContext context) => const ProvidersAdd(),
-    'ProvidersView': (BuildContext context) => const ProvidersView(),
+    'ProvidersAdd': (BuildContext context) => const SupppliersAdd(),
+    'ProvidersView': (BuildContext context) => const SupppliersView(),
     'InputsRecipt': (BuildContext context) => const InputsRecipt(),
     'PurchaseOrders': (BuildContext context) => const PurchaseOrders(),
     'PurchaseList': (BuildContext context) => const PurchaseList(),

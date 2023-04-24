@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:wholecake/error.dart';
-import 'package:wholecake/views/providers_be/providers.dart';
+// import 'package:wholecake/views/provider/provider.dart';
+import 'package:wholecake/views/providers/providers.dart';
 import 'package:wholecake/views/pruebas.dart';
 
 void main() {
@@ -17,7 +16,9 @@ class ProviderState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: ( _ )=> Proveedores(), lazy: false,),
+          create: (_) => Proveedores(),
+          lazy: false,
+        ),
       ],
       child: const MyfirstWidget(),
     );

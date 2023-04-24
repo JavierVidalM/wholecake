@@ -6,17 +6,22 @@ export 'package:wholecake/views/login/login_signin.dart';
 //Modulo Inicio
 export 'package:wholecake/views/main/main_page.dart';
 
-export 'package:wholecake/views/Inventory.dart';
-export 'package:wholecake/views/Supplies.dart';
-export 'package:wholecake/views/ToExpire.dart';
-export 'package:wholecake/views/ProductsView.dart';
-export 'package:wholecake/views/ProductsAdd.dart';
-export 'package:wholecake/views/ProductsEdit.dart';
-export 'package:wholecake/views/ProvidersAdd.dart';
-export 'package:wholecake/views/ProvidersView.dart';
-export 'package:wholecake/views/InputsRecipt.dart';
-export 'package:wholecake/views/PurchaseOrders.dart';
-export 'package:wholecake/views/PurchaseList.dart';
-export 'package:wholecake/views/SellsView.dart';
-export 'package:wholecake/views/SellsDetail.dart';
-export 'package:wholecake/views/ErrorPage.dart';
+//Modulo Productos
+export 'package:wholecake/views/products/products_inventory.dart';
+export 'package:wholecake/views/products/products_supplies.dart';
+export 'package:wholecake/views/products/products_toexpire.dart';
+export 'package:wholecake/views/products/products_view.dart';
+export 'package:wholecake/views/products/products_add.dart';
+export 'package:wholecake/views/products/products_edit.dart';
+export 'package:wholecake/views/products/products_inputs_recipt.dart';
+
+//Modulo Proveedores
+export 'package:wholecake/views/suppliers/suppliers_add.dart';
+export 'package:wholecake/views/suppliers/suppliers_view.dart';
+export 'package:wholecake/views/suppliers/suppliers_purchase_orders.dart';
+export 'package:wholecake/views/suppliers/suppliers_purchase_list.dart';
+
+//Modulo Ventas
+export 'package:wholecake/views/sells/sells_view.dart';
+export 'package:wholecake/views/sells/sells_detail.dart';
+export 'package:wholecake/views/error.dart';
