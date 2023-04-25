@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'dart:io';ProductAdd
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProductsEdit());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+class ProductsEdit extends StatelessWidget {
+  const ProductsEdit({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
