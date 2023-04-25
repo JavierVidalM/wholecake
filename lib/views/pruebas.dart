@@ -1,4 +1,4 @@
-import 'package:wholecake/views/providers/providers.dart';
+import 'package:wholecake/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
