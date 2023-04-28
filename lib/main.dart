@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/providers/providers.dart';
+import 'package:provider/provider.dart';
+import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/views/login/login_main.dart';
-// import 'package:wholecake/views/pruebas.dart';
+import 'package:wholecake/views/products/products_add.dart';
+import 'package:wholecake/views/views.dart';
 
 void main() {
   runApp(ProviderState());
@@ -13,7 +15,7 @@ class ProviderState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => Proveedores(),
+          create: (_) => ProductService(),
           lazy: false,
         ),
       ],
@@ -27,6 +29,6 @@ class MyfirstWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-        debugShowCheckedModeBanner: false, home: LoginMain());
+        debugShowCheckedModeBanner: false, home: ProductsAdd());
   }
 }

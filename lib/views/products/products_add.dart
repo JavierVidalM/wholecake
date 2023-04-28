@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:wholecake/models/productos.dart';
+import 'package:wholecake/services/productos_services.dart';
 
 void main() {
   runApp(const ProductsAdd());
@@ -30,7 +34,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
   TextEditingController nombreController = TextEditingController();
   TextEditingController fechaElaboracionController = TextEditingController();
   TextEditingController fechaVencimientoController = TextEditingController();
-  TextEditingController descripcionController = TextEditingController();
+  TextEditingController precioController = TextEditingController();
   TextEditingController categoriaController = TextEditingController();
 
   @override
@@ -38,17 +42,18 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
     nombreController.dispose();
     fechaElaboracionController.dispose();
     fechaVencimientoController.dispose();
-    descripcionController.dispose();
+    precioController.dispose();
     categoriaController.dispose();
     super.dispose();
   }
 
-  void _saveData() {
-    // Aquí es donde guardarías la información en la base de datos
-    print('Nombre: ${nombreController.text}');
-    print('Fecha de elaboración: ${fechaElaboracionController.text}');
-    print('Fecha de vencimiento: ${fechaVencimientoController.text}');
-    print('Descripción: ${descripcionController.text}');
+  Future<void> _saveData() async {
+  final msg=jsonEncode({'nombre':nombreController.text,
+  'categoria':categoriaController.text,
+  'fecha_elaboracion':fechaElaboracionController.text,
+  'fecha_vencimiento':fechaVencimientoController.text,
+  'precio':precioController.text});
+  await ProductService().addProducto(msg);
   }
 
   @override
@@ -96,7 +101,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
             InputTextField(
               hintText: 'Precio',
               labelText: 'Precio',
-              controller: descripcionController,
+              controller: precioController,
             ),
             const SizedBox(
               height: 20,
