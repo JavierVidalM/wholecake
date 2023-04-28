@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-
 
 void main() {
   runApp(const ProductsAdd());
@@ -33,6 +31,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
   TextEditingController fechaElaboracionController = TextEditingController();
   TextEditingController fechaVencimientoController = TextEditingController();
   TextEditingController descripcionController = TextEditingController();
+  TextEditingController categoriaController = TextEditingController();
 
   @override
   void dispose() {
@@ -40,6 +39,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
     fechaElaboracionController.dispose();
     fechaVencimientoController.dispose();
     descripcionController.dispose();
+    categoriaController.dispose();
     super.dispose();
   }
 
@@ -62,12 +62,20 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
         child: Column(
           children: [
             InputTextField(
-              hintText: 'Nombre',
-              labelText: 'Nombre',
+              hintText: 'Nombre Producto',
+              labelText: 'Nombre Producto',
               controller: nombreController,
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
+            ),
+            InputTextField(
+              hintText: 'Categoría',
+              labelText: 'Categoría',
+              controller: categoriaController,
+            ),
+            const SizedBox(
+              height: 20,
             ),
             InputTextField(
               hintText: 'Fecha de elaboración',
@@ -75,7 +83,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
               controller: fechaElaboracionController,
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             InputTextField(
               hintText: 'Fecha de vencimiento',
@@ -83,22 +91,22 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
               controller: fechaVencimientoController,
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             InputTextField(
-              hintText: 'Descripción',
-              labelText: 'Descripción',
+              hintText: 'Precio',
+              labelText: 'Precio',
               controller: descripcionController,
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             ElevatedButton(
               onPressed: _saveData,
               child: const Text('Guardar'),
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(),
