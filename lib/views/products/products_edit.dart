@@ -1,7 +1,6 @@
-// import 'package:flutter/material.dart';
-// import 'dart:io';
+import 'package:flutter/material.dart';
+import 'dart:io';
 
-<<<<<<< Updated upstream
 class ProductsEdit extends StatelessWidget {
   const ProductsEdit({Key? key}) : super(key: key);
   @override
@@ -15,113 +14,37 @@ class ProductsEdit extends StatelessWidget {
     );
   }
 }
-=======
-// class ProductsEdit extends StatelessWidget {
-//   const ProductsEdit({Key? key}) : super(key: key);
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Agregar productos',
-//       theme: ThemeData(
-//         primarySwatch: Colors.pink,
-//       ),
-//       home: const MyHomePage(title: 'Actualizar productos'),
-//     );
-//   }
-// }
 
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({Key? key, required this.title}) : super(key: key);
-//   final String title;
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
->>>>>>> Stashed changes
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  final String title;
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
 
-// class _MyHomePageState extends State<MyHomePage> {
-//   TextEditingController nombreController = TextEditingController();
-//   TextEditingController fechaElaboracionController = TextEditingController();
-//   TextEditingController fechaVencimientoController = TextEditingController();
-//   TextEditingController descripcionController = TextEditingController();
+class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController nombreController = TextEditingController();
+  TextEditingController fechaElaboracionController = TextEditingController();
+  TextEditingController fechaVencimientoController = TextEditingController();
+  TextEditingController descripcionController = TextEditingController();
 
-//   @override
-//   void dispose() {
-//     nombreController.dispose();
-//     fechaElaboracionController.dispose();
-//     fechaVencimientoController.dispose();
-//     descripcionController.dispose();
-//     super.dispose();
-//   }
+  @override
+  void dispose() {
+    nombreController.dispose();
+    fechaElaboracionController.dispose();
+    fechaVencimientoController.dispose();
+    descripcionController.dispose();
+    super.dispose();
+  }
 
-//   void _saveData() {
-//     // Aquí es donde guardarías la información en la base de datos
-//     print('Nombre: ${nombreController.text}');
-//     print('Fecha de elaboración: ${fechaElaboracionController.text}');
-//     print('Fecha de vencimiento: ${fechaVencimientoController.text}');
-//     print('Descripción: ${descripcionController.text}');
-//   }
+  void _saveData() {
+    // Aquí es donde guardarías la información en la base de datos
+    print('Nombre: ${nombreController.text}');
+    print('Fecha de elaboración: ${fechaElaboracionController.text}');
+    print('Fecha de vencimiento: ${fechaVencimientoController.text}');
+    print('Descripción: ${descripcionController.text}');
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Editar Productos'),
-//       ),
-//       body: SingleChildScrollView(
-//         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-//         child: Column(
-//           children: [
-//             InputTextField(
-//               hintText: 'Nombre',
-//               labelText: 'Nombre',
-//               controller: nombreController,
-//             ),
-//             const SizedBox(
-//               height: 10,
-//             ),
-//             InputTextField(
-//               hintText: 'Fecha de elaboración',
-//               labelText: 'Fecha de elaboración',
-//               controller: fechaElaboracionController,
-//             ),
-//             const SizedBox(
-//               height: 10,
-//             ),
-//             InputTextField(
-//               hintText: 'Fecha de vencimiento',
-//               labelText: 'Fecha de vencimiento',
-//               controller: fechaVencimientoController,
-//             ),
-//             const SizedBox(
-//               height: 10,
-//             ),
-//             InputTextField(
-//               hintText: 'Descripción',
-//               labelText: 'Descripción',
-//               controller: descripcionController,
-//             ),
-//             const SizedBox(
-//               height: 10,
-//             ),
-//             ElevatedButton(
-//               onPressed: _saveData,
-//               child: const Text('Guardar'),
-//             ),
-//             const SizedBox(
-//               height: 10,
-//             ),
-//             ElevatedButton(
-//               onPressed: () => Navigator.of(context).pop(),
-//               child: const Text('Volver'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-<<<<<<< Updated upstream
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,7 +55,7 @@ class ProductsEdit extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           children: [
-            InputTextField1(
+            InputTextField(
               hintText: 'Nombre',
               labelText: 'Nombre',
               controller: nombreController,
@@ -140,7 +63,7 @@ class ProductsEdit extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            InputTextField1(
+            InputTextField(
               hintText: 'Fecha de elaboración',
               labelText: 'Fecha de elaboración',
               controller: fechaElaboracionController,
@@ -148,7 +71,7 @@ class ProductsEdit extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            InputTextField1(
+            InputTextField(
               hintText: 'Fecha de vencimiento',
               labelText: 'Fecha de vencimiento',
               controller: fechaVencimientoController,
@@ -156,7 +79,7 @@ class ProductsEdit extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            InputTextField1(
+            InputTextField(
               hintText: 'Descripción',
               labelText: 'Descripción',
               controller: descripcionController,
@@ -182,8 +105,8 @@ class ProductsEdit extends StatelessWidget {
   }
 }
 
-class InputTextField1 extends StatelessWidget {
-  const InputTextField1({
+class InputTextField extends StatelessWidget {
+  const InputTextField({
     Key? key,
     required this.hintText,
     required this.labelText,
@@ -206,29 +129,3 @@ class InputTextField1 extends StatelessWidget {
     );
   }
 }
-=======
-// class InputTextField extends StatelessWidget {
-//   const InputTextField({
-//     Key? key,
-//     required this.hintText,
-//     required this.labelText,
-//     required this.controller,
-//   }) : super(key: key);
-
-//   final String hintText;
-//   final String labelText;
-//   final TextEditingController controller;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextFormField(
-//       decoration: InputDecoration(
-//         hintText: hintText,
-//         labelText: labelText,
-//         border: OutlineInputBorder(),
-//       ),
-//       controller: controller,
-//     );
-//   }
-// }
->>>>>>> Stashed changes

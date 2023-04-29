@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/views/login/login_main.dart';
-<<<<<<< Updated upstream
 import 'package:wholecake/views/home/home_page.dart';
-=======
->>>>>>> Stashed changes
 
 String _selectedItem = 'Tipo de usuario';
 
@@ -172,7 +169,6 @@ class _SigninUserState extends State<SigninUser> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-<<<<<<< Updated upstream
                         top: MediaQuery.of(context).size.height * 0.08),
                     child: ElevatedButton(
                       onPressed: () {
@@ -191,23 +187,6 @@ class _SigninUserState extends State<SigninUser> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-=======
-                        top: MediaQuery.of(context).size.height * 0.1),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const ()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFFFB5D7),
-                          minimumSize: Size(
-                              (MediaQuery.of(context).size.width * 0.75),
-                              (MediaQuery.of(context).size.height * 0.08)),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
->>>>>>> Stashed changes
                       child: const Text(
                         "Registrarse",
                         style:
@@ -223,17 +202,10 @@ class _SigninUserState extends State<SigninUser> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-<<<<<<< Updated upstream
                                   builder: (context) => LoginMain()));
                         },
                         child: const Text(
                           "Regresar",
-=======
-                                  builder: (context) => const LoginMain()));
-                        },
-                        child: const Text(
-                          'Regresar',
->>>>>>> Stashed changes
                           style:
                               TextStyle(color: Color(0xFF3681AB), fontSize: 18),
                         ),
