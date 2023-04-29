@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/services/productos_services.dart';
+import 'package:wholecake/views/products/products_edit.dart';
 import 'package:wholecake/views/views.dart';
 
 class ProductsView extends StatefulWidget {
@@ -55,11 +56,11 @@ class _ProductsViewState extends State<ProductsView> {
                                 print('este es el listado');
                                 print(listado.selectedProduct);
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ProductsEdit()));
-
-                                // Lógica para editar el producto
+                                   context,
+                                  MaterialPageRoute(
+                                  builder: (context) => ProductsEdit()));
+                      
+                            // Lógica para editar el producto
                               },
                               icon: Icon(Icons.edit),
                             ),

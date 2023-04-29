@@ -1,6 +1,12 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/services/productos_services.dart';
+
+void main() {
+  runApp(const ProductsAdd());
+}
 
 class ProductsAdd extends StatelessWidget {
   const ProductsAdd({Key? key}) : super(key: key);
@@ -42,14 +48,12 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
   }
 
   Future<void> _saveData() async {
-    final msg = jsonEncode({
-      'nombre': nombreController.text,
-      'categoria': categoriaController.text,
-      'fecha_elaboracion': fechaElaboracionController.text,
-      'fecha_vencimiento': fechaVencimientoController.text,
-      'precio': precioController.text
-    });
-    await ProductService().addProducto(msg);
+  final msg=jsonEncode({'nombre':nombreController.text,
+  'categoria':categoriaController.text,
+  'fecha_elaboracion':fechaElaboracionController.text,
+  'fecha_vencimiento':fechaVencimientoController.text,
+  'precio':precioController.text});
+  await ProductService().addProducto(msg);
   }
 
   @override

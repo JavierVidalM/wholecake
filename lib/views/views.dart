@@ -16,7 +16,7 @@ export 'package:wholecake/views/products/products_edit.dart';
 export 'package:wholecake/views/products/products_inputs_recipt.dart';
 
 //Modulo Proveedores
-export 'package:wholecake/views/suppliers/suppliers_add.dart';
+// export 'package:wholecake/views/suppliers/suppliers_add.dart';
 export 'package:wholecake/views/suppliers/suppliers_view.dart';
 export 'package:wholecake/views/suppliers/suppliers_purchase_orders.dart';
 export 'package:wholecake/views/suppliers/suppliers_purchase_list.dart';
