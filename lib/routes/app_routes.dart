@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:wholecake/views/views.dart';
 import 'package:wholecake/views/login/login.dart';
 import 'package:wholecake/views/home/home.dart';
 import 'package:wholecake/views/products/products.dart';
@@ -12,9 +11,9 @@ class AppRoutes {
 
   static Map<String, Widget Function(BuildContext)> routes = {
     //Pantallas del Login
-    '/LoginMain': (context) => LoginMain(),
-    '/LoginUser': (context) => LoginUser(),
-    '/SigninUser': (context) => SigninUser(),
+    '/LoginMain': (context) => const LoginMain(),
+    '/LoginUser': (context) => const LoginUser(),
+    '/SigninUser': (context) => const SigninUser(),
 
     //Pantalla de inicio
     '/HomePage': (BuildContext context) => const HomePage(),
@@ -26,7 +25,7 @@ class AppRoutes {
     //Pantallas de producto
     '/ProductsView': (BuildContext context) => const ProductsView(),
     '/ProductsAdd': (BuildContext context) => const ProductsAdd(),
-    '/ProductsEdit': (BuildContext context) => const ProductsEdit(),
+    '/ProductsEdit': (BuildContext context) => ProductsEdit(),
 
     '/SuppliersAdd': (BuildContext context) => SuppliersAdd(),
     '/SuppliersView': (BuildContext context) => SuppliersView(),
