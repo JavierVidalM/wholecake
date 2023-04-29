@@ -31,19 +31,18 @@ class ProductService extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future editOrCreateProduct(Listado product) async {
-  //   print('aca toy');
-  //   isEditCreate = true;
-  //   notifyListeners();
-  //   if (product.productoId == null) {
-  //     await this.addProducto(product);
-  //   } else {
-  //     // await this.updateProduct(product);
-  //   }
+  Future editOrCreateProduct(Listado product) async {
+    print('aca toy');
+    isEditCreate = true;
+    notifyListeners();
+    if (product.productoId == null) {
+    } else {
+      await this.updateProduct(product);
+    }
 
-  //   isEditCreate = false;
-  //   notifyListeners();
-  // }
+    isEditCreate = false;
+    notifyListeners();
+  }
 
   addProducto(String msg) async {
     final url = Uri.http(
@@ -58,6 +57,27 @@ class ProductService extends ChangeNotifier {
     });
     final decodeResp = response.body;
     print(decodeResp);
+  }
+
+  Future<String> updateProduct(Listado product) async {
+    final url = Uri.http(
+      BASEURL,
+      'productos/productos_edit_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(url, body: product.toJson(), headers: {
+      'authorization': basicAuth,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final decodeResp = response.body;
+    print(decodeResp);
+    //actualizamos el listado
+    final index = listadoproductos
+        .indexWhere((element) => element.productoId == product.productoId);
+    listadoproductos[index] = product;
+
+    return '';
   }
 
   deleteProducto(String msg) async {
