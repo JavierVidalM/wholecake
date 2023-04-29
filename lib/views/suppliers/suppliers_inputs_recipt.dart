@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ToExpire extends StatefulWidget {
+class InputsRecipt extends StatefulWidget {
   @override
-  _ToExpireState createState() => _ToExpireState();
+  _InputsReciptState createState() => _InputsReciptState();
 }
 
-class _ToExpireState extends State<ToExpire> {
+class _InputsReciptState extends State<InputsRecipt> {
   String nombre = '';
 
   @override

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-void main() {
-  runApp(const ProductsEdit());
-}
-
 class ProductsEdit extends StatelessWidget {
   const ProductsEdit({Key? key}) : super(key: key);
   @override
@@ -59,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           children: [
-            InputTextField(
+            InputTextField1(
               hintText: 'Nombre',
               labelText: 'Nombre',
               controller: nombreController,
@@ -67,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               height: 10,
             ),
-            InputTextField(
+            InputTextField1(
               hintText: 'Fecha de elaboración',
               labelText: 'Fecha de elaboración',
               controller: fechaElaboracionController,
@@ -75,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               height: 10,
             ),
-            InputTextField(
+            InputTextField1(
               hintText: 'Fecha de vencimiento',
               labelText: 'Fecha de vencimiento',
               controller: fechaVencimientoController,
@@ -83,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               height: 10,
             ),
-            InputTextField(
+            InputTextField1(
               hintText: 'Descripción',
               labelText: 'Descripción',
               controller: descripcionController,
@@ -109,8 +105,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class InputTextField extends StatelessWidget {
-  const InputTextField({
+class InputTextField1 extends StatelessWidget {
+  const InputTextField1({
     Key? key,
     required this.hintText,
     required this.labelText,

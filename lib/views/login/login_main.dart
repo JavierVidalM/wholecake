@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/views/login/login_signin.dart';
 import 'package:wholecake/views/login/login_user.dart';
-import 'package:wholecake/views/main/main_page.dart';
+import 'package:wholecake/views/home/home_page.dart';
 
 class LoginMain extends StatelessWidget {
   const LoginMain({Key? key}) : super(key: key);
@@ -34,8 +34,7 @@ class LoginMain extends StatelessWidget {
                       top: MediaQuery.of(context).size.height * 0.17),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginUser()));
+                      Navigator.pushNamed(context, '/LoginUser');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFFB5D7),
@@ -58,10 +57,7 @@ class LoginMain extends StatelessWidget {
                       top: MediaQuery.of(context).size.height * 0.08),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SigninUser()));
+                      Navigator.pushNamed(context, '/SigninUser');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFFB5D7),

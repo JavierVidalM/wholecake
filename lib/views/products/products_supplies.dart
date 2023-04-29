@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:wholecake/constants.dart';
 import 'package:wholecake/views/products/products_box.dart';
 
-class MobileScaffold extends StatefulWidget {
-  const MobileScaffold({Key? key}) : super(key: key);
+class Supplies extends StatefulWidget {
+  const Supplies({Key? key}) : super(key: key);
 
   @override
-  State<MobileScaffold> createState() => _MobileScaffoldState();
+  State<Supplies> createState() => _SuppliesState();
 }
 
-class _MobileScaffoldState extends State<MobileScaffold> {
+class _SuppliesState extends State<Supplies> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
