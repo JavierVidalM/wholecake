@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/views/login/login_main.dart';
+import 'package:wholecake/views/main/main_page.dart';
 
 String _selectedItem = 'Tipo de usuario';
 
@@ -174,7 +175,7 @@ class _SigninUserState extends State<SigninUser> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginMain()));
+                                builder: (context) => MainPage()));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFFFB5D7),

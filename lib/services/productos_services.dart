@@ -63,18 +63,17 @@ class ProductService extends ChangeNotifier {
 
   deleteProducto(String msg) async {
     print('deleteproducto');
-        final url = Uri.http(
+    final url = Uri.http(
       BASEURL,
       'productos/productos_productos_delete_rest/',
     );
-        String basicAuth =
+    String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-            final response = await http.post(url, body: msg, headers: {
+    final response = await http.post(url, body: msg, headers: {
       'authorization': basicAuth,
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
     print(decodeResp);
-    
   }
 }

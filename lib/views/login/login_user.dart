@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/views/login/login_main.dart';
+import 'package:wholecake/views/main/main_page.dart';
 
 class LoginUser extends StatefulWidget {
   const LoginUser({super.key});
@@ -121,7 +122,10 @@ class LoginUserState extends State<LoginUser> {
                     ),
                   ),
                   child: Text('Iniciar sesión'),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MainPage()));
+                  },
                 ),
               ),
               Container(

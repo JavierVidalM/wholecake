@@ -14,8 +14,12 @@ class MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: Image.asset(
           'assets/images/logo_SW.png',
-          height: MediaQuery.of(context).size.height * 0.15,
+          height: MediaQuery.of(context).size.height * 0.07,
         ),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Column(),
       ),
     );
   }
