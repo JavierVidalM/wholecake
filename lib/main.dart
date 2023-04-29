@@ -26,15 +26,10 @@ class MyfirstWidget extends StatelessWidget {
   const MyfirstWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-<<<<<<< Updated upstream
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: AppRoutes.initialRoute,
         routes: AppRoutes.routes,
         onGenerateRoute: AppRoutes.onGenerateRoute);
-=======
-    return const MaterialApp(
-        debugShowCheckedModeBanner: false, home: LoginMain());
->>>>>>> Stashed changes
   }
 }

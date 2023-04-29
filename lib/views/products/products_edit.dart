@@ -1,39 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
+import 'package:intl/intl.dart';
+import 'package:wholecake/services/productos_services.dart';
+
+import '../../providers/producto_form_provider.dart';
 
 class ProductsEdit extends StatelessWidget {
-  const ProductsEdit({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Agregar productos',
-      theme: ThemeData(
-        primarySwatch: Colors.pink,
+    final productService = Provider.of<ProductService>(context);
+    return ChangeNotifierProvider(
+      create: (_) => ProductFormProvider(productService.selectedProduct!),
+      child: _ProductoScreenBody(
+        productService: productService,
+        title: 'Editar Producto',
       ),
-      home: const MyHomePage(title: 'Actualizar productos'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class _ProductoScreenBody extends StatefulWidget {
+  const _ProductoScreenBody(
+      {Key? key, required this.title, required ProductService productService})
+      : super(key: key);
   final String title;
+
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<_ProductoScreenBody> createState() => _ProductoScreenBodyPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _ProductoScreenBodyPageState extends State<_ProductoScreenBody> {
   TextEditingController nombreController = TextEditingController();
   TextEditingController fechaElaboracionController = TextEditingController();
   TextEditingController fechaVencimientoController = TextEditingController();
-  TextEditingController descripcionController = TextEditingController();
+  TextEditingController precioController = TextEditingController();
+  TextEditingController categoriaController = TextEditingController();
 
   @override
   void dispose() {
     nombreController.dispose();
     fechaElaboracionController.dispose();
     fechaVencimientoController.dispose();
-    descripcionController.dispose();
+    precioController.dispose();
+    categoriaController.dispose();
     super.dispose();
   }
 
@@ -42,11 +52,21 @@ class _MyHomePageState extends State<MyHomePage> {
     print('Nombre: ${nombreController.text}');
     print('Fecha de elaboración: ${fechaElaboracionController.text}');
     print('Fecha de vencimiento: ${fechaVencimientoController.text}');
-    print('Descripción: ${descripcionController.text}');
+    print('Precio: ${precioController.text}');
+    print('Categoria: ${categoriaController.text}');
   }
 
   @override
   Widget build(BuildContext context) {
+    final productForm = Provider.of<ProductFormProvider>(context);
+    final product = productForm.product;
+    nombreController.text = product.nombre;
+    fechaElaboracionController.text =
+        DateFormat('dd-MM-yyyy').format(product.fechaElaboracion);
+    fechaVencimientoController.text =
+        DateFormat('dd-MM-yyyy').format(product.fechaVencimiento);
+    precioController.text = product.precio;
+    categoriaController.text = product.categoria;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar Productos'),
@@ -55,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           children: [
-            InputTextField(
+            InputTextField1(
               hintText: 'Nombre',
               labelText: 'Nombre',
               controller: nombreController,
@@ -63,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               height: 10,
             ),
-            InputTextField(
+            InputTextField1(
               hintText: 'Fecha de elaboración',
               labelText: 'Fecha de elaboración',
               controller: fechaElaboracionController,
@@ -71,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               height: 10,
             ),
-            InputTextField(
+            InputTextField1(
               hintText: 'Fecha de vencimiento',
               labelText: 'Fecha de vencimiento',
               controller: fechaVencimientoController,
@@ -79,10 +99,18 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               height: 10,
             ),
-            InputTextField(
-              hintText: 'Descripción',
-              labelText: 'Descripción',
-              controller: descripcionController,
+            InputTextField1(
+              hintText: 'Precio',
+              labelText: 'Precio',
+              controller: precioController,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            InputTextField1(
+              hintText: 'Categoria',
+              labelText: 'Categoria',
+              controller: categoriaController,
             ),
             const SizedBox(
               height: 10,
@@ -105,8 +133,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class InputTextField extends StatelessWidget {
-  const InputTextField({
+class InputTextField1 extends StatelessWidget {
+  const InputTextField1({
     Key? key,
     required this.hintText,
     required this.labelText,
