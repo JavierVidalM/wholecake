@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:wholecake/models/productos.dart';
 
 class ProductService extends ChangeNotifier {
-  String APIUSER = 'niko';
-  String APIPASS = 'nicolas15';
-  String BASEURL = '192.168.1.7:8000';
+  String APIUSER = 'migueslaxl';
+  String APIPASS = 'kissisl0ve';
+  String BASEURL = '3.85.128.77:8000';
   List<Listado> listadoproductos = [];
   Listado? selectedProduct;
   bool isLoading = true;
@@ -46,7 +46,6 @@ class ProductService extends ChangeNotifier {
   // }
 
   addProducto(String msg) async {
-    print('addproducto metodo');
     final url = Uri.http(
       BASEURL,
       'productos/productos_productos_add_rest/',
@@ -62,7 +61,6 @@ class ProductService extends ChangeNotifier {
   }
 
   deleteProducto(String msg) async {
-    print('deleteproducto');
     final url = Uri.http(
       BASEURL,
       'productos/productos_productos_delete_rest/',
