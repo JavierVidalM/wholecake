@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/views/login/login_main.dart';
 import 'package:wholecake/views/products/products_add.dart';
+import 'package:wholecake/views/products/products_view.dart';
 import 'package:wholecake/views/views.dart';
 
 void main() {
@@ -29,6 +30,6 @@ class MyfirstWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-        debugShowCheckedModeBanner: false, home: ProductsAdd());
+        debugShowCheckedModeBanner: false, home: ProductsView());
   }
 }

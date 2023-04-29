@@ -1,52 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(ProductsView());
-}
-
-class Product {
-  final String name;
-  final String elaborationDate;
-  final String expirationDate;
-  final String description;
-
-  Product({
-    required this.name,
-    required this.elaborationDate,
-    required this.expirationDate,
-    required this.description,
-  });
-}
+import 'package:provider/provider.dart';
+import 'package:wholecake/services/productos_services.dart';
 
 class ProductsView extends StatelessWidget {
+  const ProductsView({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final products = [
-      Product(
-        name: 'Producto 1',
-        elaborationDate: '01/01/2022',
-        expirationDate: '01/01/2023',
-        description: 'Descripción del producto 1',
-      ),
-      Product(
-        name: 'Producto 2',
-        elaborationDate: '01/01/2022',
-        expirationDate: '01/01/2023',
-        description: 'Descripción del producto 2',
-      ),
-      Product(
-        name: 'Producto 3',
-        elaborationDate: '01/01/2022',
-        expirationDate: '01/01/2023',
-        description: 'Descripción del producto 3',
-      ),
-      Product(
-        name: 'Producto 4',
-        elaborationDate: '01/01/2022',
-        expirationDate: '01/01/2023',
-        description: 'Descripción del producto 4',
-      ),
-    ];
+    final listado = Provider.of<ProductService>(context);
 
     return MaterialApp(
       title: 'Listado de productos',
@@ -58,9 +21,9 @@ class ProductsView extends StatelessWidget {
           title: Text('Listado de productos'),
         ),
         body: ListView.builder(
-          itemCount: products.length,
+          itemCount: listado.listadoproductos.length,
           itemBuilder: (context, index) {
-            final product = products[index];
+            final product = listado.listadoproductos[index];
             return Card(
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Padding(
@@ -72,7 +35,7 @@ class ProductsView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          product.name,
+                          product.nombre,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -87,8 +50,11 @@ class ProductsView extends StatelessWidget {
                               icon: Icon(Icons.edit),
                             ),
                             IconButton(
-                              onPressed: () {
-                                // Lógica para eliminar el producto
+                              onPressed: () async {
+                                final msg =
+                                    jsonEncode({'id': product.productoId});
+                                await ProductService().deleteProducto(msg);
+                                setState(() {});
                               },
                               icon: Icon(Icons.delete),
                             ),
@@ -98,17 +64,17 @@ class ProductsView extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'Elaboración: ${product.elaborationDate}',
+                      'Elaboración: ${product.fechaElaboracion.toString().substring(0, 10)}',
                       style: TextStyle(fontSize: 16),
                     ),
                     SizedBox(height: 5),
                     Text(
-                      'Vencimiento: ${product.expirationDate}',
+                      'Vencimiento: ${product.fechaVencimiento.toString().substring(0, 10)}',
                       style: TextStyle(fontSize: 16),
                     ),
                     SizedBox(height: 10),
                     Text(
-                      product.description,
+                      product.productoId.toString(),
                       style: TextStyle(fontSize: 16),
                     ),
                   ],
