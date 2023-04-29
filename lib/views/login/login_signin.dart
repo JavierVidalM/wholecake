@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wholecake/views/login/login_main.dart';
 
 String _selectedItem = 'Tipo de usuario';
 
@@ -165,6 +166,49 @@ class _SigninUserState extends State<SigninUser> {
                                   color: Color(0xFF3681AB), width: 2.0))),
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.08),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginMain()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFFB5D7),
+                        minimumSize: Size(
+                          (MediaQuery.of(context).size.width * 0.75),
+                          (MediaQuery.of(context).size.height * 0.08),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        "Registrarse",
+                        style:
+                            TextStyle(color: Color(0xFFF0F0F0), fontSize: 22),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.02),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginMain()));
+                        },
+                        child: const Text(
+                          "Regresar",
+                          style:
+                              TextStyle(color: Color(0xFF3681AB), fontSize: 18),
+                        ),
+                      )),
                 ],
               )
             ]),

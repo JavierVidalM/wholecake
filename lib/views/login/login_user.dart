@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wholecake/views/login/login_main.dart';
 
 class LoginUser extends StatefulWidget {
   const LoginUser({super.key});
@@ -123,6 +124,20 @@ class LoginUserState extends State<LoginUser> {
                   onPressed: () {},
                 ),
               ),
+              Container(
+                  margin: EdgeInsets.only(top: 16),
+                  width: 293,
+                  height: 60,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginMain()));
+                    },
+                    child: const Text(
+                      "Regresar",
+                      style: TextStyle(color: Color(0xFF3681AB), fontSize: 18),
+                    ),
+                  )),
             ],
           ),
         ),

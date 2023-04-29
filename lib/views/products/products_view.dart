@@ -10,6 +10,7 @@ class ProductsView extends StatefulWidget {
   @override
   _ProductsViewState createState() => _ProductsViewState();
 }
+
 class _ProductsViewState extends State<ProductsView> {
   @override
   Widget build(BuildContext context) {
@@ -59,9 +60,10 @@ class _ProductsViewState extends State<ProductsView> {
                                     jsonEncode({'id': product.productoId});
                                 await ProductService().deleteProducto(msg);
                                 setState(() {
-                                    listado.listadoproductos.removeAt(index); // Actualizar el estado del widget
-                                  });
-                                },
+                                  listado.listadoproductos.removeAt(
+                                      index); // Actualizar el estado del widget
+                                });
+                              },
                               icon: Icon(Icons.delete),
                             ),
                           ],
