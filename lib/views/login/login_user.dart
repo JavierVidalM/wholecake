@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/views/login/login_main.dart';
+<<<<<<< Updated upstream
 import 'package:wholecake/views/home/home_page.dart';
+=======
+>>>>>>> Stashed changes
 
 class LoginUser extends StatefulWidget {
   const LoginUser({super.key});
@@ -128,17 +131,31 @@ class LoginUserState extends State<LoginUser> {
                   },
                 ),
               ),
+<<<<<<< Updated upstream
+=======
+              SizedBox(height: 16.0),
+>>>>>>> Stashed changes
               Container(
                   margin: EdgeInsets.only(top: 16),
                   width: 293,
                   height: 60,
                   child: TextButton(
                     onPressed: () {
+<<<<<<< Updated upstream
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => LoginMain()));
                     },
                     child: const Text(
                       "Regresar",
+=======
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginMain()));
+                    },
+                    child: const Text(
+                      'Regresar',
+>>>>>>> Stashed changes
                       style: TextStyle(color: Color(0xFF3681AB), fontSize: 18),
                     ),
                   )),
