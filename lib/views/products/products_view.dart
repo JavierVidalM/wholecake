@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/services/productos_services.dart';
 
-class ProductsView extends StatelessWidget {
-  const ProductsView({super.key});
+class ProductsView extends StatefulWidget {
+  const ProductsView({Key? key}) : super(key: key);
 
+  @override
+  _ProductsViewState createState() => _ProductsViewState();
+}
+class _ProductsViewState extends State<ProductsView> {
   @override
   Widget build(BuildContext context) {
     final listado = Provider.of<ProductService>(context);
@@ -54,8 +58,10 @@ class ProductsView extends StatelessWidget {
                                 final msg =
                                     jsonEncode({'id': product.productoId});
                                 await ProductService().deleteProducto(msg);
-                                setState(() {});
-                              },
+                                setState(() {
+                                    listado.listadoproductos.removeAt(index); // Actualizar el estado del widget
+                                  });
+                                },
                               icon: Icon(Icons.delete),
                             ),
                           ],
