@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'dart:io';
-import 'package:intl/intl.dart';
+import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/services/productos_services.dart';
-
-import '../../providers/producto_form_provider.dart';
+import 'package:wholecake/ui/input_decorations.dart';
+import 'package:provider/provider.dart';
+import 'package:wholecake/providers/producto_form_provider.dart';
 
 class ProductsEdit extends StatelessWidget {
   @override
@@ -12,148 +11,140 @@ class ProductsEdit extends StatelessWidget {
     final productService = Provider.of<ProductService>(context);
     return ChangeNotifierProvider(
       create: (_) => ProductFormProvider(productService.selectedProduct!),
-      child: _ProductoScreenBody(
-        productService: productService,
-        title: 'Editar Producto',
-      ),
+      child: _ProductoScreenBody(productService: productService),
     );
   }
 }
 
-class _ProductoScreenBody extends StatefulWidget {
-  const _ProductoScreenBody(
-      {Key? key, required this.title, required ProductService productService})
-      : super(key: key);
-  final String title;
+class _ProductoScreenBody extends StatelessWidget {
+  const _ProductoScreenBody({
+    Key? key,
+    required this.productService,
+  }) : super(key: key);
 
-  @override
-  State<_ProductoScreenBody> createState() => _ProductoScreenBodyPageState();
-}
-
-class _ProductoScreenBodyPageState extends State<_ProductoScreenBody> {
-  TextEditingController nombreController = TextEditingController();
-  TextEditingController fechaElaboracionController = TextEditingController();
-  TextEditingController fechaVencimientoController = TextEditingController();
-  TextEditingController precioController = TextEditingController();
-  TextEditingController categoriaController = TextEditingController();
-
-  @override
-  void dispose() {
-    nombreController.dispose();
-    fechaElaboracionController.dispose();
-    fechaVencimientoController.dispose();
-    precioController.dispose();
-    categoriaController.dispose();
-    super.dispose();
-  }
-
-  void _saveData() {
-    // Aquí es donde guardarías la información en la base de datos
-    print('Nombre: ${nombreController.text}');
-    print('Fecha de elaboración: ${fechaElaboracionController.text}');
-    print('Fecha de vencimiento: ${fechaVencimientoController.text}');
-    print('Precio: ${precioController.text}');
-    print('Categoria: ${categoriaController.text}');
-  }
+  final ProductService productService;
 
   @override
   Widget build(BuildContext context) {
     final productForm = Provider.of<ProductFormProvider>(context);
-    final product = productForm.product;
-    nombreController.text = product.nombre;
-    fechaElaboracionController.text =
-        DateFormat('dd-MM-yyyy').format(product.fechaElaboracion);
-    fechaVencimientoController.text =
-        DateFormat('dd-MM-yyyy').format(product.fechaVencimiento);
-    precioController.text = product.precio;
-    categoriaController.text = product.categoria;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Editar Productos'),
-      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        child: Column(
-          children: [
-            InputTextField1(
-              hintText: 'Nombre',
-              labelText: 'Nombre',
-              controller: nombreController,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            InputTextField1(
-              hintText: 'Fecha de elaboración',
-              labelText: 'Fecha de elaboración',
-              controller: fechaElaboracionController,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            InputTextField1(
-              hintText: 'Fecha de vencimiento',
-              labelText: 'Fecha de vencimiento',
-              controller: fechaVencimientoController,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            InputTextField1(
-              hintText: 'Precio',
-              labelText: 'Precio',
-              controller: precioController,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            InputTextField1(
-              hintText: 'Categoria',
-              labelText: 'Categoria',
-              controller: categoriaController,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            ElevatedButton(
-              onPressed: _saveData,
-              child: const Text('Guardar'),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Volver'),
-            ),
-          ],
-        ),
+        child: Column(children: [
+          _ProductForm(),
+          const SizedBox(height: 100),
+        ]),
       ),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.save_outlined),
+          onPressed: () async {
+            if (!productForm.isValidForm()) return;
+            print(productForm.product);
+
+            await productService.editOrCreateProduct(productForm.product);
+          }),
     );
   }
 }
 
-class InputTextField1 extends StatelessWidget {
-  const InputTextField1({
-    Key? key,
-    required this.hintText,
-    required this.labelText,
-    required this.controller,
-  }) : super(key: key);
-
-  final String hintText;
-  final String labelText;
-  final TextEditingController controller;
-
+class _ProductForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: hintText,
-        labelText: labelText,
-        border: OutlineInputBorder(),
+    final productForm = Provider.of<ProductFormProvider>(context);
+    final product = productForm.product;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        width: double.infinity,
+        decoration: _createDecoration(),
+        child: Form(
+            key: productForm.formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                TextFormField(
+                  initialValue: product.nombre,
+                  onChanged: (value) => product.nombre = value,
+                  validator: (value) {
+                    if (value == null || value.length < 1)
+                      return 'El nombre es obligtorio';
+                  },
+                  decoration: InputDecorations.authInputDecoration(
+                      hintText: 'Nombre del producto', labelText: 'Nombre'),
+                ),
+                TextFormField(
+                  initialValue: product.categoria,
+                  onChanged: (value) => product.categoria = value,
+                  validator: (value) {
+                    if (value == null || value.length < 1)
+                      return 'El nombre es obligtorio';
+                  },
+                  decoration: InputDecorations.authInputDecoration(
+                      hintText: 'Categoria', labelText: 'categoria'),
+                ),
+                TextFormField(
+                  initialValue: product.fechaElaboracion.toString(),
+                  onChanged: (value) =>
+                      product.fechaElaboracion = DateTime.parse(value),
+                  validator: (value) {
+                    if (value == null || value.length < 1)
+                      return 'El nombre es obligtorio';
+                  },
+                  decoration: InputDecorations.authInputDecoration(
+                      hintText: 'Fecha Elaboracion',
+                      labelText: 'fecha elaboracion'),
+                ),
+                TextFormField(
+                  initialValue: product.fechaVencimiento.toString(),
+                  onChanged: (value) =>
+                      product.fechaVencimiento = DateTime.parse(value),
+                  validator: (value) {
+                    if (value == null || value.length < 1)
+                      return 'El nombre es obligtorio';
+                  },
+                  decoration: InputDecorations.authInputDecoration(
+                      hintText: 'Fecha Vencimiento',
+                      labelText: 'Fecha vencimiento'),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  initialValue: product.precio.toString(),
+                  onChanged: (value) {
+                    if (int.tryParse(value) == null) {
+                      product.precio = "0";
+                    } else {
+                      product.precio = value;
+                    }
+                  },
+                  decoration: InputDecorations.authInputDecoration(
+                      hintText: '\$15000', labelText: 'Precio'),
+                ),
+                const SizedBox(height: 20),
+                SwitchListTile.adaptive(
+                  value: true,
+                  onChanged: (value) {},
+                  activeColor: Colors.orange,
+                  title: const Text('Disponible'),
+                )
+              ],
+            )),
       ),
-      controller: controller,
     );
   }
+
+  BoxDecoration _createDecoration() => const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(25),
+              bottomRight: Radius.circular(25)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black,
+              offset: Offset(0, 5),
+              blurRadius: 10,
+            )
+          ]);
 }

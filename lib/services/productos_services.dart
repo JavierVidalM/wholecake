@@ -32,7 +32,6 @@ class ProductService extends ChangeNotifier {
   }
 
   Future editOrCreateProduct(Listado product) async {
-    print('aca toy');
     isEditCreate = true;
     notifyListeners();
     if (product.productoId == null) {
@@ -60,9 +59,10 @@ class ProductService extends ChangeNotifier {
   }
 
   Future<String> updateProduct(Listado product) async {
+    print(product.productoId);
     final url = Uri.http(
       BASEURL,
-      'productos/productos_edit_rest/',
+      'productos/productos_productos_update_rest/',
     );
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
@@ -73,10 +73,8 @@ class ProductService extends ChangeNotifier {
     final decodeResp = response.body;
     print(decodeResp);
     //actualizamos el listado
-    final index = listadoproductos
-        .indexWhere((element) => element.productoId == product.productoId);
+    final index = listadoproductos.indexWhere((element) => element.productoId == product.productoId);
     listadoproductos[index] = product;
-
     return '';
   }
 

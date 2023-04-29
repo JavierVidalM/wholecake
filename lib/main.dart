@@ -1,15 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/views/login/login_main.dart';
-import 'package:wholecake/views/products/products_add.dart';
 import 'package:wholecake/views/products/products_view.dart';
 import 'package:wholecake/views/views.dart';
 
 void main() {
   runApp(ProviderState());
 }
-
 class ProviderState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -24,7 +22,6 @@ class ProviderState extends StatelessWidget {
     );
   }
 }
-
 class MyfirstWidget extends StatelessWidget {
   const MyfirstWidget({Key? key}) : super(key: key);
   @override
