@@ -11,7 +11,13 @@ class ProductsEdit extends StatelessWidget {
     final productService = Provider.of<ProductService>(context);
     return ChangeNotifierProvider(
       create: (_) => ProductFormProvider(productService.selectedProduct!),
-      child: _ProductoScreenBody(productService: productService),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.pink,
+          title: Text('Editar producto'),
+        ),
+        body: _ProductoScreenBody(productService: productService),
+      ),
     );
   }
 }
@@ -39,7 +45,6 @@ class _ProductoScreenBody extends StatelessWidget {
           onPressed: () async {
             if (!productForm.isValidForm()) return;
             print(productForm.product);
-
             await productService.editOrCreateProduct(productForm.product);
           }),
     );
@@ -57,94 +62,319 @@ class _ProductForm extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         width: double.infinity,
-        decoration: _createDecoration(),
+        // decoration: _createDecoration(),
         child: Form(
             key: productForm.formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               children: [
-                const SizedBox(height: 10),
-                TextFormField(
-                  initialValue: product.nombre,
-                  onChanged: (value) => product.nombre = value,
-                  validator: (value) {
-                    if (value == null || value.length < 1)
-                      return 'El nombre es obligtorio';
-                  },
-                  decoration: InputDecorations.authInputDecoration(
-                      hintText: 'Nombre del producto', labelText: 'Nombre'),
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Nombre',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextFormField(
+                      initialValue: product.nombre,
+                      onChanged: (value) => product.nombre = value,
+                      validator: (value) {
+                        if (value == null || value.length < 1)
+                          return 'El nombre es obligatorio';
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Nombre del producto',
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                TextFormField(
-                  initialValue: product.categoria,
-                  onChanged: (value) => product.categoria = value,
-                  validator: (value) {
-                    if (value == null || value.length < 1)
-                      return 'El nombre es obligtorio';
-                  },
-                  decoration: InputDecorations.authInputDecoration(
-                      hintText: 'Categoria', labelText: 'categoria'),
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Categoría',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextFormField(
+                      initialValue: product.categoria,
+                      onChanged: (value) => product.categoria = value,
+                      validator: (value) {
+                        if (value == null || value.length < 1)
+                          return 'La categoría es obligatoria';
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Categoría',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                TextFormField(
-                  initialValue: product.fechaElaboracion.toString(),
-                  onChanged: (value) =>
-                      product.fechaElaboracion = DateTime.parse(value),
-                  validator: (value) {
-                    if (value == null || value.length < 1)
-                      return 'El nombre es obligtorio';
-                  },
-                  decoration: InputDecorations.authInputDecoration(
-                      hintText: 'Fecha Elaboracion',
-                      labelText: 'fecha elaboracion'),
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Fecha Elaboración',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextFormField(
+                      initialValue: product.fechaElaboracion.toString(),
+                      onChanged: (value) =>
+                          product.fechaElaboracion = DateTime.parse(value),
+                      validator: (value) {
+                        if (value == null || value.length < 1)
+                          return 'La fecha de elaboración es obligatoria';
+                      },
+                      decoration: InputDecoration(
+                        hintText: '\$15000',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                TextFormField(
-                  initialValue: product.fechaVencimiento.toString(),
-                  onChanged: (value) =>
-                      product.fechaVencimiento = DateTime.parse(value),
-                  validator: (value) {
-                    if (value == null || value.length < 1)
-                      return 'El nombre es obligtorio';
-                  },
-                  decoration: InputDecorations.authInputDecoration(
-                      hintText: 'Fecha Vencimiento',
-                      labelText: 'Fecha vencimiento'),
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Fecha Vencimiento',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextFormField(
+                      initialValue: product.fechaVencimiento.toString(),
+                      onChanged: (value) =>
+                          product.fechaVencimiento = DateTime.parse(value),
+                      validator: (value) {
+                        if (value == null || value.length < 1)
+                          return 'El nombre es obligatorio';
+                      },
+                      decoration: InputDecoration(
+                        hintText: '\$15000',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  initialValue: product.precio.toString(),
-                  onChanged: (value) {
-                    if (int.tryParse(value) == null) {
-                      product.precio = "0";
-                    } else {
-                      product.precio = value;
-                    }
-                  },
-                  decoration: InputDecorations.authInputDecoration(
-                      hintText: '\$15000', labelText: 'Precio'),
-                ),
-                const SizedBox(height: 20),
-                SwitchListTile.adaptive(
-                  value: true,
-                  onChanged: (value) {},
-                  activeColor: Colors.orange,
-                  title: const Text('Disponible'),
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Precio',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      initialValue: product.precio.toString(),
+                      onChanged: (value) {
+                        if (int.tryParse(value) == null) {
+                          product.precio = "0";
+                        } else {
+                          product.precio = value;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        hintText: '\$15000',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 )
               ],
             )),
       ),
     );
   }
-
-  BoxDecoration _createDecoration() => const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black,
-              offset: Offset(0, 5),
-              blurRadius: 10,
-            )
-          ]);
 }
