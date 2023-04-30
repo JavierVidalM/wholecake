@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/services/productos_services.dart';
+import 'package:file_picker/file_picker.dart';
 
 void main() {
   runApp(const ProductsAdd());
@@ -36,6 +37,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
   TextEditingController fechaVencimientoController = TextEditingController();
   TextEditingController precioController = TextEditingController();
   TextEditingController categoriaController = TextEditingController();
+  File? imagen;
 
   @override
   void dispose() {
@@ -48,12 +50,17 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
   }
 
   Future<void> _saveData() async {
-  final msg=jsonEncode({'nombre':nombreController.text,
-  'categoria':categoriaController.text,
-  'fecha_elaboracion':fechaElaboracionController.text,
-  'fecha_vencimiento':fechaVencimientoController.text,
-  'precio':precioController.text});
-  await ProductService().addProducto(msg);
+    final bytes = imagen != null ? await imagen!.readAsBytes() : null;
+    final base64 = bytes != null ? base64Encode(bytes) : null;
+    final msg = jsonEncode({
+      'nombre': nombreController.text,
+      'categoria': categoriaController.text,
+      'fecha_elaboracion': fechaElaboracionController.text,
+      'fecha_vencimiento': fechaVencimientoController.text,
+      'precio': precioController.text,
+      'imagen': base64
+    });
+    // await ProductService().addProducto(msg);
   }
 
   @override
@@ -105,6 +112,20 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
             ),
             const SizedBox(
               height: 20,
+            ),
+            ElevatedButton.icon(
+              onPressed: () async {
+                final result = await FilePicker.platform.pickFiles(
+                  type: FileType.image,
+                );
+                if (result != null) {
+                  setState(() {
+                    imagen = File(result.files.single.path!);
+                  });
+                }
+              },
+              icon: Icon(Icons.image),
+              label: Text('Seleccionar imagen'),
             ),
             ElevatedButton(
               onPressed: _saveData,
