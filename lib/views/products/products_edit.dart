@@ -7,7 +7,14 @@ import 'package:wholecake/providers/producto_form_provider.dart';
 
 import 'package:flutter/material.dart';
 
-class ProductsEdit extends StatelessWidget {
+import 'package:flutter/material.dart';
+
+class ProductsEdit extends StatefulWidget {
+  @override
+  _ProductsEditState createState() => _ProductsEditState();
+}
+
+class _ProductsEditState extends State<ProductsEdit> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,6 +30,7 @@ class ProductsEdit extends StatelessWidget {
     );
   }
 }
+
 
 class EditProductPage extends StatefulWidget {
   @override
