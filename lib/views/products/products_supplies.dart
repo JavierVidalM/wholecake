@@ -24,7 +24,7 @@ class _SuppliesState extends State<Supplies> {
             fontSize: 30,
             color: Color.fromARGB(255, 93, 42, 66)),
       ),
-      drawer: myDrawer,
+      drawer: MyDrawer(),
       body: Column(
         children: [
           //4 cajas arriba

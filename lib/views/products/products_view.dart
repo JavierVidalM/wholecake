@@ -5,6 +5,7 @@ import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/views/products/products_edit.dart';
 import 'package:wholecake/views/views.dart';
 import 'dart:typed_data';
+
 class ProductsView extends StatefulWidget {
   const ProductsView({Key? key}) : super(key: key);
 
@@ -42,7 +43,7 @@ class _ProductsViewState extends State<ProductsView> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image:image.image,
+                        image: image.image,
                         fit: BoxFit.fill,
                       ),
                     ),

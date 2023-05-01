@@ -7,7 +7,7 @@ import 'package:wholecake/views/sells/sells.dart';
 import 'package:wholecake/views/error.dart';
 
 class AppRoutes {
-  static const initialRoute = '/ProductsView';
+  static const initialRoute = '/LoginMain';
 
   static Map<String, Widget Function(BuildContext)> routes = {
     //Pantallas del Login

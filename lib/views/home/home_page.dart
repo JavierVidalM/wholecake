@@ -1,5 +1,5 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:wholecake/constants.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,7 +9,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  List<double> weeklySummary = [];
+  // List<double> weeklySummary = [];
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +24,7 @@ class HomePageState extends State<HomePage> {
         backgroundColor: const Color(0xFFFFB5D7),
         toolbarHeight: MediaQuery.of(context).size.height * 0.1,
       ),
+      drawer: MyDrawer(),
       body: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -41,9 +42,19 @@ class HomePageState extends State<HomePage> {
                   ],
                 )),
             Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.02),
-                child: LineChart(LineChartData())),
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.01),
+              child: SizedBox(
+                width: 300,
+                height: 350,
+                child: Card(
+                  child: Row(
+                    children: [const Text("hola")],
+                  ),
+                  // child: MyBarGraph(),
+                ),
+              ), // ),// child: LineChart(LineChartData())
+            ),
           ])),
     );
   }
