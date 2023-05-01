@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wholecake/constants.dart';
 import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/ui/input_decorations.dart';
@@ -20,10 +21,9 @@ class _ProductsEditState extends State<ProductsEdit> {
     return MaterialApp(
       title: 'Editar producto',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.pink, // Color rosa
+          backgroundColor: Color(0xFFFFB5D7), // Color rosa
         ),
       ),
       home: EditProductPage(),
@@ -50,9 +50,11 @@ class _EditProductPageState extends State<EditProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFBDE0FE),
       appBar: AppBar(
         title: Text('Editar producto'),
       ),
+      drawer: MyDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -136,26 +138,43 @@ class _EditProductPageState extends State<EditProductPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                    },
-                    child: Text('Actualizar foto'),
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFFFB5D7),
+                    ),
+                    child: Text(
+                      'Actualizar foto',
+                      style: TextStyle(color: Color(0xFF5D2A42)),
+                    ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                    },
-                    child: Text('Guardar'),
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFFFB5D7),
+                    ),
+                    child: Text(
+                      'Guardar',
+                      style: TextStyle(color: Color(0xFF5D2A42)),
+                    ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                    },
-                    child: Text('Volver'),
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(
+                        0xFFFFB5D7,
+                      ),
+                    ),
+                    child: Text(
+                      'Volver',
+                      style: TextStyle(color: Color(0xFF5D2A42)),
+                    ),
                   ),
                 ],
               ),
-						],
-           ),
+            ],
           ),
         ),
-      );
-  	}
-	}
+      ),
+    );
+  }
+}

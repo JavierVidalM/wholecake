@@ -20,9 +20,10 @@ class _ProductsViewState extends State<ProductsView> {
     final listado = Provider.of<ProductService>(context);
 
     return Scaffold(
+        backgroundColor: Color(0xFFBDE0FE),
         appBar: AppBar(
           title: Text('Listado de productos'),
-          backgroundColor: Colors.pink,
+          backgroundColor: Color(0xFFFFB5D7),
         ),
         drawer: MyDrawer(),
         body: Column(children: [

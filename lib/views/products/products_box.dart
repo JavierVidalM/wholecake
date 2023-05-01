@@ -9,8 +9,7 @@ class MyBox extends StatelessWidget {
       padding: const EdgeInsets.all(12.0),
       child: Container(
         decoration: BoxDecoration(
-            color: Color.fromARGB(255, 255, 181, 216),
-            borderRadius: BorderRadius.circular(20)),
+            color: Color(0xFFFFB5D7), borderRadius: BorderRadius.circular(20)),
         child: Column(children: [
           //cantidad
           Row(
@@ -19,7 +18,7 @@ class MyBox extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                    color: Color.fromRGBO(199, 165, 199, 1),
+                    color: Color(0xFFFFB5D7),
                     borderRadius: BorderRadius.circular(12)),
                 child: Text(
                   '35',

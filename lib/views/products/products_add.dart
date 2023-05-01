@@ -13,9 +13,7 @@ class ProductsAdd extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Agregar productos',
-      theme: ThemeData(
-        primarySwatch: Colors.pink,
-      ),
+      color: Color(0xFFFFB5D7),
       home: const ProductsAddPagePage(title: 'Agregar productos'),
     );
   }
@@ -65,9 +63,12 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFBDE0FE),
       appBar: AppBar(
         title: const Text('Agregar Productos'),
+        backgroundColor: Color(0xFFFFB5D7),
       ),
+      drawer: MyDrawer(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
@@ -135,22 +136,41 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
                   });
                 }
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFFB5D7),
+              ),
               icon: Icon(Icons.image),
-              label: Text('Seleccionar imagen'),
+              label: Text(
+                'Seleccionar imagen',
+                style: TextStyle(color: Color(0xFF5D2A42)),
+              ),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ProductsView()));
               },
-              child: const Text('Guardar'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFFB5D7),
+              ),
+              child: const Text(
+                'Guardar',
+                style: TextStyle(color: Color(0xFF5D2A42)),
+              ),
             ),
             const SizedBox(
               height: 20,
             ),
             ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Volver'),
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProductsView())),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFFB5D7),
+              ),
+              child: const Text(
+                'Volver',
+                style: TextStyle(color: Color(0xFF5D2A42)),
+              ),
             ),
           ],
         ),
