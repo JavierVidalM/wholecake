@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/views/products/products_edit.dart';
 import 'package:wholecake/views/views.dart';
-
+import 'dart:typed_data';
 class ProductsView extends StatefulWidget {
   const ProductsView({Key? key}) : super(key: key);
 
@@ -26,6 +26,8 @@ class _ProductsViewState extends State<ProductsView> {
         itemCount: listado.listadoproductos.length,
         itemBuilder: (context, index) {
           final product = listado.listadoproductos[index];
+          Uint8List bytes = Uint8List.fromList(base64.decode(product.imagen));
+          Image image = Image.memory(bytes);
           return Card(
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             child: Padding(
@@ -40,8 +42,7 @@ class _ProductsViewState extends State<ProductsView> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: NetworkImage(
-                            'https://static.wikia.nocookie.net/drama/images/6/65/Ji_Hyo38.jpg/revision/latest/scale-to-width-down/250?cb=20220605002504&path-prefix=es'),
+                        image:image.image,
                         fit: BoxFit.fill,
                       ),
                     ),
