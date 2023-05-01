@@ -7,10 +7,6 @@ import 'package:wholecake/providers/producto_form_provider.dart';
 
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(ProductsEdit());
-}
-
 class ProductsEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
