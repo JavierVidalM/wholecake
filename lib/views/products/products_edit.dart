@@ -8,10 +8,10 @@ import 'package:wholecake/providers/producto_form_provider.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProductsEdit());
 }
 
-class MyApp extends StatelessWidget {
+class ProductsEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
