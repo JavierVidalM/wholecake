@@ -5,376 +5,153 @@ import 'package:wholecake/ui/input_decorations.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/providers/producto_form_provider.dart';
 
-class ProductsEdit extends StatelessWidget {
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final productService = Provider.of<ProductService>(context);
-    return ChangeNotifierProvider(
-      create: (_) => ProductFormProvider(productService.selectedProduct!),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.pink,
-          title: Text('Editar producto'),
+    return MaterialApp(
+      title: 'Editar producto',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.pink, // Color rosa
         ),
-        body: _ProductoScreenBody(productService: productService),
       ),
+      home: EditProductPage(),
     );
   }
 }
 
-class _ProductoScreenBody extends StatelessWidget {
-  const _ProductoScreenBody({
-    Key? key,
-    required this.productService,
-  }) : super(key: key);
+class EditProductPage extends StatefulWidget {
+  @override
+  _EditProductPageState createState() => _EditProductPageState();
+}
 
-  final ProductService productService;
+class _EditProductPageState extends State<EditProductPage> {
+  final _formKey = GlobalKey<FormState>();
+
+  // Controladores de los campos de texto
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _categoryController = TextEditingController();
+  TextEditingController _priceController = TextEditingController();
+  TextEditingController _manufactureDateController = TextEditingController();
+  TextEditingController _expirationDateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final productForm = Provider.of<ProductFormProvider>(context);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(children: [
-          _ProductForm(),
-          const SizedBox(height: 100),
-        ]),
+      appBar: AppBar(
+        title: Text('Editar producto'),
       ),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.save_outlined),
-          onPressed: () async {
-            if (!productForm.isValidForm()) return;
-            print(productForm.product);
-            await productService.editOrCreateProduct(productForm.product);
-          }),
-    );
-  }
-}
-
-class _ProductForm extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final productForm = Provider.of<ProductFormProvider>(context);
-    final product = productForm.product;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        width: double.infinity,
-        // decoration: _createDecoration(),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Form(
-            key: productForm.formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              children: [
-                SizedBox(height: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 32.0),
+              Center(
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Text(
-                      'Nombre',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextFormField(
-                      initialValue: product.nombre,
-                      onChanged: (value) => product.nombre = value,
-                      validator: (value) {
-                        if (value == null || value.length < 1)
-                          return 'El nombre es obligatorio';
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Nombre del producto',
-                        hintStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
+                    Container(
+                      width: 100,
+                      height: 100,
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        image: DecorationImage(
+                          image: NetworkImage(''),
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Categoría',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextFormField(
-                      initialValue: product.categoria,
-                      onChanged: (value) => product.categoria = value,
-                      validator: (value) {
-                        if (value == null || value.length < 1)
-                          return 'La categoría es obligatoria';
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Categoría',
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                        ),
-                        hintStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+              ),
+              SizedBox(height: 32.0),
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: 'Nombre',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                 ),
-                SizedBox(height: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Fecha Elaboración',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextFormField(
-                      initialValue: product.fechaElaboracion.toString(),
-                      onChanged: (value) =>
-                          product.fechaElaboracion = DateTime.parse(value),
-                      validator: (value) {
-                        if (value == null || value.length < 1)
-                          return 'La fecha de elaboración es obligatoria';
-                      },
-                      decoration: InputDecoration(
-                        hintText: '\$15000',
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        hintStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: _categoryController,
+                decoration: InputDecoration(
+                  labelText: 'Categoría',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                 ),
-                SizedBox(height: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Fecha Vencimiento',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextFormField(
-                      initialValue: product.fechaVencimiento.toString(),
-                      onChanged: (value) =>
-                          product.fechaVencimiento = DateTime.parse(value),
-                      validator: (value) {
-                        if (value == null || value.length < 1)
-                          return 'El nombre es obligatorio';
-                      },
-                      decoration: InputDecoration(
-                        hintText: '\$15000',
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        hintStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: _manufactureDateController,
+                decoration: InputDecoration(
+                  labelText: 'Fecha de elaboración',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                 ),
-                SizedBox(height: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Precio',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      initialValue: product.precio.toString(),
-                      onChanged: (value) {
-                        if (int.tryParse(value) == null) {
-                          product.precio = "0";
-                        } else {
-                          product.precio = value;
-                        }
-                      },
-                      decoration: InputDecoration(
-                        hintText: '\$15000',
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        hintStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            )),
-      ),
-    );
-  }
-}
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: _manufactureDateController,
+                decoration: InputDecoration(
+                  labelText: 'Fecha de vencimiento',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: _priceController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Precio',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 32.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                    },
+                    child: Text('Actualizar foto'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                    },
+                    child: Text('Guardar'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                    },
+                    child: Text('Volver'),
+                  ),
+                ],
+              ),
+						],
+           ),
+          ),
+        ),
+      );
+  	}
+	}

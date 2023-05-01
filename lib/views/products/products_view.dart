@@ -5,6 +5,7 @@ import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/views/products/products_edit.dart';
 import 'package:wholecake/views/views.dart';
 import 'dart:typed_data';
+import '../../constants.dart';
 
 class ProductsView extends StatefulWidget {
   const ProductsView({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class _ProductsViewState extends State<ProductsView> {
         title: Text('Listado de productos'),
         backgroundColor: Colors.pink,
       ),
+      drawer: MyDrawer(),
       body: ListView.builder(
         itemCount: listado.listadoproductos.length,
         itemBuilder: (context, index) {
