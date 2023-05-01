@@ -4,11 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:file_picker/file_picker.dart';
-
-void main() {
-  runApp(const ProductsAdd());
-}
-
 class ProductsAdd extends StatelessWidget {
   const ProductsAdd({Key? key}) : super(key: key);
 
@@ -60,7 +55,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
       'precio': precioController.text,
       'imagen': base64
     });
-    // await ProductService().addProducto(msg);
+    await ProductService().addProducto(msg);
   }
 
   @override

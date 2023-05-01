@@ -31,6 +31,7 @@ class Listado {
     DateTime fechaVencimiento;
     String precio;
     String categoria;
+    String imagen;
 
     Listado({
         required this.productoId,
@@ -39,6 +40,7 @@ class Listado {
         required this.fechaVencimiento,
         required this.precio,
         required this.categoria,
+        required this.imagen,
     });
 
     factory Listado.fromJson(String str) => Listado.fromMap(json.decode(str));
@@ -46,12 +48,13 @@ class Listado {
     String toJson() => json.encode(toMap());
 
     factory Listado.fromMap(Map<String, dynamic> json) => Listado(
-        productoId: json["productoId"],
+        productoId: json["id"],
         nombre: json["nombre"],
         fechaElaboracion: DateTime.parse(json["fecha_elaboracion"]),
         fechaVencimiento: DateTime.parse(json["fecha_vencimiento"]),
         precio: json["precio"],
         categoria: json["categoria"],
+        imagen: json["imagen"],
     );
 
     Map<String, dynamic> toMap() => {
@@ -61,14 +64,15 @@ class Listado {
         "fecha_vencimiento": "${fechaVencimiento.year.toString().padLeft(4, '0')}-${fechaVencimiento.month.toString().padLeft(2, '0')}-${fechaVencimiento.day.toString().padLeft(2, '0')}",
         "precio": precio,
         "categoria": categoria,
+        "imagen": imagen,
     };
-        Listado copy() => Listado(
+    Listado copy() => Listado(
       productoId: productoId, 
       nombre: nombre, 
       precio: precio, 
       categoria: categoria, 
       fechaVencimiento: fechaVencimiento,
       fechaElaboracion: fechaElaboracion,
+      imagen: imagen,
       );
 }
-
