@@ -35,6 +35,12 @@ dependencies:
   intl: ^0.18.1
   fl_chart: ^0.62.0
   file_picker: ^4.0.0
+  flutter_native_splash: ^2.2.19
+flutter_native_splash:
+  android: true
+  ios: true
+  image: "assets/images/logo_SW.png"
+  color: "#BDE0FE"
 
 dev_dependencies:
   flutter_test:
@@ -45,6 +51,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/SweetCake_icon.png"  
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.

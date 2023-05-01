@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:wholecake/constants.dart';
+import 'package:wholecake/views/products/products.dart';
 import 'package:flutter/material.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:file_picker/file_picker.dart';
+
 class ProductsAdd extends StatelessWidget {
   const ProductsAdd({Key? key}) : super(key: key);
 
@@ -56,6 +58,8 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
       'imagen': base64
     });
     await ProductService().addProducto(msg);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ProductsView()));
   }
 
   @override
@@ -68,6 +72,18 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           children: [
+            Container(
+              width: 100,
+              height: 100,
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                image: DecorationImage(
+                  image: NetworkImage(''),
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
             InputTextField(
               hintText: 'Nombre Producto',
               labelText: 'Nombre Producto',
@@ -123,7 +139,10 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
               label: Text('Seleccionar imagen'),
             ),
             ElevatedButton(
-              onPressed: _saveData,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProductsView()));
+              },
               child: const Text('Guardar'),
             ),
             const SizedBox(
