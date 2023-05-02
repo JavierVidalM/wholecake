@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/models/users.dart';
-import 'package:wholecake/views/users/users_add.dart';
 import 'package:wholecake/services/users_services.dart';
 import 'package:wholecake/providers/user_form_provider.dart';
 import 'package:file_picker/file_picker.dart';
@@ -142,7 +141,7 @@ class InputTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         labelText: labelText,
-        border: UnderlineInputBorder(),
+        border: const UnderlineInputBorder(),
       ),
       controller: controller,
     );

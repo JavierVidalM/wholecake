@@ -47,7 +47,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
   Future<void> _saveData() async {
     final bytes = imagen != null ? await imagen!.readAsBytes() : null;
     final base64 = bytes != null ? base64Encode(bytes) : "";
-    
+
     final msg = jsonEncode({
       'nombre': nombreController.text,
       'categoria': categoriaController.text,

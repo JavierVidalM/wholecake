@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/models/users.dart';
-import 'package:wholecake/views/users/users_add.dart';
 import 'package:wholecake/services/users_services.dart';
-import 'package:wholecake/providers/user_form_provider.dart';
 import 'package:file_picker/file_picker.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:wholecake/views/users/users_list.dart';
 
 class UsersAdd extends StatelessWidget {
   const UsersAdd({Key? key}) : super(key: key);
@@ -51,8 +51,8 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
   }
 
   Future<void> _saveData() async {
-    final bytes = imagen != null ? await imagen!.readAsbytes() : null;
-    final base64 = bytes != null ? base64Encode(bytes) : null;
+    final bytes = imagen != null ? await imagen!.readAsBytes() : null;
+    final base64 = bytes != null ? base64Encode(bytes) : "";
     final msg = jsonEncode({
       // Aquí es donde guardarías la información en la base de datos
       'nombre': nombreusersController.text,
@@ -61,7 +61,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
       'cargo': cargousersController.text,
       'correo': correousersController.text,
       'numero': numerotelefonousersController.text,
-      'contancto emergencia': contactoemergenciausersController,
+      'contacto emergencia': contactoemergenciausersController.text,
       'imagen': base64
     });
     await UserService().UsersAdd(msg);
