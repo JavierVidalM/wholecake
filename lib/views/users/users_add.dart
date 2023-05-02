@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:wholecake/models/users.dart';
 import 'package:wholecake/views/users/users_add.dart';
-
-void main() {
-  runApp(const UsersAdd());
-}
+import 'package:wholecake/services/users_services.dart';
+import 'package:wholecake/providers/user_form_provider.dart';
+import 'package:file_picker/file_picker.dart';
 
 class UsersAdd extends StatelessWidget {
   const UsersAdd({Key? key}) : super(key: key);
@@ -37,6 +36,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
   TextEditingController numerotelefonousersController = TextEditingController();
   TextEditingController contactoemergenciausersController =
       TextEditingController();
+  File? imagen;
 
   @override
   void dispose() {
@@ -50,15 +50,23 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
     super.dispose();
   }
 
-  void _saveData() {
-    // Aquí es donde guardarías la información en la base de datos
-    print('Nombre: ${rutusersController.text}');
-    print('Fecha de elaboración: ${nombreusersController.text}');
-    print('Fecha de vencimiento: ${localusersController.text}');
-    print('Descripción: ${cargousersController.text}');
-    print('Descripción: ${correousersController.text}');
-    print('Descripción: ${numerotelefonousersController.text}');
-    print('Descripción: ${contactoemergenciausersController.text}');
+  Future<void> _saveData() async {
+    final bytes = imagen != null ? await imagen!.readAsbytes() : null;
+    final base64 = bytes != null ? base64Encode(bytes) : null;
+    final msg = jsonEncode({
+      // Aquí es donde guardarías la información en la base de datos
+      'nombre': nombreusersController.text,
+      'rut': rutusersController.text,
+      'local': localusersController.text,
+      'cargo': cargousersController.text,
+      'correo': correousersController.text,
+      'numero': numerotelefonousersController.text,
+      'contancto emergencia': contactoemergenciausersController,
+      'imagen': base64
+    });
+    await UserService().UsersAdd(msg);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => UsersList()));
   }
 
   @override
@@ -71,7 +79,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             child: Column(
               children: [
-                InputTextField(
+                InputTextField1(
                   hintText: 'Rut ',
                   labelText: 'Rut ',
                   controller: rutusersController,
@@ -79,7 +87,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField(
+                InputTextField1(
                   hintText: 'Nombre  completo',
                   labelText: 'Nombre completo',
                   controller: nombreusersController,
@@ -87,7 +95,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField(
+                InputTextField1(
                   hintText: 'Local',
                   labelText: 'Local',
                   controller: localusersController,
@@ -95,7 +103,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField(
+                InputTextField1(
                   hintText: 'Cargo',
                   labelText: 'Cargo',
                   controller: cargousersController,
@@ -103,7 +111,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField(
+                InputTextField1(
                   hintText: 'Correo  ',
                   labelText: 'Correo ',
                   controller: correousersController,
@@ -111,7 +119,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField(
+                InputTextField1(
                   hintText: 'Numero de telefono',
                   labelText: 'Numero de telefono',
                   controller: numerotelefonousersController,
@@ -119,7 +127,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField(
+                InputTextField1(
                   hintText: 'Contacto de emergencia',
                   labelText: 'Contacto de emergencia',
                   controller: contactoemergenciausersController,
@@ -131,13 +139,33 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                   onPressed: _saveData,
                   child: const Text('Guardar'),
                 ),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    final result = await FilePicker.platform.pickFiles(
+                      type: FileType.image,
+                    );
+                    if (result != null) {
+                      setState(() {
+                        imagen = File(result.files.single.path!);
+                      });
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFFFB5D7),
+                  ),
+                  icon: const Icon(Icons.image),
+                  label: const Text(
+                    'Seleccionar imagen',
+                    style: TextStyle(color: Color(0xFF5D2A42)),
+                  ),
+                ),
               ],
             )));
   }
 }
 
-class InputTextField extends StatelessWidget {
-  const InputTextField({
+class InputTextField1 extends StatelessWidget {
+  const InputTextField1({
     Key? key,
     required this.hintText,
     required this.labelText,
@@ -154,7 +182,7 @@ class InputTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         labelText: labelText,
-        border: UnderlineInputBorder(),
+        border: const UnderlineInputBorder(),
       ),
       controller: controller,
     );

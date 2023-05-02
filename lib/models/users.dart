@@ -32,6 +32,7 @@ class Listado {
     required this.userCorreo,
     required this.userNumero,
     required this.userNemergencia,
+    required this.userImagen,
   });
 
   int userId;
@@ -43,6 +44,7 @@ class Listado {
   String userCorreo;
   int userNumero;
   int userNemergencia;
+  String userImagen;
 
   factory Listado.fromJson(String str) => Listado.fromMap(json.decode(str));
 
@@ -58,6 +60,7 @@ class Listado {
         userCorreo: json["user_correo"],
         userNumero: json["user_numero"],
         userNemergencia: json["user_nemergencia"],
+        userImagen: json["user_imagen"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -70,6 +73,7 @@ class Listado {
         "user_correo": userCorreo,
         "user_numero": userNumero,
         "user_nemergencia": userNemergencia,
+        "user_imagen": userImagen,
       };
 
   Listado copy() => Listado(
@@ -82,5 +86,6 @@ class Listado {
         userCorreo: userCorreo,
         userNumero: userNumero,
         userNemergencia: userNemergencia,
+        userImagen: userImagen,
       );
 }
