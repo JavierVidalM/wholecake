@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/constants.dart';
+import 'package:wholecake/sidebar.dart';
 import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/ui/input_decorations.dart';
@@ -31,7 +31,6 @@ class _ProductsEditState extends State<ProductsEdit> {
   }
 }
 
-
 class EditProductPage extends StatefulWidget {
   @override
   _EditProductPageState createState() => _EditProductPageState();
@@ -54,7 +53,7 @@ class _EditProductPageState extends State<EditProductPage> {
       appBar: AppBar(
         title: Text('Editar producto'),
       ),
-      drawer: MyDrawer(),
+      drawer: SideBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

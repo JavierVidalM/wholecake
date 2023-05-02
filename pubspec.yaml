@@ -38,8 +38,8 @@ dependencies:
   flutter_native_splash: ^2.2.19
 
 flutter_native_splash:
-  # color: "#BDE0FE"
-  image: "assets/images/logo_SW.png"
+  color: "#BDE0FE"
+  image: "assets/images/splash.png"
   android: true
   ios: true
 

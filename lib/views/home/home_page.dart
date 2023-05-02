@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/constants.dart';
+import 'package:wholecake/sidebar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,7 +24,7 @@ class HomePageState extends State<HomePage> {
         backgroundColor: const Color(0xFFFFB5D7),
         toolbarHeight: MediaQuery.of(context).size.height * 0.1,
       ),
-      drawer: MyDrawer(),
+      drawer: SideBar(),
       body: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

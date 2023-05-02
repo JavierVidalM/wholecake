@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:wholecake/constants.dart';
+import 'package:wholecake/sidebar.dart';
 import 'package:wholecake/views/products/products.dart';
 import 'package:flutter/material.dart';
 import 'package:wholecake/services/productos_services.dart';
@@ -69,7 +69,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
         title: const Text('Agregar Productos'),
         backgroundColor: Color(0xFFFFB5D7),
       ),
-      drawer: MyDrawer(),
+      drawer: SideBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
@@ -164,8 +164,11 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
               height: 20,
             ),
             ElevatedButton(
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProductsView())),
+              onPressed: () {
+                _saveData();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProductsView()));
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFFFB5D7),
               ),

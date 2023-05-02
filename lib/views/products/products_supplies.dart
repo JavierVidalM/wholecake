@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/constants.dart';
+import 'package:wholecake/sidebar.dart';
 import 'package:wholecake/views/products/products_box.dart';
 
 class Supplies extends StatefulWidget {
@@ -24,7 +24,7 @@ class _SuppliesState extends State<Supplies> {
             fontSize: 30,
             color: Color.fromARGB(255, 93, 42, 66)),
       ),
-      drawer: MyDrawer(),
+      drawer: SideBar(),
       body: Column(
         children: [
           //4 cajas arriba
