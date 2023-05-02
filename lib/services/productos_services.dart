@@ -25,9 +25,28 @@ class ProductService extends ChangeNotifier {
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
     final response = await http.get(url, headers: {'authorization': basicAuth});
-    print(response.body);
     final ProductosMap = Productos.fromJson(response.body);
     listadoproductos = ProductosMap.listado;
+    notifyListeners();
+  }
+
+  Future addProducto(String msg) async {
+    final url = Uri.http(
+      BASEURL,
+      'productos/productos_productos_add_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(url, body: msg, headers: {
+      'authorization': basicAuth,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final decodeResp = response.body;
+    final Listado producto = Listado.fromJson(decodeResp);
+    listadoproductos.add(producto);
+    notifyListeners();
+    await loadProductos(); //
+    isEditCreate = false;
     notifyListeners();
   }
 
@@ -43,23 +62,7 @@ class ProductService extends ChangeNotifier {
     notifyListeners();
   }
 
-  addProducto(String msg) async {
-    final url = Uri.http(
-      BASEURL,
-      'productos/productos_productos_add_rest/',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.post(url, body: msg, headers: {
-      'authorization': basicAuth,
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-    final decodeResp = response.body;
-    loadProductos();
-  }
-
   Future<String> updateProduct(Listado product) async {
-    print(product.productoId);
     final url = Uri.http(
       BASEURL,
       'productos/productos_productos_update_rest/',

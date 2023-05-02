@@ -5,6 +5,7 @@ import 'package:wholecake/views/products/products.dart';
 import 'package:flutter/material.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:wholecake/views/pruebas.dart';
 
 class ProductsAdd extends StatelessWidget {
   const ProductsAdd({Key? key}) : super(key: key);
@@ -47,7 +48,6 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
   Future<void> _saveData() async {
     final bytes = imagen != null ? await imagen!.readAsBytes() : null;
     final base64 = bytes != null ? base64Encode(bytes) : "";
-
     final msg = jsonEncode({
       'nombre': nombreController.text,
       'categoria': categoriaController.text,
@@ -149,8 +149,8 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
             ElevatedButton(
               onPressed: () {
                 _saveData();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProductsView()));
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => ProductsView()));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFFFB5D7),
