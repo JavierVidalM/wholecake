@@ -91,7 +91,7 @@ class _ConversionMonedasState extends State<ConversionMonedas> {
               ),
             );
           } else if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text(
                 'Ocurrió un error al obtener la tasa de cambio.',
                 style: TextStyle(color: Colors.red),
