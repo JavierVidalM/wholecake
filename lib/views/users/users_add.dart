@@ -79,7 +79,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             child: Column(
               children: [
-                InputTextField(
+                InputTextField1(
                   hintText: 'Rut ',
                   labelText: 'Rut ',
                   controller: rutusersController,
@@ -87,7 +87,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField(
+                InputTextField1(
                   hintText: 'Nombre  completo',
                   labelText: 'Nombre completo',
                   controller: nombreusersController,
@@ -95,7 +95,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField(
+                InputTextField1(
                   hintText: 'Local',
                   labelText: 'Local',
                   controller: localusersController,
@@ -103,7 +103,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField(
+                InputTextField1(
                   hintText: 'Cargo',
                   labelText: 'Cargo',
                   controller: cargousersController,
@@ -111,7 +111,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField(
+                InputTextField1(
                   hintText: 'Correo  ',
                   labelText: 'Correo ',
                   controller: correousersController,
@@ -119,7 +119,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField(
+                InputTextField1(
                   hintText: 'Numero de telefono',
                   labelText: 'Numero de telefono',
                   controller: numerotelefonousersController,
@@ -127,7 +127,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField(
+                InputTextField1(
                   hintText: 'Contacto de emergencia',
                   labelText: 'Contacto de emergencia',
                   controller: contactoemergenciausersController,
@@ -164,8 +164,8 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
   }
 }
 
-class InputTextField extends StatelessWidget {
-  const InputTextField({
+class InputTextField1 extends StatelessWidget {
+  const InputTextField1({
     Key? key,
     required this.hintText,
     required this.labelText,
