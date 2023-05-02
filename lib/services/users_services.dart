@@ -21,7 +21,6 @@ class UserService extends ChangeNotifier {
     loadUsers();
   }
 
-  
   Future loadUsers() async {
     isLoading = true;
     notifyListeners();
