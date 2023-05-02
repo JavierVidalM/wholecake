@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'package:wholecake/views/users/users_edit.dart';
-
-void main() {
-  runApp(const UsersEdit());
-}
+import 'package:wholecake/models/users.dart';
+import 'package:wholecake/views/users/users_add.dart';
+import 'package:wholecake/services/users_services.dart';
+import 'package:wholecake/providers/user_form_provider.dart';
+import 'package:file_picker/file_picker.dart';
 
 class UsersEdit extends StatelessWidget {
   const UsersEdit({Key? key}) : super(key: key);
@@ -36,6 +35,8 @@ class UsersEditPagePageState extends State<UsersEditPagePage> {
   TextEditingController correousersController = TextEditingController();
   TextEditingController costoproductousersController = TextEditingController();
   TextEditingController numerousersController = TextEditingController();
+  TextEditingController contactoemergenciausersController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -46,19 +47,11 @@ class UsersEditPagePageState extends State<UsersEditPagePage> {
     correousersController.dispose();
     costoproductousersController.dispose();
     numerousersController.dispose();
+    contactoemergenciausersController.dispose();
     super.dispose();
   }
 
-  void _saveData() {
-    // Aquí es donde guardarías la información en la base de datos
-    print('Nombre: ${rutusersController.text}');
-    print('Fecha de elaboración: ${nombreusersController.text}');
-    print('Fecha de vencimiento: ${tipoproductousersController.text}');
-    print('Descripción: ${marcaproductousersController.text}');
-    print('Descripción: ${correousersController.text}');
-    print('Descripción: ${costoproductousersController.text}');
-    print('Descripción: ${numerousersController.text}');
-  }
+  void _saveData() {}
 
   @override
   Widget build(BuildContext context) {
