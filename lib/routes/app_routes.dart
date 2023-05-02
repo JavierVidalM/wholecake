@@ -5,6 +5,7 @@ import 'package:wholecake/views/products/products.dart';
 import 'package:wholecake/views/suppliers/suppliers.dart';
 import 'package:wholecake/views/sells/sells.dart';
 import 'package:wholecake/views/error.dart';
+import 'package:wholecake/views/users/usersroutes.dart';
 
 class AppRoutes {
   static const initialRoute = '/LoginMain';
@@ -39,6 +40,10 @@ class AppRoutes {
 
     //Pantalla de error
     '/Error': (BuildContext context) => const ErrorPage(),
+    //Pantalla de users
+    '/UsersList': (BuildContext context) => const UsersList(),
+    '/UsersAdd': (BuildContext context) => const UsersAdd(),
+    '/UsersEdit': (BuildContext context) => const UsersEdit(),
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
