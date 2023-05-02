@@ -5,14 +5,14 @@ import 'package:wholecake/views/products/products.dart';
 
 // var myDefaultBackground = Color.fromARGB(255, 189, 224, 254);
 
-class MyDrawer extends StatefulWidget {
-  const MyDrawer({Key? key}) : super(key: key);
+class SideBar extends StatefulWidget {
+  const SideBar({Key? key}) : super(key: key);
 
   @override
-  _MyDrawerState createState() => _MyDrawerState();
+  _SideBarState createState() => _SideBarState();
 }
 
-class _MyDrawerState extends State<MyDrawer> {
+class _SideBarState extends State<SideBar> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
