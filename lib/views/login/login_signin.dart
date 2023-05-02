@@ -62,6 +62,52 @@ class _SigninUserState extends State<SigninUser> {
                           left: MediaQuery.of(context).size.width * 0.08,
                         ),
                         child: const TextField(
+                          keyboardType: TextInputType.numberWithOptions(),
+                          decoration: InputDecoration(
+                              hintText: "Rut",
+                              hintStyle: TextStyle(
+                                  color: Color(0xFF909090), fontSize: 20),
+                              fillColor: Color(0xFFBDE0FE),
+                              filled: true,
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color(0xFF3681AB), width: 4.0)),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color(0xFF3681AB), width: 2.0))),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.02,
+                          right: MediaQuery.of(context).size.width * 0.08,
+                          left: MediaQuery.of(context).size.width * 0.08,
+                        ),
+                        child: const TextField(
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                              hintText: "Correo electrónico",
+                              hintStyle: TextStyle(
+                                  color: Color(0xFF909090), fontSize: 20),
+                              fillColor: Color(0xFFBDE0FE),
+                              filled: true,
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color(0xFF3681AB), width: 4.0)),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color(0xFF3681AB), width: 2.0))),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.02,
+                          right: MediaQuery.of(context).size.width * 0.08,
+                          left: MediaQuery.of(context).size.width * 0.08,
+                        ),
+                        child: TextFormField(
+                          autocorrect: false,
+                          obscureText: true,
                           decoration: InputDecoration(
                               hintText: "Contraseña",
                               hintStyle: TextStyle(
@@ -82,7 +128,9 @@ class _SigninUserState extends State<SigninUser> {
                           right: MediaQuery.of(context).size.width * 0.08,
                           left: MediaQuery.of(context).size.width * 0.08,
                         ),
-                        child: const TextField(
+                        child: TextFormField(
+                          autocorrect: false,
+                          obscureText: true,
                           decoration: InputDecoration(
                               hintText: "Repetir contraseña",
                               hintStyle: TextStyle(
@@ -103,7 +151,8 @@ class _SigninUserState extends State<SigninUser> {
                           right: MediaQuery.of(context).size.width * 0.08,
                           left: MediaQuery.of(context).size.width * 0.08,
                         ),
-                        child: const TextField(
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               hintText: "Código Administrador",
                               hintStyle: TextStyle(
@@ -120,7 +169,7 @@ class _SigninUserState extends State<SigninUser> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.08),
+                            top: MediaQuery.of(context).size.height * 0.05),
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(
@@ -147,7 +196,7 @@ class _SigninUserState extends State<SigninUser> {
                       ),
                       Padding(
                           padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height * 0.02),
+                              top: MediaQuery.of(context).size.height * 0.01),
                           child: TextButton(
                             onPressed: () {
                               Navigator.push(
@@ -158,7 +207,7 @@ class _SigninUserState extends State<SigninUser> {
                             child: const Text(
                               "Regresar",
                               style: TextStyle(
-                                  color: Color(0xFF3681AB), fontSize: 18),
+                                  color: Color(0xFF3681AB), fontSize: 20),
                             ),
                           )),
                     ],
