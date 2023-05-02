@@ -5,7 +5,7 @@ import 'package:wholecake/views/products/products.dart';
 import 'package:wholecake/views/suppliers/suppliers.dart';
 import 'package:wholecake/views/sells/sells.dart';
 import 'package:wholecake/views/error.dart';
-import 'package:wholecake/views/users/usersroutes.dart';
+import 'package:wholecake/views/users/users.dart';
 
 class AppRoutes {
   static const initialRoute = '/ProductsAdd';
@@ -28,7 +28,7 @@ class AppRoutes {
     '/ProductsAdd': (BuildContext context) => const ProductsAdd(),
     '/ProductsEdit': (BuildContext context) => ProductsEdit(),
 
-    '/SuppliersAdd': (BuildContext context) => SuppliersAdd(),
+    '/SuppliersAdd': (BuildContext context) => const SuppliersAdd(),
     '/SuppliersView': (BuildContext context) => SuppliersView(),
     '/InputsRecipt': (BuildContext context) => InputsRecipt(),
     '/PurchaseOrders': (BuildContext context) => PurchaseOrders(),

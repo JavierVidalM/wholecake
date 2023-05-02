@@ -17,7 +17,7 @@ class _SideBarState extends State<SideBar> {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: Color.fromARGB(255, 255, 196, 228),
-      child: Column(children: [
+      child: ListView(children: [
         DrawerHeader(child: Icon(Icons.favorite)),
 
         GestureDetector(
@@ -34,9 +34,15 @@ class _SideBarState extends State<SideBar> {
         //   leading: Icon(Icons.home_outlined),
         //   title: Text('Inicio'),
         // ),
-        ListTile(
-          leading: Icon(Icons.list),
-          title: Text('Inventario'),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ProductsView()));
+          },
+          child: ListTile(
+            leading: Icon(Icons.list),
+            title: Text('Productos'),
+          ),
         ),
         ListTile(
           leading: Icon(Icons.check_box),

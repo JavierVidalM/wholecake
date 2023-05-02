@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/sidebar.dart';
 import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/services/productos_services.dart';
+import 'package:wholecake/sidebar.dart';
 import 'package:wholecake/ui/input_decorations.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/providers/producto_form_provider.dart';
-
-import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
 
 class ProductsEdit extends StatefulWidget {
   @override
@@ -16,164 +12,323 @@ class ProductsEdit extends StatefulWidget {
 }
 
 class _ProductsEditState extends State<ProductsEdit> {
+  late ProductService _productService;
+
+  @override
+  void initState() {
+    super.initState();
+    _productService = Provider.of<ProductService>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Editar producto',
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Color(0xFFFFB5D7), // Color rosa
+    return ChangeNotifierProvider(
+      create: (_) => ProductFormProvider(_productService.selectedProduct!),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Editar producto',
+            style: TextStyle(
+              color: Color(0xFF5D2A42),
+              fontSize: 24,
+            ),
+          ),
+          backgroundColor: Color(0xFFFFB5D7),
+          centerTitle: true,
+          titleSpacing: 0,
         ),
+        drawer: SideBar(),
+        body: _ProductoScreenBody(productService: _productService),
       ),
-      home: EditProductPage(),
     );
   }
 }
 
-class EditProductPage extends StatefulWidget {
-  @override
-  _EditProductPageState createState() => _EditProductPageState();
-}
+class _ProductoScreenBody extends StatelessWidget {
+  const _ProductoScreenBody({
+    Key? key,
+    required this.productService,
+  }) : super(key: key);
 
-class _EditProductPageState extends State<EditProductPage> {
-  final _formKey = GlobalKey<FormState>();
-
-  // Controladores de los campos de texto
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _categoryController = TextEditingController();
-  TextEditingController _priceController = TextEditingController();
-  TextEditingController _manufactureDateController = TextEditingController();
-  TextEditingController _expirationDateController = TextEditingController();
+  final ProductService productService;
 
   @override
   Widget build(BuildContext context) {
+    final productForm = Provider.of<ProductFormProvider>(context);
     return Scaffold(
       backgroundColor: Color(0xFFBDE0FE),
-      appBar: AppBar(
-        title: Text('Editar producto'),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          _ProductForm(),
+          const SizedBox(height: 100),
+        ]),
       ),
-      drawer: SideBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 32.0),
-              Center(
-                child: Stack(
-                  alignment: Alignment.center,
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.save_outlined),
+          onPressed: () async {
+            if (!productForm.isValidForm()) return;
+            print(productForm.product);
+            await productService.editOrCreateProduct(productForm.product);
+          }),
+    );
+  }
+}
+
+class _ProductForm extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final productForm = Provider.of<ProductFormProvider>(context);
+    final product = productForm.product;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          width: double.infinity,
+          // decoration: _createDecoration(),
+          child: Form(
+            key: productForm.formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 100,
-                      height: 100,
-                      margin: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        image: DecorationImage(
-                          image: NetworkImage(''),
-                          fit: BoxFit.fill,
+                    Text(
+                      'Producto',
+                      style: TextStyle(
+                        color: Color(0XFF5D2A42),
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextFormField(
+                      initialValue: product.nombre,
+                      onChanged: (value) => product.nombre = value,
+                      validator: (value) {
+                        if (value == null || value.length < 1)
+                          return 'El nombre es obligatorio';
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Nombre del producto',
+                        hintStyle: TextStyle(
+                          color: Color(0xFFA1A1A1),
+                          fontSize: 14,
+                        ),
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 32.0),
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: 'Nombre',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.0),
-              TextFormField(
-                controller: _categoryController,
-                decoration: InputDecoration(
-                  labelText: 'Categoría',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.0),
-              TextFormField(
-                controller: _manufactureDateController,
-                decoration: InputDecoration(
-                  labelText: 'Fecha de elaboración',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.0),
-              TextFormField(
-                controller: _manufactureDateController,
-                decoration: InputDecoration(
-                  labelText: 'Fecha de vencimiento',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.0),
-              TextFormField(
-                controller: _priceController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: 'Precio',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 32.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFFFB5D7),
-                    ),
-                    child: Text(
-                      'Actualizar foto',
-                      style: TextStyle(color: Color(0xFF5D2A42)),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFFFB5D7),
-                    ),
-                    child: Text(
-                      'Guardar',
-                      style: TextStyle(color: Color(0xFF5D2A42)),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(
-                        0xFFFFB5D7,
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Categoría',
+                      style: TextStyle(
+                        color: Color(0XFF5D2A42),
+                        fontSize: 18,
                       ),
                     ),
-                    child: Text(
-                      'Volver',
-                      style: TextStyle(color: Color(0xFF5D2A42)),
+                    TextFormField(
+                      initialValue: product.categoria,
+                      onChanged: (value) => product.categoria = value,
+                      validator: (value) {
+                        if (value == null || value.length < 1)
+                          return 'La categoría es obligatoria';
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Nombre del producto',
+                        hintStyle: TextStyle(
+                          color: Color(0xFFA1A1A1),
+                          fontSize: 14,
+                        ),
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Fecha Elaboración',
+                      style: TextStyle(
+                        color: Color(0XFF5D2A42),
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextFormField(
+                      initialValue: product.fechaElaboracion.toString(),
+                      onChanged: (value) =>
+                          product.fechaElaboracion = DateTime.parse(value),
+                      validator: (value) {
+                        if (value == null || value.length < 1)
+                          return 'La fecha de elaboración es obligatoria';
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Nombre del producto',
+                        hintStyle: TextStyle(
+                          color: Color(0xFFA1A1A1),
+                          fontSize: 14,
+                        ),
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Fecha Vencimiento',
+                      style: TextStyle(
+                        color: Color(0XFF5D2A42),
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextFormField(
+                      initialValue: product.fechaVencimiento.toString(),
+                      onChanged: (value) =>
+                          product.fechaVencimiento = DateTime.parse(value),
+                      validator: (value) {
+                        if (value == null || value.length < 1)
+                          return 'El nombre es obligatorio';
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Nombre del producto',
+                        hintStyle: TextStyle(
+                          color: Color(0xFFA1A1A1),
+                          fontSize: 14,
+                        ),
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Precio',
+                      style: TextStyle(
+                        color: Color(0XFF5D2A42),
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      initialValue: product.precio.toString(),
+                      onChanged: (value) {
+                        if (int.tryParse(value) == null) {
+                          product.precio = "0";
+                        } else {
+                          product.precio = value;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Nombre del producto',
+                        hintStyle: TextStyle(
+                          color: Color(0xFFA1A1A1),
+                          fontSize: 14,
+                        ),
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )),
     );
   }
 }
