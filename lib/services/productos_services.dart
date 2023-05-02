@@ -55,7 +55,7 @@ class ProductService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
-    print(decodeResp);
+    loadProductos();
   }
 
   Future<String> updateProduct(Listado product) async {
@@ -73,7 +73,8 @@ class ProductService extends ChangeNotifier {
     final decodeResp = response.body;
     print(decodeResp);
     //actualizamos el listado
-    final index = listadoproductos.indexWhere((element) => element.productoId == product.productoId);
+    final index = listadoproductos
+        .indexWhere((element) => element.productoId == product.productoId);
     listadoproductos[index] = product;
     return '';
   }

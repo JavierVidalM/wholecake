@@ -103,7 +103,7 @@ class _ProductsViewState extends State<ProductsView> {
                                       IconButton(
                                         onPressed: () async {
                                           final msg = jsonEncode({
-                                            'Eliminar ID': product.productoId
+                                            'id': product.productoId
                                           });
                                           await ProductService()
                                               .deleteProducto(msg);
