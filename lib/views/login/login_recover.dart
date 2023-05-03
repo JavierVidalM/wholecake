@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/views/login/login.dart';
-import 'package:wholecake/views/login/login_main.dart';
-import 'package:wholecake/views/home/home_page.dart';
 
 class PassRecover extends StatefulWidget {
   const PassRecover({super.key});
@@ -13,7 +11,7 @@ class PassRecoverState extends State<PassRecover> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffbde0fe),
+      backgroundColor: const Color(0xffbde0fe),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -57,7 +55,7 @@ class PassRecoverState extends State<PassRecover> {
                 ),
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: "Correo electrónico",
                       hintStyle:
                           TextStyle(color: Color(0xFF909090), fontSize: 20),
@@ -76,8 +74,10 @@ class PassRecoverState extends State<PassRecover> {
                     top: MediaQuery.of(context).size.height * 0.15),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginUser()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginUser()));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFFB5D7),
@@ -100,8 +100,10 @@ class PassRecoverState extends State<PassRecover> {
                       top: MediaQuery.of(context).size.height * 0.01),
                   child: TextButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginUser()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginUser()));
                     },
                     child: const Text(
                       "Regresar",

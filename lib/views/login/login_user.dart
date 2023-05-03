@@ -15,7 +15,7 @@ class LoginUserState extends State<LoginUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffbde0fe),
+      backgroundColor: const Color(0xffbde0fe),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -65,7 +65,7 @@ class LoginUserState extends State<LoginUser> {
                 child: TextFormField(
                   autocorrect: false,
                   obscureText: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: "Contraseña",
                       hintStyle:
                           TextStyle(color: Color(0xFF909090), fontSize: 20),
@@ -83,13 +83,15 @@ class LoginUserState extends State<LoginUser> {
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.02),
                 child: TextButton(
-                  child: Text(
+                  child: const Text(
                     '¿Olvidó su contraseña?',
                     style: TextStyle(color: Color(0xFF3681AB), fontSize: 18),
                   ),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PassRecover()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PassRecover()));
                   },
                 ),
               ),
@@ -102,8 +104,8 @@ class LoginUserState extends State<LoginUser> {
                         children: <Widget>[
                           Theme(
                             data: ThemeData(
-                              unselectedWidgetColor: Color(0xFF909090),
-                              disabledColor: Color(0xFF909090),
+                              unselectedWidgetColor: const Color(0xFF909090),
+                              disabledColor: const Color(0xFF909090),
                             ),
                             child: Checkbox(
                               value: _rememberMe,
@@ -115,8 +117,8 @@ class LoginUserState extends State<LoginUser> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              checkColor: Color(0xFFBDE0FE),
-                              activeColor: Color(0xFF3681AB),
+                              checkColor: const Color(0xFFBDE0FE),
+                              activeColor: const Color(0xFF3681AB),
                             ),
                           ),
                           GestureDetector(
@@ -125,7 +127,7 @@ class LoginUserState extends State<LoginUser> {
                                 _rememberMe = !_rememberMe;
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               'Recuérdame',
                               style: TextStyle(
                                   color: Color(0xFF909090), fontSize: 18),
@@ -138,8 +140,10 @@ class LoginUserState extends State<LoginUser> {
                     top: MediaQuery.of(context).size.height * 0.05),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFFB5D7),
@@ -162,8 +166,10 @@ class LoginUserState extends State<LoginUser> {
                       top: MediaQuery.of(context).size.height * 0.01),
                   child: TextButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginMain()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginMain()));
                     },
                     child: const Text(
                       "Regresar",

@@ -4,6 +4,7 @@ import 'package:wholecake/views/login/login.dart';
 import 'package:wholecake/views/products/products.dart';
 import 'package:wholecake/views/sells/sells.dart';
 import 'package:wholecake/views/suppliers/suppliers.dart';
+import 'package:wholecake/views/users/users.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
@@ -34,6 +35,13 @@ class SideBar extends StatelessWidget {
               onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const HomePage()),
+                  )),
+          ListTile(
+              leading: const Icon(Icons.person_outline_rounded),
+              title: const Text("Usuarios"),
+              onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const UsersList()),
                   )),
           ListTile(
               leading: const Icon(Icons.inventory_rounded),

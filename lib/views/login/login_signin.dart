@@ -108,7 +108,7 @@ class _SigninUserState extends State<SigninUser> {
                         child: TextFormField(
                           autocorrect: false,
                           obscureText: true,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               hintText: "Contraseña",
                               hintStyle: TextStyle(
                                   color: Color(0xFF909090), fontSize: 20),
@@ -131,7 +131,7 @@ class _SigninUserState extends State<SigninUser> {
                         child: TextFormField(
                           autocorrect: false,
                           obscureText: true,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               hintText: "Repetir contraseña",
                               hintStyle: TextStyle(
                                   color: Color(0xFF909090), fontSize: 20),
@@ -153,7 +153,7 @@ class _SigninUserState extends State<SigninUser> {
                         ),
                         child: TextFormField(
                           keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               hintText: "Código Administrador",
                               hintStyle: TextStyle(
                                   color: Color(0xFF909090), fontSize: 20),
@@ -175,7 +175,7 @@ class _SigninUserState extends State<SigninUser> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomePage()));
+                                    builder: (context) => const HomePage()));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFFFB5D7),
@@ -202,7 +202,7 @@ class _SigninUserState extends State<SigninUser> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginMain()));
+                                      builder: (context) => const LoginMain()));
                             },
                             child: const Text(
                               "Regresar",

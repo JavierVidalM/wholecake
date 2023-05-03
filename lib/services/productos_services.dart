@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:wholecake/models/productos.dart';
 
 class ProductService extends ChangeNotifier {
-  String APIUSER = 'migueslaxl';
-  String APIPASS = 'kissisl0ve';
+  String APIUSER = 'sweetcake';
+  String APIPASS = 'pasteldetula';
   String BASEURL = '3.85.128.77:8000';
   List<Listado> listadoproductos = [];
   Listado? selectedProduct;
