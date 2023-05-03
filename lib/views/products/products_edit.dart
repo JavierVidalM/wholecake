@@ -258,7 +258,7 @@ class _ProductForm extends StatelessWidget {
                         if (DateTime.tryParse(value) == null) {
                           return 'El valor debe ser una fecha válida';
                         } else {
-                          product.fechaElaboracion = DateTime.parse(value);
+                          product.fechaVencimiento = DateTime.parse(value);
                         }
                       },
                       decoration: InputDecoration(
