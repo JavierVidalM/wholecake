@@ -74,77 +74,215 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           children: [
-            Container(
-              width: 100,
-              height: 100,
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                image: DecorationImage(
-                  image: NetworkImage(''),
-                  fit: BoxFit.fill,
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * 0.04,
+              ),
+              child: InkWell(
+                onTap: () async {
+                  final result = await FilePicker.platform.pickFiles(
+                    type: FileType.image,
+                  );
+                  if (result != null) {
+                    setState(() {
+                      imagen = File(result.files.single.path!);
+                    });
+                  }
+                },
+                child: Container(
+                  width: 80.0,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFF909090),
+                  ),
+                  child: ClipOval(
+                    child: imagen != null
+                        ? Image.file(
+                            imagen!,
+                            width: 80.0,
+                            height: 80.0,
+                            fit: BoxFit.cover,
+                          )
+                        : const Icon(
+                            Icons.add,
+                            size: 40.0,
+                            color: Color(0xFFC0C0C0),
+                          ),
+                  ),
                 ),
               ),
             ),
-            InputTextField(
-              hintText: 'Nombre Producto',
-              labelText: 'Nombre Producto',
+            TextField(
               controller: nombreController,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            InputTextField(
-              hintText: 'Categoría',
-              labelText: 'Categoría',
-              controller: categoriaController,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            InputTextField(
-              hintText: 'Fecha de elaboración',
-              labelText: 'Fecha de elaboración',
-              controller: fechaElaboracionController,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            InputTextField(
-              hintText: 'Fecha de vencimiento',
-              labelText: 'Fecha de vencimiento',
-              controller: fechaVencimientoController,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            InputTextField(
-              hintText: 'Precio',
-              labelText: 'Precio',
-              controller: precioController,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton.icon(
-              onPressed: () async {
-                final result = await FilePicker.platform.pickFiles(
-                  type: FileType.image,
-                );
-                if (result != null) {
-                  setState(() {
-                    imagen = File(result.files.single.path!);
-                  });
-                }
+              onChanged: (value) {
+                // Aquí puede agregar la lógica para actualizar el valor del controlador
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFFB5D7),
+              decoration: InputDecoration(
+                hintText: 'Nombre del producto',
+                hintStyle: TextStyle(
+                  color: Color(0xFFA1A1A1),
+                  fontSize: 14,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
               ),
-              icon: Icon(Icons.image),
-              label: Text(
-                'Seleccionar imagen',
-                style: TextStyle(color: Color(0xFF5D2A42)),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+              controller: categoriaController,
+              onChanged: (value) {
+                // Aquí puede agregar la lógica para actualizar el valor del controlador
+              },
+              decoration: InputDecoration(
+                hintText: 'Categoría',
+                hintStyle: TextStyle(
+                  color: Color(0xFFA1A1A1),
+                  fontSize: 14,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
               ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+              controller: fechaElaboracionController,
+              onChanged: (value) {
+                // Aquí puede agregar la lógica para actualizar el valor del controlador
+              },
+              decoration: InputDecoration(
+                hintText: 'Fecha de elaboración',
+                hintStyle: TextStyle(
+                  color: Color(0xFFA1A1A1),
+                  fontSize: 14,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+              controller: fechaVencimientoController,
+              onChanged: (value) {
+                // Aquí puede agregar la lógica para actualizar el valor del controlador
+              },
+              decoration: InputDecoration(
+                hintText: 'Fecha de Vencimiento',
+                hintStyle: TextStyle(
+                  color: Color(0xFFA1A1A1),
+                  fontSize: 14,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+              keyboardType: TextInputType.numberWithOptions(),
+              controller: precioController,
+              onChanged: (value) {
+                // Aquí puede agregar la lógica para actualizar el valor del controlador
+              },
+              decoration: InputDecoration(
+                hintText: 'Precio',
+                hintStyle: TextStyle(
+                  color: Color(0xFFA1A1A1),
+                  fontSize: 14,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
             ),
             ElevatedButton(
               onPressed: () {

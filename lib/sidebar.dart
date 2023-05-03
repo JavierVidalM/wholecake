@@ -17,8 +17,20 @@ class SideBar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: const Text("Monkey D. Luffy"),
-            accountEmail: const Text("monkey@dluffy.com"),
+            accountName: const Text(
+              "Monkey D. Luffy",
+              style: TextStyle(
+                color: Color(0xFF343434),
+                fontSize: 16,
+              ),
+            ),
+            accountEmail: const Text(
+              "monkey@dluffy.com",
+              style: TextStyle(
+                color: Color(0xFF343434),
+                fontSize: 16,
+              ),
+            ),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
@@ -41,7 +53,7 @@ class SideBar extends StatelessWidget {
               title: const Text("Usuarios"),
               onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const UsersList()),
+                    MaterialPageRoute(builder: (context) => const UsersAdd()),
                   )),
           ListTile(
               leading: const Icon(Icons.inventory_rounded),

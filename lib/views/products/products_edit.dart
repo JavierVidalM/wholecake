@@ -69,8 +69,8 @@ class _ProductoScreenBody extends StatelessWidget {
           onPressed: () async {
             if (!productForm.isValidForm()) return;
             await productService.editOrCreateProduct(productForm.product);
-                            Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProductsView()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ProductsView()));
           }),
     );
   }
@@ -337,7 +337,7 @@ class _ProductForm extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           )),

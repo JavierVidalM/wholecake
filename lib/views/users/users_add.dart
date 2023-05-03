@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/services/users_services.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:wholecake/sidebar.dart';
 import 'package:wholecake/theme/theme_constant.dart';
 import 'dart:convert';
 import 'dart:io';
-<<<<<<< Updated upstream
-import 'package:wholecake/views/users/users.dart';
-=======
 import 'package:wholecake/views/users/users_list.dart';
->>>>>>> Stashed changes
 
 class UsersAdd extends StatelessWidget {
   const UsersAdd({Key? key}) : super(key: key);
@@ -90,6 +87,7 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
           centerTitle: true,
           titleSpacing: 0,
         ),
+        drawer: SideBar(),
         body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             child: Column(
