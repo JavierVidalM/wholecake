@@ -37,8 +37,8 @@ class LoginUserState extends State<LoginUser> {
               Padding(
                 padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.12,
-                  right: MediaQuery.of(context).size.width * 0.02,
-                  left: MediaQuery.of(context).size.width * 0.02,
+                  right: MediaQuery.of(context).size.width * 0.08,
+                  left: MediaQuery.of(context).size.width * 0.08,
                 ),
                 child: const TextField(
                   keyboardType: TextInputType.emailAddress,
@@ -59,8 +59,8 @@ class LoginUserState extends State<LoginUser> {
               Padding(
                 padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.06,
-                  right: MediaQuery.of(context).size.width * 0.02,
-                  left: MediaQuery.of(context).size.width * 0.02,
+                  right: MediaQuery.of(context).size.width * 0.08,
+                  left: MediaQuery.of(context).size.width * 0.08,
                 ),
                 child: TextFormField(
                   autocorrect: false,
@@ -97,7 +97,8 @@ class LoginUserState extends State<LoginUser> {
               ),
               Padding(
                   padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0),
+                      top: MediaQuery.of(context).size.height * 0,
+                      left: MediaQuery.of(context).size.width * 0.08),
                   child: Container(
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -137,7 +138,7 @@ class LoginUserState extends State<LoginUser> {
                   )),
               Padding(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.05),
+                    top: MediaQuery.of(context).size.height * 0.08),
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
