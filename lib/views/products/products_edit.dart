@@ -5,6 +5,7 @@ import 'package:wholecake/sidebar.dart';
 import 'package:wholecake/ui/input_decorations.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/providers/producto_form_provider.dart';
+import 'package:wholecake/views/products/products.dart';
 
 class ProductsEdit extends StatefulWidget {
   @override
@@ -67,8 +68,9 @@ class _ProductoScreenBody extends StatelessWidget {
           child: const Icon(Icons.save_outlined),
           onPressed: () async {
             if (!productForm.isValidForm()) return;
-            print(productForm.product);
             await productService.editOrCreateProduct(productForm.product);
+                            Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProductsView()));
           }),
     );
   }
@@ -195,12 +197,17 @@ class _ProductForm extends StatelessWidget {
                       ),
                     ),
                     TextFormField(
-                      initialValue: product.fechaElaboracion.toString(),
-                      onChanged: (value) =>
-                          product.fechaElaboracion = DateTime.parse(value),
+                      initialValue:
+                          product.fechaElaboracion.toString().substring(0, 10),
                       validator: (value) {
-                        if (value == null || value.length < 1)
+                        if (value == null)
                           return 'La fecha de elaboración es obligatoria';
+
+                        if (DateTime.tryParse(value) == null) {
+                          return 'El valor debe ser una fecha válida';
+                        } else {
+                          product.fechaElaboracion = DateTime.parse(value);
+                        }
                       },
                       decoration: InputDecoration(
                         hintText: 'Nombre del producto',
@@ -242,12 +249,17 @@ class _ProductForm extends StatelessWidget {
                       ),
                     ),
                     TextFormField(
-                      initialValue: product.fechaVencimiento.toString(),
-                      onChanged: (value) =>
-                          product.fechaVencimiento = DateTime.parse(value),
+                      initialValue:
+                          product.fechaVencimiento.toString().substring(0, 10),
                       validator: (value) {
-                        if (value == null || value.length < 1)
-                          return 'El nombre es obligatorio';
+                        if (value == null)
+                          return 'La fecha de vencimiento es obligatoria';
+
+                        if (DateTime.tryParse(value) == null) {
+                          return 'El valor debe ser una fecha válida';
+                        } else {
+                          product.fechaElaboracion = DateTime.parse(value);
+                        }
                       },
                       decoration: InputDecoration(
                         hintText: 'Nombre del producto',
