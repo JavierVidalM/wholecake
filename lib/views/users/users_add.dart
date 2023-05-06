@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/services/users_services.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:wholecake/sidebar.dart';
+import 'package:wholecake/theme/theme_constant.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:wholecake/views/users/users_list.dart';
@@ -13,7 +15,8 @@ class UsersAdd extends StatelessWidget {
     return MaterialApp(
       title: 'Información del usuario',
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        primaryColor: MyTheme.primary,
+        scaffoldBackgroundColor: Color.fromARGB(255, 189, 224, 254),
       ),
       home: const UsersAddPagePage(title: 'Información del usuario'),
     );
@@ -73,92 +76,310 @@ class UsersAddPagePageState extends State<UsersAddPagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Crear usuario'),
+          title: Text(
+            'Añadir Usuario',
+            style: TextStyle(
+              color: Color(0xFF5D2A42),
+              fontSize: 24,
+            ),
+          ),
+          backgroundColor: Color(0xFFFFB5D7),
+          centerTitle: true,
+          titleSpacing: 0,
         ),
+        drawer: SideBar(),
         body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             child: Column(
               children: [
-                InputTextField1(
-                  hintText: 'Rut ',
-                  labelText: 'Rut ',
+                TextFormField(
                   controller: rutusersController,
+                  decoration: InputDecoration(
+                    hintText: 'RUT',
+                    hintStyle: TextStyle(
+                      color: Color(0xFFA1A1A1),
+                      fontSize: 14,
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField1(
-                  hintText: 'Nombre  completo',
-                  labelText: 'Nombre completo',
+                TextFormField(
                   controller: nombreusersController,
+                  decoration: InputDecoration(
+                    hintText: 'Nombre Completo',
+                    hintStyle: TextStyle(
+                      color: Color(0xFFA1A1A1),
+                      fontSize: 14,
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField1(
-                  hintText: 'Local',
-                  labelText: 'Local',
+                TextFormField(
                   controller: localusersController,
+                  decoration: InputDecoration(
+                    hintText: 'Local',
+                    hintStyle: TextStyle(
+                      color: Color(0xFFA1A1A1),
+                      fontSize: 14,
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField1(
-                  hintText: 'Cargo',
-                  labelText: 'Cargo',
+                TextFormField(
                   controller: cargousersController,
+                  decoration: InputDecoration(
+                    hintText: 'Cargo',
+                    hintStyle: TextStyle(
+                      color: Color(0xFFA1A1A1),
+                      fontSize: 14,
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField1(
-                  hintText: 'Correo  ',
-                  labelText: 'Correo ',
+                TextFormField(
                   controller: correousersController,
+                  decoration: InputDecoration(
+                    hintText: 'Correo Electronico',
+                    hintStyle: TextStyle(
+                      color: Color(0xFFA1A1A1),
+                      fontSize: 14,
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField1(
-                  hintText: 'Numero de telefono',
-                  labelText: 'Numero de telefono',
+                TextFormField(
                   controller: numerotelefonousersController,
+                  decoration: InputDecoration(
+                    hintText: 'Numero de Telefono',
+                    hintStyle: TextStyle(
+                      color: Color(0xFFA1A1A1),
+                      fontSize: 14,
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                InputTextField1(
-                  hintText: 'Contacto de emergencia',
-                  labelText: 'Contacto de emergencia',
+                TextFormField(
                   controller: contactoemergenciausersController,
-                ),
-                ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Volver')),
-                ElevatedButton(
-                  onPressed: _saveData,
-                  child: const Text('Guardar'),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    final result = await FilePicker.platform.pickFiles(
-                      type: FileType.image,
-                    );
-                    if (result != null) {
-                      setState(() {
-                        imagen = File(result.files.single.path!);
-                      });
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFFFB5D7),
-                  ),
-                  icon: const Icon(Icons.image),
-                  label: const Text(
-                    'Seleccionar imagen',
-                    style: TextStyle(color: Color(0xFF5D2A42)),
+                  decoration: InputDecoration(
+                    hintText: 'Contacto de Emergencia',
+                    hintStyle: TextStyle(
+                      color: Color(0xFFA1A1A1),
+                      fontSize: 14,
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          final result = await FilePicker.platform.pickFiles(
+                            type: FileType.image,
+                          );
+                          if (result != null) {
+                            setState(() {
+                              imagen = File(result.files.single.path!);
+                            });
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFFB5D7),
+                        ),
+                        icon: const Icon(Icons.image),
+                        label: const Text(
+                          'Seleccionar imagen',
+                          style: TextStyle(color: Color(0xFF5D2A42)),
+                        ),
+                      ),
+                      SizedBox(height: 16.0),
+                      ElevatedButton(
+                        onPressed: _saveData,
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFFFC4E3),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.save, color: Colors.white),
+                            const SizedBox(width: 1),
+                            Expanded(
+                              child: Text(
+                                'Guardar',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color(0xFF5D2A42),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16.0),
+                      ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFFFB5D7),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.arrow_back, color: Colors.white),
+                            const SizedBox(width: 1),
+                            Expanded(
+                              child: Text(
+                                'Volver',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color(0xFF5D2A42),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             )));
   }
@@ -170,6 +391,7 @@ class InputTextField1 extends StatelessWidget {
     required this.hintText,
     required this.labelText,
     required this.controller,
+    required border,
   }) : super(key: key);
 
   final String hintText;

@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/services/productos_services.dart';
+import 'package:wholecake/sidebar.dart';
+import 'package:wholecake/views/products/products_add.dart';
 import 'package:wholecake/views/products/products_edit.dart';
-import 'package:wholecake/views/views.dart';
 import 'dart:typed_data';
-import '../../sidebar.dart';
 
 class ProductsView extends StatefulWidget {
   const ProductsView({Key? key}) : super(key: key);

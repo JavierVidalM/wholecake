@@ -25,37 +25,107 @@ class HomePageState extends State<HomePage> {
         toolbarHeight: MediaQuery.of(context).size.height * 0.1,
       ),
       drawer: SideBar(),
-      body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-            Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.02),
-                child: Column(
-                  children: const [
-                    Text(
-                      "Resumen",
-                      style: TextStyle(color: Color(0xFF2C2C2C), fontSize: 24),
-                    ),
-                  ],
-                )),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.01),
-              child: SizedBox(
-                width: 300,
-                height: 350,
-                child: Card(
-                  child: Row(
-                    children: [const Text("hola")],
-                  ),
-                  // child: MyBarGraph(),
-                ),
-              ), // ),// child: LineChart(LineChartData())
+      body: ListView(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.02,
             ),
-          ])),
+            child: Column(
+              children: const [
+                Text(
+                  "Resumen",
+                  style: TextStyle(color: Color(0xFF2C2C2C), fontSize: 24),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.01,
+              left: MediaQuery.of(context).size.height * 0.03,
+              right: MediaQuery.of(context).size.height * 0.03,
+            ),
+            child: SizedBox(
+              width: 300,
+              height: 350,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                color: const Color(0xFF343434),
+                child: Center(
+                  child: Text(
+                    'Aquí irá un gráfico',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                // child: MyBarGraph(),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.01,
+              left: MediaQuery.of(context).size.height * 0.03,
+              right: MediaQuery.of(context).size.height * 0.03,
+            ),
+            child: SizedBox(
+              width: 300,
+              height: 350,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                color: const Color(0xFF343434),
+                child: Center(
+                  child: Text(
+                    'Aquí irá un gráfico',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                // child: MyBarGraph(),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.01,
+              left: MediaQuery.of(context).size.height * 0.03,
+              right: MediaQuery.of(context).size.height * 0.03,
+            ),
+            child: SizedBox(
+              width: 300,
+              height: 350,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                color: const Color(0xFF343434),
+                child: Center(
+                  child: Text(
+                    'Aquí irá un gráfico',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                // child: MyBarGraph(),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

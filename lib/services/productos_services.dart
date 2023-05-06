@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:wholecake/models/productos.dart';
 
 class ProductService extends ChangeNotifier {
-  String APIUSER = 'migueslaxl';
-  String APIPASS = 'kissisl0ve';
+  String APIUSER = 'sweetcake';
+  String APIPASS = 'pasteldetula';
   String BASEURL = '3.85.128.77:8000';
   List<Listado> listadoproductos = [];
   Listado? selectedProduct;
@@ -25,12 +25,10 @@ class ProductService extends ChangeNotifier {
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
     final response = await http.get(url, headers: {'authorization': basicAuth});
-    print(response.body);
     final ProductosMap = Productos.fromJson(response.body);
     listadoproductos = ProductosMap.listado;
     notifyListeners();
   }
-
   Future editOrCreateProduct(Listado product) async {
     isEditCreate = true;
     notifyListeners();
@@ -43,7 +41,7 @@ class ProductService extends ChangeNotifier {
     notifyListeners();
   }
 
-  addProducto(String msg) async {
+  Future addProducto(String msg) async {
     final url = Uri.http(
       BASEURL,
       'productos/productos_productos_add_rest/',
@@ -55,11 +53,17 @@ class ProductService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
-    loadProductos();
+    final Listado producto = Listado.fromJson(decodeResp);
+    listadoproductos.add(producto);
+    notifyListeners();
+    await loadProductos(); //
+    isEditCreate = false;
+    notifyListeners();
   }
 
+
+
   Future<String> updateProduct(Listado product) async {
-    print(product.productoId);
     final url = Uri.http(
       BASEURL,
       'productos/productos_productos_update_rest/',
@@ -71,10 +75,8 @@ class ProductService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
-    print(decodeResp);
     //actualizamos el listado
-    final index = listadoproductos
-        .indexWhere((element) => element.productoId == product.productoId);
+    final index = listadoproductos.indexWhere((element) => element.productoId == product.productoId);
     listadoproductos[index] = product;
     return '';
   }
@@ -91,6 +93,5 @@ class ProductService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
-    print(decodeResp);
   }
 }

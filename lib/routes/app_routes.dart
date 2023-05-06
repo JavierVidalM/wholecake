@@ -4,11 +4,11 @@ import 'package:wholecake/views/home/home.dart';
 import 'package:wholecake/views/products/products.dart';
 import 'package:wholecake/views/suppliers/suppliers.dart';
 import 'package:wholecake/views/sells/sells.dart';
-import 'package:wholecake/views/error.dart';
 import 'package:wholecake/views/users/users.dart';
+import 'package:wholecake/views/error.dart';
 
 class AppRoutes {
-  static const initialRoute = '/ProductsAdd';
+  static const initialRoute = '/HomePage';
 
   static Map<String, Widget Function(BuildContext)> routes = {
     //Pantallas del Login
