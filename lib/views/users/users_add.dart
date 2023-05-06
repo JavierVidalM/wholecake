@@ -12,20 +12,12 @@ class UsersAdd extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Información del usuario',
-      theme: ThemeData(
-        primaryColor: MyTheme.primary,
-        scaffoldBackgroundColor: Color.fromARGB(255, 189, 224, 254),
-      ),
-      home: const UsersAddPagePage(title: 'Información del usuario'),
-    );
+    return MaterialApp();
   }
 }
 
 class UsersAddPagePage extends StatefulWidget {
-  const UsersAddPagePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const UsersAddPagePage({Key? key}) : super(key: key);
   @override
   State<UsersAddPagePage> createState() => UsersAddPagePageState();
 }

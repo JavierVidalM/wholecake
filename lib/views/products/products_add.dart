@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:wholecake/sidebar.dart';
+import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/products/products.dart';
 import 'package:flutter/material.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:wholecake/views/pruebas.dart';
 
 class ProductsAdd extends StatelessWidget {
   const ProductsAdd({Key? key}) : super(key: key);
@@ -14,20 +14,21 @@ class ProductsAdd extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Agregar productos',
-      color: Color(0xFFFFB5D7),
-      home: const ProductsAddPagePage(title: 'Agregar productos'),
+      debugShowCheckedModeBanner: false,
+      home: const ProductsAddPage(title: 'Agregar productos'),
+      theme: SweetCakeTheme.myTheme,
     );
   }
 }
 
-class ProductsAddPagePage extends StatefulWidget {
-  const ProductsAddPagePage({Key? key, required this.title}) : super(key: key);
+class ProductsAddPage extends StatefulWidget {
+  const ProductsAddPage({Key? key, required this.title}) : super(key: key);
   final String title;
   @override
-  State<ProductsAddPagePage> createState() => _ProductsAddPagePageState();
+  State<ProductsAddPage> createState() => _ProductsAddPageState();
 }
 
-class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
+class _ProductsAddPageState extends State<ProductsAddPage> {
   TextEditingController nombreController = TextEditingController();
   TextEditingController fechaElaboracionController = TextEditingController();
   TextEditingController fechaVencimientoController = TextEditingController();
@@ -66,8 +67,10 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
     return Scaffold(
       backgroundColor: Color(0xFFBDE0FE),
       appBar: AppBar(
-        title: const Text('Agregar Productos'),
-        backgroundColor: Color(0xFFFFB5D7),
+        title: Text(
+          'Agregar Productos',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
       ),
       drawer: SideBar(),
       body: SingleChildScrollView(
@@ -118,31 +121,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
               onChanged: (value) {
                 // Aquí puede agregar la lógica para actualizar el valor del controlador
               },
-              decoration: InputDecoration(
-                hintText: 'Nombre del producto',
-                hintStyle: TextStyle(
-                  color: Color(0xFFA1A1A1),
-                  fontSize: 14,
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-              ),
+              decoration: InputDecoration(hintText: 'Nombre del producto'),
             ),
             const SizedBox(
               height: 20,
@@ -152,31 +131,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
               onChanged: (value) {
                 // Aquí puede agregar la lógica para actualizar el valor del controlador
               },
-              decoration: InputDecoration(
-                hintText: 'Categoría',
-                hintStyle: TextStyle(
-                  color: Color(0xFFA1A1A1),
-                  fontSize: 14,
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-              ),
+              decoration: InputDecoration(hintText: 'Categoría'),
             ),
             const SizedBox(
               height: 20,
@@ -186,31 +141,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
               onChanged: (value) {
                 // Aquí puede agregar la lógica para actualizar el valor del controlador
               },
-              decoration: InputDecoration(
-                hintText: 'Fecha de elaboración',
-                hintStyle: TextStyle(
-                  color: Color(0xFFA1A1A1),
-                  fontSize: 14,
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-              ),
+              decoration: InputDecoration(hintText: 'Fecha de elaboración'),
             ),
             const SizedBox(
               height: 20,
@@ -220,31 +151,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
               onChanged: (value) {
                 // Aquí puede agregar la lógica para actualizar el valor del controlador
               },
-              decoration: InputDecoration(
-                hintText: 'Fecha de Vencimiento',
-                hintStyle: TextStyle(
-                  color: Color(0xFFA1A1A1),
-                  fontSize: 14,
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-              ),
+              decoration: InputDecoration(hintText: 'Fecha de Vencimiento'),
             ),
             const SizedBox(
               height: 20,
@@ -255,31 +162,7 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
               onChanged: (value) {
                 // Aquí puede agregar la lógica para actualizar el valor del controlador
               },
-              decoration: InputDecoration(
-                hintText: 'Precio',
-                hintStyle: TextStyle(
-                  color: Color(0xFFA1A1A1),
-                  fontSize: 14,
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-              ),
+              decoration: InputDecoration(hintText: 'Precio'),
             ),
             const SizedBox(
               height: 20,
@@ -288,15 +171,15 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
               onPressed: () {
                 _saveData();
                 // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => ProductsView()));
+                MaterialPageRoute(builder: (context) => ProductsView());
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFFB5D7),
+                minimumSize: Size(
+                  (MediaQuery.of(context).size.width * 0.6),
+                  (MediaQuery.of(context).size.height * 0.07),
+                ),
               ),
-              child: const Text(
-                'Guardar',
-                style: TextStyle(color: Color(0xFF5D2A42)),
-              ),
+              child: const Text('Guardar'),
             ),
             const SizedBox(
               height: 20,
@@ -308,41 +191,16 @@ class _ProductsAddPagePageState extends State<ProductsAddPagePage> {
                     MaterialPageRoute(builder: (context) => ProductsView()));
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFFB5D7),
+                minimumSize: Size(
+                  (MediaQuery.of(context).size.width * 0.6),
+                  (MediaQuery.of(context).size.height * 0.07),
+                ),
               ),
-              child: const Text(
-                'Volver',
-                style: TextStyle(color: Color(0xFF5D2A42)),
-              ),
+              child: const Text('Volver'),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class InputTextField extends StatelessWidget {
-  const InputTextField({
-    Key? key,
-    required this.hintText,
-    required this.labelText,
-    required this.controller,
-  }) : super(key: key);
-
-  final String hintText;
-  final String labelText;
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: hintText,
-        labelText: labelText,
-        border: OutlineInputBorder(),
-      ),
-      controller: controller,
     );
   }
 }

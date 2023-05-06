@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/sidebar.dart';
-import 'package:wholecake/ui/input_decorations.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/providers/producto_form_provider.dart';
 import 'package:wholecake/views/products/products.dart';
@@ -29,54 +27,23 @@ class _ProductsEditState extends State<ProductsEdit> {
         appBar: AppBar(
           title: Text(
             'Editar producto',
-            style: TextStyle(
-              color: Color(0xFF5D2A42),
-              fontSize: 24,
-            ),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-          backgroundColor: Color(0xFFFFB5D7),
-          centerTitle: true,
-          titleSpacing: 0,
+          toolbarHeight: MediaQuery.of(context).size.height * 0.1,
         ),
         drawer: SideBar(),
-        body: _ProductoScreenBody(productService: _productService),
+        body: _ProductForm(productService: _productService),
       ),
-    );
-  }
-}
-
-class _ProductoScreenBody extends StatelessWidget {
-  const _ProductoScreenBody({
-    Key? key,
-    required this.productService,
-  }) : super(key: key);
-
-  final ProductService productService;
-
-  @override
-  Widget build(BuildContext context) {
-    final productForm = Provider.of<ProductFormProvider>(context);
-    return Scaffold(
-      backgroundColor: Color(0xFFBDE0FE),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          _ProductForm(),
-          const SizedBox(height: 100),
-        ]),
-      ),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.save_outlined),
-          onPressed: () async {
-            if (!productForm.isValidForm()) return;
-            await productService.editOrCreateProduct(productForm.product);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ProductsView()));
-          }),
     );
   }
 }
 
 class _ProductForm extends StatelessWidget {
+  final ProductService productService;
+
+  const _ProductForm({Key? key, required this.productService})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final productForm = Provider.of<ProductFormProvider>(context);
@@ -87,7 +54,6 @@ class _ProductForm extends StatelessWidget {
       child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           width: double.infinity,
-          // decoration: _createDecoration(),
           child: Form(
             key: productForm.formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -97,13 +63,7 @@ class _ProductForm extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Producto',
-                      style: TextStyle(
-                        color: Color(0XFF5D2A42),
-                        fontSize: 18,
-                      ),
-                    ),
+                    Text('Producto'),
                     TextFormField(
                       initialValue: product.nombre,
                       onChanged: (value) => product.nombre = value,
@@ -113,28 +73,6 @@ class _ProductForm extends StatelessWidget {
                       },
                       decoration: InputDecoration(
                         hintText: 'Nombre del producto',
-                        hintStyle: TextStyle(
-                          color: Color(0xFFA1A1A1),
-                          fontSize: 14,
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
                       ),
                     ),
                   ],
@@ -143,13 +81,7 @@ class _ProductForm extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Categoría',
-                      style: TextStyle(
-                        color: Color(0XFF5D2A42),
-                        fontSize: 18,
-                      ),
-                    ),
+                    Text('Categoría'),
                     TextFormField(
                       initialValue: product.categoria,
                       onChanged: (value) => product.categoria = value,
@@ -159,28 +91,6 @@ class _ProductForm extends StatelessWidget {
                       },
                       decoration: InputDecoration(
                         hintText: 'Nombre del producto',
-                        hintStyle: TextStyle(
-                          color: Color(0xFFA1A1A1),
-                          fontSize: 14,
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
                       ),
                     ),
                   ],
@@ -189,13 +99,7 @@ class _ProductForm extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Fecha Elaboración',
-                      style: TextStyle(
-                        color: Color(0XFF5D2A42),
-                        fontSize: 18,
-                      ),
-                    ),
+                    Text('Fecha Elaboración'),
                     TextFormField(
                       initialValue:
                           product.fechaElaboracion.toString().substring(0, 10),
@@ -211,28 +115,6 @@ class _ProductForm extends StatelessWidget {
                       },
                       decoration: InputDecoration(
                         hintText: 'Nombre del producto',
-                        hintStyle: TextStyle(
-                          color: Color(0xFFA1A1A1),
-                          fontSize: 14,
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
                       ),
                     ),
                   ],
@@ -241,13 +123,7 @@ class _ProductForm extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Fecha Vencimiento',
-                      style: TextStyle(
-                        color: Color(0XFF5D2A42),
-                        fontSize: 18,
-                      ),
-                    ),
+                    Text('Fecha Vencimiento'),
                     TextFormField(
                       initialValue:
                           product.fechaVencimiento.toString().substring(0, 10),
@@ -264,26 +140,7 @@ class _ProductForm extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'Nombre del producto',
                         hintStyle: TextStyle(
-                          color: Color(0xFFA1A1A1),
                           fontSize: 14,
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
@@ -293,13 +150,7 @@ class _ProductForm extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Precio',
-                      style: TextStyle(
-                        color: Color(0XFF5D2A42),
-                        fontSize: 18,
-                      ),
-                    ),
+                    Text('Precio'),
                     TextFormField(
                       keyboardType: TextInputType.number,
                       initialValue: product.precio.toString(),
@@ -312,29 +163,54 @@ class _ProductForm extends StatelessWidget {
                       },
                       decoration: InputDecoration(
                         hintText: 'Nombre del producto',
-                        hintStyle: TextStyle(
-                          color: Color(0xFFA1A1A1),
-                          fontSize: 14,
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (!productForm.isValidForm()) return;
+                        await productService
+                            .editOrCreateProduct(productForm.product);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductsView()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(
+                          (MediaQuery.of(context).size.width * 0.6),
+                          (MediaQuery.of(context).size.height * 0.07),
                         ),
                       ),
+                      child: Text('Guardar'),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductsView()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(
+                          (MediaQuery.of(context).size.width * 0.6),
+                          (MediaQuery.of(context).size.height * 0.07),
+                        ),
+                      ),
+                      child: Text('Volver'),
                     ),
                   ],
                 ),

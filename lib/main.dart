@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/routes/app_routes.dart';
+import 'package:wholecake/theme/theme.dart';
 
 void main() {
   runApp(ProviderState());
@@ -30,6 +31,7 @@ class MyfirstWidget extends StatelessWidget {
     //     debugShowCheckedModeBanner: false, home: ProductsView());
 
     return MaterialApp(
+        theme: SweetCakeTheme.myTheme,
         debugShowCheckedModeBanner: false,
         initialRoute: AppRoutes.initialRoute,
         routes: AppRoutes.routes,
