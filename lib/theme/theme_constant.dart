@@ -7,32 +7,6 @@ class SweetCakeTheme {
   static const Color blue = Color(0xFFBDE0FE);
   static const Color hint = Color(0xFFA1A1A1);
 
-  static final InputDecorationTheme _inputDecorationTheme =
-      InputDecorationTheme(
-    hintStyle: const TextStyle(
-      color: hint,
-      fontSize: 14,
-    ),
-    fillColor: Colors.white,
-    filled: true,
-    border: OutlineInputBorder(
-      borderSide: BorderSide.none,
-      borderRadius: BorderRadius.circular(10),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide.none,
-      borderRadius: BorderRadius.circular(10),
-    ),
-    errorBorder: OutlineInputBorder(
-      borderSide: BorderSide.none,
-      borderRadius: BorderRadius.circular(10),
-    ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderSide: BorderSide.none,
-      borderRadius: BorderRadius.circular(10),
-    ),
-  );
-
   static final ThemeData myTheme = ThemeData(
     primaryColor: pink1,
     appBarTheme: const AppBarTheme(
@@ -69,6 +43,58 @@ class SweetCakeTheme {
       backgroundColor: pink2,
       foregroundColor: pink3,
     ),
-    inputDecorationTheme: _inputDecorationTheme,
+    cardTheme: CardTheme(
+      color: const Color(0xFFBDE0FE),
+      elevation: 10,
+      margin: const EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 10,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      hintStyle: const TextStyle(
+        color: hint,
+        fontSize: 14,
+      ),
+      fillColor: Colors.white,
+      filled: true,
+      border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(10),
+      ),
+    ),
   );
+  static final ThemeData graphCardTheme = ThemeData(
+      cardTheme: CardTheme(
+        color: const Color(0xFF343434),
+        elevation: 10,
+        margin: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 10,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      textTheme: const TextTheme(
+          bodyMedium: TextStyle(
+        color: Colors.white,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      )));
 }

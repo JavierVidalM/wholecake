@@ -71,6 +71,7 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
           'Agregar Productos',
           style: Theme.of(context).textTheme.titleLarge,
         ),
+        toolbarHeight: MediaQuery.of(context).size.height * 0.1,
       ),
       drawer: SideBar(),
       body: SingleChildScrollView(
@@ -170,8 +171,8 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
             ElevatedButton(
               onPressed: () {
                 _saveData();
-                // Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ProductsView());
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProductsView()));
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(
@@ -187,7 +188,7 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
             ElevatedButton(
               onPressed: () {
                 _saveData();
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => ProductsView()));
               },
               style: ElevatedButton.styleFrom(

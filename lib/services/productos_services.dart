@@ -29,6 +29,7 @@ class ProductService extends ChangeNotifier {
     listadoproductos = ProductosMap.listado;
     notifyListeners();
   }
+
   Future editOrCreateProduct(Listado product) async {
     isEditCreate = true;
     notifyListeners();
@@ -42,6 +43,7 @@ class ProductService extends ChangeNotifier {
   }
 
   Future addProducto(String msg) async {
+    notifyListeners();
     final url = Uri.http(
       BASEURL,
       'productos/productos_productos_add_rest/',
@@ -55,13 +57,10 @@ class ProductService extends ChangeNotifier {
     final decodeResp = response.body;
     final Listado producto = Listado.fromJson(decodeResp);
     listadoproductos.add(producto);
-    notifyListeners();
+    // notifyListeners();
     await loadProductos(); //
     isEditCreate = false;
-    notifyListeners();
   }
-
-
 
   Future<String> updateProduct(Listado product) async {
     final url = Uri.http(
@@ -76,7 +75,8 @@ class ProductService extends ChangeNotifier {
     });
     final decodeResp = response.body;
     //actualizamos el listado
-    final index = listadoproductos.indexWhere((element) => element.productoId == product.productoId);
+    final index = listadoproductos
+        .indexWhere((element) => element.productoId == product.productoId);
     listadoproductos[index] = product;
     return '';
   }
