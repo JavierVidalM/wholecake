@@ -6,6 +6,7 @@ import 'package:wholecake/views/products/products.dart';
 import 'package:flutter/material.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 
 class ProductsAdd extends StatelessWidget {
   const ProductsAdd({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class ProductsAdd extends StatelessWidget {
       title: 'Agregar productos',
       debugShowCheckedModeBanner: false,
       home: const ProductsAddPage(title: 'Agregar productos'),
-      theme: SweetCakeTheme.myTheme,
+      theme: SweetCakeTheme.mainTheme,
     );
   }
 }
@@ -96,9 +97,9 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
                 child: Container(
                   width: 80.0,
                   height: 80.0,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: const Color(0xFF909090),
+                    color: Color(0xFF909090),
                   ),
                   child: ClipOval(
                     child: imagen != null
@@ -122,7 +123,8 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
               onChanged: (value) {
                 // Aquí puede agregar la lógica para actualizar el valor del controlador
               },
-              decoration: InputDecoration(hintText: 'Nombre del producto'),
+              decoration:
+                  const InputDecoration(hintText: 'Nombre del producto'),
             ),
             const SizedBox(
               height: 20,
@@ -132,38 +134,36 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
               onChanged: (value) {
                 // Aquí puede agregar la lógica para actualizar el valor del controlador
               },
-              decoration: InputDecoration(hintText: 'Categoría'),
+              decoration: const InputDecoration(hintText: 'Categoría'),
             ),
             const SizedBox(
               height: 20,
             ),
-            TextField(
+            DateTimePicker(
+              dateHintText: 'Fecha Elaboración',
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2100),
               controller: fechaElaboracionController,
-              onChanged: (value) {
-                // Aquí puede agregar la lógica para actualizar el valor del controlador
-              },
-              decoration: InputDecoration(hintText: 'Fecha de elaboración'),
             ),
             const SizedBox(
               height: 20,
             ),
-            TextField(
+            DateTimePicker(
+              dateHintText: 'Fecha Vencimiento',
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2100),
               controller: fechaVencimientoController,
-              onChanged: (value) {
-                // Aquí puede agregar la lógica para actualizar el valor del controlador
-              },
-              decoration: InputDecoration(hintText: 'Fecha de Vencimiento'),
             ),
             const SizedBox(
               height: 20,
             ),
             TextField(
-              keyboardType: TextInputType.numberWithOptions(),
+              keyboardType: const TextInputType.numberWithOptions(),
               controller: precioController,
               onChanged: (value) {
                 // Aquí puede agregar la lógica para actualizar el valor del controlador
               },
-              decoration: InputDecoration(hintText: 'Precio'),
+              decoration: const InputDecoration(hintText: 'Precio'),
             ),
             const SizedBox(
               height: 20,
@@ -171,8 +171,10 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
             ElevatedButton(
               onPressed: () {
                 _saveData();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProductsView()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductsView()));
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(
@@ -187,9 +189,10 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                _saveData();
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => ProductsView()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProductsView()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(

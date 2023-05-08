@@ -31,7 +31,7 @@ class MyfirstWidget extends StatelessWidget {
     //     debugShowCheckedModeBanner: false, home: ProductsView());
 
     return MaterialApp(
-        theme: SweetCakeTheme.myTheme,
+        theme: SweetCakeTheme.mainTheme,
         debugShowCheckedModeBanner: false,
         initialRoute: AppRoutes.initialRoute,
         routes: AppRoutes.routes,

@@ -86,8 +86,12 @@ class _ProductsViewState extends State<ProductsView> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      product.nombre,
+                                    Expanded(
+                                      child: Text(
+                                        product.nombre,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                     Row(
                                       children: [

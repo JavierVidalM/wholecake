@@ -4,7 +4,7 @@ import 'package:wholecake/sidebar.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/providers/producto_form_provider.dart';
 import 'package:wholecake/views/products/products.dart';
-import 'package:date_field/date_field.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 
 class ProductsEdit extends StatefulWidget {
   @override
@@ -13,7 +13,6 @@ class ProductsEdit extends StatefulWidget {
 
 class _ProductsEditState extends State<ProductsEdit> {
   late ProductService _productService;
-
   @override
   void initState() {
     super.initState();
@@ -32,7 +31,7 @@ class _ProductsEditState extends State<ProductsEdit> {
           ),
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
         ),
-        drawer: SideBar(),
+        drawer: const SideBar(),
         body: _ProductForm(productService: _productService),
       ),
     );
@@ -61,7 +60,7 @@ class _ProductForm extends StatelessWidget {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -70,127 +69,72 @@ class _ProductForm extends StatelessWidget {
                         initialValue: product.nombre,
                         onChanged: (value) => product.nombre = value,
                         validator: (value) {
-                          if (value == null || value.length < 1)
+                          if (value == null || value.isEmpty) {
                             return 'El nombre es obligatorio';
+                          }
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Nombre del producto',
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Categoría'),
+                      const Text('Categoría'),
                       TextFormField(
                         initialValue: product.categoria,
                         onChanged: (value) => product.categoria = value,
                         validator: (value) {
-                          if (value == null || value.length < 1)
+                          if (value == null || value.isEmpty) {
                             return 'La categoría es obligatoria';
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Nombre del producto',
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     Text('Fecha Elaboración'),
-                  //     DateTimeFormField(
-                  //       decoration: const InputDecoration(
-                  //         suffixIcon: Icon(Icons.event_note),
-                  //       ),
-                  //       mode: DateTimeFieldPickerMode.date,
-                  //       autovalidateMode: AutovalidateMode.always,
-                  //       onDateSelected: (DateTime value) {
-                  //         print(value);
-                  //       },
-                  //     )
-                  //   ],
-                  // ),
-                  // SizedBox(height: 20),
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     Text('Fecha Elaboración'),
-                  //     DateTimeFormField(
-                  //       decoration: const InputDecoration(
-                  //         suffixIcon: Icon(Icons.event_note),
-                  //       ),
-                  //       mode: DateTimeFieldPickerMode.date,
-                  //       autovalidateMode: AutovalidateMode.always,
-                  //       onDateSelected: (DateTime value) {
-                  //         print(value);
-                  //       },
-                  //     )
-                  //   ],
-                  // ),
-
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Fecha Elaboración'),
-                      TextFormField(
-                        initialValue: product.fechaElaboracion
-                            .toString()
-                            .substring(0, 10),
-                        validator: (value) {
-                          if (value == null)
-                            return 'La fecha de elaboración es obligatoria';
-
-                          if (DateTime.tryParse(value) == null) {
-                            return 'El valor debe ser una fecha válida';
-                          } else {
-                            product.fechaElaboracion = DateTime.parse(value);
                           }
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Nombre del producto',
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Fecha Vencimiento'),
-                      TextFormField(
-                        initialValue: product.fechaVencimiento
-                            .toString()
-                            .substring(0, 10),
-                        validator: (value) {
-                          if (value == null)
-                            return 'La fecha de vencimiento es obligatoria';
-
-                          if (DateTime.tryParse(value) == null) {
-                            return 'El valor debe ser una fecha válida';
-                          } else {
-                            product.fechaVencimiento = DateTime.parse(value);
-                          }
+                      const Text('Fecha Elaboración'),
+                      DateTimePicker(
+                        initialValue: product.fechaElaboracion,
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100),
+                        // onChanged: (val) => print(val),
+                        validator: (val) {
+                          product.fechaVencimiento = val!;
                         },
-                        decoration: InputDecoration(
-                          hintText: 'Nombre del producto',
-                          hintStyle: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
                       ),
                     ],
                   ),
-
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Precio'),
+                      const Text('Fecha Vencimiento'),
+                      DateTimePicker(
+                        initialValue: product.fechaElaboracion,
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100),
+                        // onChanged: (val) => print(val),
+                        validator: (val) {
+                          product.fechaVencimiento = val!;
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Precio'),
                       TextFormField(
                         keyboardType: TextInputType.number,
                         initialValue: product.precio.toString(),
@@ -201,13 +145,13 @@ class _ProductForm extends StatelessWidget {
                             product.precio = value;
                           }
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Nombre del producto',
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -228,11 +172,11 @@ class _ProductForm extends StatelessWidget {
                             (MediaQuery.of(context).size.height * 0.07),
                           ),
                         ),
-                        child: Text('Guardar'),
+                        child: const Text('Guardar'),
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -241,7 +185,7 @@ class _ProductForm extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ProductsView()),
+                                builder: (context) => const ProductsView()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -250,7 +194,7 @@ class _ProductForm extends StatelessWidget {
                             (MediaQuery.of(context).size.height * 0.07),
                           ),
                         ),
-                        child: Text('Volver'),
+                        child: const Text('Volver'),
                       ),
                     ],
                   ),
