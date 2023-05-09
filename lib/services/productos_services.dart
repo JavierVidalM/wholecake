@@ -77,9 +77,9 @@ class ProductService extends ChangeNotifier {
     });
     final decodeResp = response.body;
     //actualizamos el listado
-    final index = listadoproductos
-        .indexWhere((element) => element.productoId == product.productoId);
-    listadoproductos[index] = product;
+    // final index = listadoproductos
+    //     .indexWhere((element) => element.productoId == product.productoId);
+    // listadoproductos[index] = product;
     return '';
   }
 
