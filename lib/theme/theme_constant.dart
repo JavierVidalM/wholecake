@@ -64,85 +64,86 @@ class SweetCakeTheme {
   );
 
   static final ThemeData mainTheme = ThemeData(
-      //Color principal
-      primaryColor: pink1,
-      //Tema para el appbar
-      appBarTheme: const AppBarTheme(
-        color: pink2,
-        iconTheme: IconThemeData(color: pink3),
-        centerTitle: true,
-        titleSpacing: 0,
-      ),
-      //Estilo de los textos
-      textTheme: const TextTheme(
-        titleLarge: TextStyle(color: pink3, fontSize: 28),
-        bodyMedium:
-            TextStyle(color: gray, fontSize: 16, fontWeight: FontWeight.bold),
-        bodySmall: TextStyle(color: gray, fontSize: 14),
-      ),
-      //Color de fondo de la app
-      scaffoldBackgroundColor: blue,
-      //Estilo de los botones tradicionales
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(pink2),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+    //Color principal
+    primaryColor: pink1,
+    //Tema para el appbar
+    appBarTheme: const AppBarTheme(
+      color: pink2,
+      iconTheme: IconThemeData(color: pink3),
+      centerTitle: true,
+      titleSpacing: 0,
+    ),
+    //Estilo de los textos
+    textTheme: const TextTheme(
+      titleLarge: TextStyle(color: pink3, fontSize: 28),
+      bodyMedium:
+          TextStyle(color: gray, fontSize: 16, fontWeight: FontWeight.bold),
+      bodySmall: TextStyle(color: gray, fontSize: 14),
+    ),
+    //Color de fondo de la app
+    scaffoldBackgroundColor: blue,
+    //Estilo de los botones tradicionales
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(pink2),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-          foregroundColor: MaterialStateProperty.all<Color>(pink3),
         ),
+        foregroundColor: MaterialStateProperty.all<Color>(pink3),
       ),
-      //Estilo de los botones flotantes
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: pink2,
-        foregroundColor: pink3,
+    ),
+    //Estilo de los botones flotantes
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: pink2,
+      foregroundColor: pink3,
+    ),
+    //Estilo de las Cards
+    cardTheme: CardTheme(
+      color: const Color(0xFFBDE0FE),
+      elevation: 10,
+      margin: const EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 10,
       ),
-      //Estilo de las Cards
-      cardTheme: CardTheme(
-        color: const Color(0xFFBDE0FE),
-        elevation: 10,
-        margin: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 10,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
       ),
-      //Estilo de las entradas de texto
-      inputDecorationTheme: InputDecorationTheme(
-        hintStyle: const TextStyle(
-          color: hint,
-          fontSize: 14,
-        ),
-        fillColor: Colors.white,
-        filled: true,
-        border: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(0),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(10),
-        ),
+    ),
+    //Estilo de las entradas de texto
+    inputDecorationTheme: InputDecorationTheme(
+      hintStyle: const TextStyle(
+        color: hint,
+        fontSize: 14,
       ),
-      iconTheme: const IconThemeData(color: blue2),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(color: pink2),
-      // Estilo para el AlertDialog (PopUP)
-      dialogTheme: DialogTheme(
-          backgroundColor: blue,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))));
+      fillColor: Colors.white,
+      filled: true,
+      border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(10),
+      ),
+    ),
+    iconTheme: const IconThemeData(color: blue2),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(color: pink2),
+    // Estilo para el AlertDialog (PopUP)
+    dialogTheme: DialogTheme(
+      backgroundColor: blue,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    ),
+  );
 
   static final ThemeData calendarTheme = ThemeData(
     primarySwatch: pink_1,
