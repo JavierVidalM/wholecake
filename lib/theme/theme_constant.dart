@@ -125,7 +125,7 @@ class SweetCakeTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(0),
         ),
         errorBorder: OutlineInputBorder(
           borderSide: BorderSide.none,
@@ -139,9 +139,10 @@ class SweetCakeTheme {
       iconTheme: const IconThemeData(color: blue2),
       progressIndicatorTheme: const ProgressIndicatorThemeData(color: pink2),
       // Estilo para el AlertDialog (PopUP)
-      dialogTheme: const DialogTheme(
-        backgroundColor: blue,
-      ));
+      dialogTheme: DialogTheme(
+          backgroundColor: blue,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))));
 
   static final ThemeData calendarTheme = ThemeData(
     primarySwatch: pink_1,
