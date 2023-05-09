@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/sidebar.dart';
+import 'package:wholecake/views/utilities/sidebar.dart';
 import 'package:wholecake/theme/theme.dart';
 
 class HomePage extends StatefulWidget {

@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/sidebar.dart';
+import 'package:wholecake/views/utilities/sidebar.dart';
+import 'package:wholecake/views/utilities/loading_screen.dart';
 import 'package:wholecake/views/products/products_add.dart';
 import 'package:wholecake/views/products/products_edit.dart';
 import 'dart:typed_data';
+import 'package:intl/intl.dart';
 
 class ProductsView extends StatefulWidget {
   const ProductsView({Key? key}) : super(key: key);
@@ -22,6 +24,7 @@ class _ProductsViewState extends State<ProductsView> {
   @override
   Widget build(BuildContext context) {
     final listado = Provider.of<ProductService>(context);
+    if (listado.isLoading) return const LoadingScreen();
 
     return Scaffold(
         appBar: AppBar(
@@ -31,20 +34,62 @@ class _ProductsViewState extends State<ProductsView> {
           ),
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
         ),
-        drawer: SideBar(),
+        drawer: const SideBar(),
         body: Column(children: [
           Container(
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 20, top: 5),
-            child: ElevatedButton.icon(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProductsAdd()));
-              },
-              label: Text('Agregar'),
-              icon: Icon(Icons.add),
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.03,
+              vertical: MediaQuery.of(context).size.height * 0.01,
+            ),
+            child: Row(
+              children: [
+                // Botón de filtro
+                IconButton(
+                  onPressed: () {
+                    // Lógica para abrir el filtro
+                  },
+                  icon: const Icon(Icons.filter_alt_outlined),
+                ),
+                // Campo de entrada de texto y botón de búsqueda
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Row(
+                      children: [
+                        const Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Buscar',
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            // Lógica para buscar
+                          },
+                          icon: const Icon(Icons.search),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProductsAdd()),
+                    );
+                  },
+                  icon: const Icon(Icons.add),
+                ),
+              ],
             ),
           ),
+          Divider(height: MediaQuery.of(context).size.height * 0.005),
           Expanded(
             child: RefreshIndicator(
               onRefresh: _refresh,
@@ -129,6 +174,8 @@ class _ProductsViewState extends State<ProductsView> {
                                   ],
                                 ),
                                 SizedBox(height: 10),
+                                Text('Categoría: ${product.categoria}'),
+                                SizedBox(height: 10),
                                 Text(
                                   'Elaboración: ${product.fechaElaboracion.toString().substring(0, 10)}',
                                 ),
@@ -138,7 +185,12 @@ class _ProductsViewState extends State<ProductsView> {
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                  product.productoId.toString(),
+                                  NumberFormat.currency(
+                                    locale: 'es',
+                                    symbol: '\$',
+                                    decimalDigits: 0,
+                                    customPattern: '\$ #,##0',
+                                  ).format(double.parse(product.precio)),
                                 ),
                               ],
                             ),

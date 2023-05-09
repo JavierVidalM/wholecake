@@ -6,6 +6,8 @@ class ProductFormProvider extends ChangeNotifier {
   Listado product;
   ProductFormProvider(this.product);
 
+  bool isLoading = false;
+
   bool isValidForm() {
     return formKey.currentState?.validate() ?? false;
   }

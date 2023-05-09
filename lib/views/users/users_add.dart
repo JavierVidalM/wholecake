@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/services/users_services.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:wholecake/sidebar.dart';
+import 'package:wholecake/views/utilities/sidebar.dart';
 import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/home/home.dart';
 import 'dart:convert';

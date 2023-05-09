@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/sidebar.dart';
+import 'package:wholecake/views/utilities/sidebar.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/providers/producto_form_provider.dart';
 import 'package:wholecake/views/products/products.dart';
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:typed_data';
+import 'dart:convert';
+import 'dart:io';
 
 class ProductsEdit extends StatefulWidget {
   @override
@@ -38,17 +42,41 @@ class _ProductsEditState extends State<ProductsEdit> {
   }
 }
 
-class _ProductForm extends StatelessWidget {
+class _ProductForm extends StatefulWidget {
   final ProductService productService;
 
   const _ProductForm({Key? key, required this.productService})
       : super(key: key);
 
   @override
+  State<_ProductForm> createState() => _ProductFormState();
+}
+
+class _ProductFormState extends State<_ProductForm> {
+  File? imageSelected;
+
+  Future<void> seleccionarImagen() async {
+    final result = await FilePicker.platform.pickFiles(type: FileType.image);
+    if (result != null) {
+      setState(() {
+        imageSelected = File(result.files.single.path!);
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final productForm = Provider.of<ProductFormProvider>(context);
     final product = productForm.product;
-
+    ImageProvider image;
+    if (imageSelected != null) {
+      image = FileImage(imageSelected!);
+    } else if (product.imagen.isNotEmpty) {
+      Uint8List bytes = Uint8List.fromList(base64.decode(product.imagen));
+      image = MemoryImage(bytes);
+    } else {
+      image = AssetImage('assets/images/placeholder-image.png');
+    }
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -61,6 +89,35 @@ class _ProductForm extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height * 0.04,
+                    ),
+                    child: InkWell(
+                      onTap: seleccionarImagen,
+                      child: Container(
+                        width: 80.0,
+                        height: 80.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: image,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: ClipOval(
+                          child: imageSelected != null
+                              ? Image.file(
+                                  imageSelected!,
+                                  width: 80.0,
+                                  height: 80.0,
+                                  fit: BoxFit.cover,
+                                )
+                              : const SizedBox(),
+                        ),
+                      ),
+                    ),
+                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -157,8 +214,14 @@ class _ProductForm extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
+                          final bytes = imageSelected != null
+                              ? await imageSelected!.readAsBytes()
+                              : null;
+                          final base64 =
+                              bytes != null ? base64Encode(bytes) : "";
+                          product.imagen = base64;
                           if (!productForm.isValidForm()) return;
-                          await productService
+                          await widget.productService
                               .editOrCreateProduct(productForm.product);
                           Navigator.push(
                             context,

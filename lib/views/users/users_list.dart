@@ -6,7 +6,7 @@ import 'package:wholecake/models/users.dart';
 import 'package:wholecake/views/users/users.dart';
 import 'package:wholecake/services/users_services.dart';
 import 'package:wholecake/providers/user_form_provider.dart';
-import '../../sidebar.dart';
+import '../utilities/sidebar.dart';
 
 class UsersList extends StatefulWidget {
   const UsersList({Key? key}) : super(key: key);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/sidebar.dart';
 
 class SweetCakeTheme {
   static const Color white = Color(0xFFF0F0F0);
@@ -9,7 +8,24 @@ class SweetCakeTheme {
   static const Color blue = Color(0xFFBDE0FE);
   static const Color blue2 = Color(0xFF3681AB);
   static const Color hint = Color(0xFF909090);
+  static const Color gray = Color(0xFF454545);
   // static const Color SBicons = Color(0xFFA1A1A1);
+
+  static MaterialColor pink_1 = const MaterialColor(
+    0xFFFFB5D7, // color principal
+    <int, Color>{
+      50: Color(0xFFFFE3EE),
+      100: Color(0xFFFFC1D1),
+      200: Color(0xFFFF9FB4),
+      300: Color(0xFFFF7D97),
+      400: Color(0xFFFF5B7B),
+      500: Color(0xFFFF3A5E),
+      600: Color(0xFFFF3257),
+      700: Color(0xFFFF2A4E),
+      800: Color(0xFFFF2247),
+      900: Color(0xFFFF1539),
+    },
+  );
 
   static final ThemeData nadena = ThemeData();
 
@@ -48,44 +64,91 @@ class SweetCakeTheme {
   );
 
   static final ThemeData mainTheme = ThemeData(
-    primaryColor: pink1,
-    appBarTheme: const AppBarTheme(
-      color: pink2,
-      iconTheme: IconThemeData(color: pink3),
-      centerTitle: true,
-      titleSpacing: 0,
-    ),
-    textTheme: const TextTheme(
-      titleLarge: TextStyle(color: pink3, fontSize: 28),
-      bodyMedium:
-          TextStyle(color: pink3, fontSize: 18, fontWeight: FontWeight.bold),
-      bodySmall: TextStyle(color: Colors.grey),
-    ),
-    scaffoldBackgroundColor: blue,
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(pink2),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+      //Color principal
+      primaryColor: pink1,
+      //Tema para el appbar
+      appBarTheme: const AppBarTheme(
+        color: pink2,
+        iconTheme: IconThemeData(color: pink3),
+        centerTitle: true,
+        titleSpacing: 0,
+      ),
+      //Estilo de los textos
+      textTheme: const TextTheme(
+        titleLarge: TextStyle(color: pink3, fontSize: 28),
+        bodyMedium:
+            TextStyle(color: gray, fontSize: 16, fontWeight: FontWeight.bold),
+        bodySmall: TextStyle(color: gray, fontSize: 14),
+      ),
+      //Color de fondo de la app
+      scaffoldBackgroundColor: blue,
+      //Estilo de los botones tradicionales
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(pink2),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
+          foregroundColor: MaterialStateProperty.all<Color>(pink3),
         ),
-        foregroundColor: MaterialStateProperty.all<Color>(pink3),
       ),
-    ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: pink2,
-      foregroundColor: pink3,
-    ),
-    cardTheme: CardTheme(
-      color: const Color(0xFFBDE0FE),
-      elevation: 10,
-      margin: const EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 10,
+      //Estilo de los botones flotantes
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: pink2,
+        foregroundColor: pink3,
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+      //Estilo de las Cards
+      cardTheme: CardTheme(
+        color: const Color(0xFFBDE0FE),
+        elevation: 10,
+        margin: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 10,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      //Estilo de las entradas de texto
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: const TextStyle(
+          color: hint,
+          fontSize: 14,
+        ),
+        fillColor: Colors.white,
+        filled: true,
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      iconTheme: const IconThemeData(color: blue2),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(color: pink2),
+      // Estilo para el AlertDialog (PopUP)
+      dialogTheme: const DialogTheme(
+        backgroundColor: blue,
+      ));
+
+  static final ThemeData calendarTheme = ThemeData(
+    primarySwatch: pink_1,
+    dialogBackgroundColor: blue,
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: MaterialStateProperty.all<Color>(blue2),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -136,34 +199,18 @@ class SweetCakeTheme {
   static ThemeData sidebarTheme = ThemeData(
       primaryColor: pink1,
       iconTheme: const IconThemeData(
-        color: Colors.black,
+        color: Colors.red,
       ),
       textTheme: const TextTheme(
-        bodyText1: TextStyle(
-          color: Colors.black,
-          fontSize: 16,
-        ),
-        bodyText2: TextStyle(
-          color: Colors.black,
-          fontSize: 14,
-        ),
-        subtitle1: TextStyle(
-          color: Colors.black,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-        subtitle2: TextStyle(
-          color: Colors.black,
+        bodyLarge: TextStyle(
+          color: gray,
           fontSize: 16,
         ),
       ),
-      // dividerColor: Colors.black,
-      tabBarTheme: const TabBarTheme(
-        labelColor: Colors.black,
-        unselectedLabelColor: Colors.grey,
-      ),
+      dividerColor: Colors.black,
       drawerTheme: const DrawerThemeData(
-        backgroundColor: Color(0xFFFFC4E3),
+        backgroundColor: pink1,
       ),
-      colorScheme: ColorScheme.light(primary: pink2));
+      colorScheme: const ColorScheme.light(primary: pink2),
+      dividerTheme: DividerThemeData(color: pink3));
 }

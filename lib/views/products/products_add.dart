@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:wholecake/sidebar.dart';
+import 'package:wholecake/views/utilities/sidebar.dart';
 import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/products/products.dart';
 import 'package:flutter/material.dart';
@@ -63,10 +63,23 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
         context, MaterialPageRoute(builder: (context) => ProductsView()));
   }
 
+  Future popUp() => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: const Text("Ingrese la categoría"),
+            content: TextField(
+              controller: categoriaController,
+              onChanged: (value) {},
+              autofocus: true,
+            ),
+            actions: [
+              ElevatedButton(onPressed: () {}, child: const Text("Agregar"))
+            ],
+          ));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFBDE0FE),
       appBar: AppBar(
         title: Text(
           'Agregar Productos',
@@ -129,30 +142,63 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
             const SizedBox(
               height: 20,
             ),
-            TextField(
-              controller: categoriaController,
-              onChanged: (value) {
-                // Aquí puede agregar la lógica para actualizar el valor del controlador
-              },
-              decoration: const InputDecoration(hintText: 'Categoría'),
+            // Row(
+            //   children: [
+            Row(
+              children: [
+                const Expanded(
+                  child: TextField(
+                    // controller: categoriaController,
+                    // onChanged: (value) {},
+                    enabled: false,
+                    decoration: InputDecoration(
+                      hintText: 'Esta caja de texto no hace nada',
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.02),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      popUp();
+                    },
+                    child: Icon(Icons.add),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(
+                          MediaQuery.of(context).size.height * 0.02,
+                          MediaQuery.of(context).size.height * 0.06),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            //   ],
+            // ),
+            const SizedBox(
+              height: 20,
+            ),
+            Theme(
+              data: SweetCakeTheme.calendarTheme,
+              child: DateTimePicker(
+                useRootNavigator: true,
+                dateHintText: 'Fecha Elaboración',
+                firstDate: DateTime.now(),
+                lastDate: DateTime(2100),
+                controller: fechaElaboracionController,
+              ),
             ),
             const SizedBox(
               height: 20,
             ),
-            DateTimePicker(
-              dateHintText: 'Fecha Elaboración',
-              firstDate: DateTime(2000),
-              lastDate: DateTime(2100),
-              controller: fechaElaboracionController,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            DateTimePicker(
-              dateHintText: 'Fecha Vencimiento',
-              firstDate: DateTime(2000),
-              lastDate: DateTime(2100),
-              controller: fechaVencimientoController,
+            Theme(
+              data: SweetCakeTheme.calendarTheme,
+              child: DateTimePicker(
+                dateHintText: 'Fecha Vencimiento',
+                firstDate: DateTime.now(),
+                lastDate: DateTime(2100),
+                controller: fechaVencimientoController,
+              ),
             ),
             const SizedBox(
               height: 20,

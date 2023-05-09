@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/home/home.dart';
 import 'package:wholecake/views/login/login.dart';
@@ -7,8 +9,19 @@ import 'package:wholecake/views/sells/sells.dart';
 import 'package:wholecake/views/suppliers/suppliers.dart';
 import 'package:wholecake/views/users/users.dart';
 
-class SideBar extends StatelessWidget {
+class SideBar extends StatefulWidget {
   const SideBar({super.key});
+
+  @override
+  State<SideBar> createState() => _SideBarState();
+}
+
+class _SideBarState extends State<SideBar> {
+  String getProductCount(BuildContext context) {
+    final productService = Provider.of<ProductService>(context, listen: false);
+    final productCount = productService.listadoproductos.length;
+    return productCount.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +33,18 @@ class SideBar extends StatelessWidget {
           children: [
             Column(
               children: [
-                UserAccountsDrawerHeader(
-                  accountName: const Text(
+                const UserAccountsDrawerHeader(
+                  accountName: Text(
                     "Monkey D. Luffy",
                     style: TextStyle(),
                   ),
-                  accountEmail: const Text(
+                  accountEmail: Text(
                     "monkey@dluffy.com",
                     style: TextStyle(),
                   ),
                   currentAccountPicture: CircleAvatar(
-                    child: ClipOval(
-                      child: Image.network(
-                        'https://img1.ak.crunchyroll.com/i/spire4/5b954f7af990b40acc4f3f410a3a5f9d1664298859_large.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                    backgroundImage: NetworkImage(
+                        'https://img1.ak.crunchyroll.com/i/spire4/5b954f7af990b40acc4f3f410a3a5f9d1664298859_large.jpg'),
                   ),
                 ),
                 ListTile(
@@ -52,7 +61,7 @@ class SideBar extends StatelessWidget {
                     onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const UsersList()),
+                              builder: (context) => const UsersAdd()),
                         )),
                 ListTile(
                     leading: const Icon(Icons.inventory_rounded),
@@ -78,13 +87,27 @@ class SideBar extends StatelessWidget {
                           MaterialPageRoute(builder: (context) => ToExpire()),
                         )),
                 ListTile(
-                    leading: const Icon(Icons.cake_outlined),
-                    title: const Text("Productos"),
-                    onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProductsView()),
+                  leading: const Icon(Icons.cake_outlined),
+                  title: const Text("Productos"),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductsView()),
+                  ),
+                  trailing: ClipOval(
+                    child: Container(
+                        color: const Color(0xFFF95959),
+                        width: 20,
+                        height: 20,
+                        child: Center(
+                          child: Text(
+                            getProductCount(context),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 14),
+                          ),
                         )),
+                  ),
+                ),
                 ListTile(
                   leading: const Icon(Icons.local_shipping_outlined),
                   title: const Text("Proveedores"),
@@ -92,25 +115,13 @@ class SideBar extends StatelessWidget {
                     context,
                     MaterialPageRoute(builder: (context) => SuppliersView()),
                   ),
-                  trailing: ClipOval(
-                    child: Container(
-                        color: const Color(0xFFF95959),
-                        width: 20,
-                        height: 20,
-                        child: const Center(
-                          child: Text(
-                            "3",
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          ),
-                        )),
-                  ),
                 ),
               ],
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const Divider(),
+                Divider(height: MediaQuery.of(context).size.height * 0.005),
                 ListTile(
                   leading: const Icon(Icons.logout),
                   title: const Text("Cerrar sesión"),

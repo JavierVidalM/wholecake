@@ -5,16 +5,16 @@ import 'package:wholecake/views/products/products.dart';
 import 'package:wholecake/views/suppliers/suppliers.dart';
 import 'package:wholecake/views/sells/sells.dart';
 import 'package:wholecake/views/users/users.dart';
-import 'package:wholecake/views/error.dart';
+import 'package:wholecake/views/utilities/utilities.dart';
 
 class AppRoutes {
-  static const initialRoute = '/HomePage';
+  static const initialRoute = '/ProductsView';
 
   static Map<String, Widget Function(BuildContext)> routes = {
     //Pantallas del Login
-    '/LoginMain': (context) => const LoginMain(),
-    '/LoginUser': (context) => const LoginUser(),
-    '/SigninUser': (context) => const SigninUser(),
+    '/LoginMain': (BuildContext context) => const LoginMain(),
+    '/LoginUser': (BuildContext context) => const LoginUser(),
+    '/SigninUser': (BuildContext context) => const SigninUser(),
 
     //Pantalla de inicio
     '/HomePage': (BuildContext context) => const HomePage(),
@@ -38,12 +38,14 @@ class AppRoutes {
     '/SellsView': (BuildContext context) => SellsView(),
     '/SellsDetail': (BuildContext context) => SellsDetail(),
 
-    //Pantalla de error
-    '/Error': (BuildContext context) => const ErrorPage(),
     //Pantalla de users
     '/UsersList': (BuildContext context) => const UsersList(),
     '/UsersAdd': (BuildContext context) => const UsersAdd(),
     '/UsersEdit': (BuildContext context) => const UsersEdit(),
+    //Pantalla de error
+    '/Error': (BuildContext context) => const ErrorPage(),
+    //Pantalla de carga
+    '/LoadingScreen': (BuildContext context) => const LoadingScreen(),
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {

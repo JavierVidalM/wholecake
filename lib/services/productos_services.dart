@@ -17,6 +17,7 @@ class ProductService extends ChangeNotifier {
   }
 
   loadProductos() async {
+    isLoading = true;
     notifyListeners();
     var url = Uri.http(
       BASEURL,
@@ -27,6 +28,7 @@ class ProductService extends ChangeNotifier {
     final response = await http.get(url, headers: {'authorization': basicAuth});
     final ProductosMap = Productos.fromJson(response.body);
     listadoproductos = ProductosMap.listado;
+    isLoading = false;
     notifyListeners();
   }
 
