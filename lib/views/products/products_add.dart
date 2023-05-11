@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:provider/provider.dart';
 import 'package:wholecake/views/utilities/sidebar.dart';
 import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/products/products.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
+
+import '../utilities/loading_screen.dart';
 
 class ProductsAdd extends StatelessWidget {
   const ProductsAdd({Key? key}) : super(key: key);
@@ -57,14 +60,14 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
       'fecha_vencimiento': fechaVencimientoController.text,
       'precio': precioController.text,
       'imagen': base64,
-      'estado': 'True',
+      'estado': 'true',
     });
     await ProductService().addProducto(msg);
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const ProductsView()));
   }
 
-  Future popUp() => showDialog(
+  Future<String?> popUp() => showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
             title: const Text("Ingrese la categoría"),
@@ -74,12 +77,21 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
               autofocus: true,
             ),
             actions: [
-              ElevatedButton(onPressed: () {}, child: const Text("Agregar"))
+              ElevatedButton(
+                onPressed: () =>
+                    Navigator.of(context).pop(categoriaController.text),
+                child: const Text("Agregar"),
+              )
             ],
           ));
 
+  String _selectedItem = 'Tortas';
+
   @override
   Widget build(BuildContext context) {
+    final listadoCategorias = Provider.of<ProductService>(context);
+    if (listadoCategorias.isLoading) return const LoadingScreen();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -88,7 +100,7 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
         ),
         toolbarHeight: MediaQuery.of(context).size.height * 0.1,
       ),
-      drawer: SideBar(),
+      drawer: const SideBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
@@ -134,48 +146,44 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
             ),
             TextField(
               controller: nombreController,
-              onChanged: (value) {
-                // Aquí puede agregar la lógica para actualizar el valor del controlador
-              },
               decoration:
                   const InputDecoration(hintText: 'Nombre del producto'),
             ),
             const SizedBox(
               height: 20,
             ),
-            // Row(
-            //   children: [
             Row(
               children: [
-                const Expanded(
-                  child: TextField(
-                    // controller: categoriaController,
-                    // onChanged: (value) {},
-                    enabled: false,
-                    decoration: InputDecoration(
-                      hintText: 'Esta caja de texto no hace nada',
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.02),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      popUp();
+                // for (int cat =0; cat<listadoCategorias.listadocategorias.length; cat++) {
+                //   String catList = listadoCategorias.listadocategorias[cat];
+                // },
+
+                Expanded(
+                  child: DropdownButtonFormField<dynamic>(
+                    value: _selectedItem,
+                    items: <dynamic>[listadoCategorias.listadocategorias]
+                        .map((value) {
+                      return DropdownMenuItem<dynamic>(
+                        value: value,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 0), // Agrega un margen izquierdo
+                          // child: Text(value),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (newvalue) {
+                      setState(() {
+                        _selectedItem = newvalue!;
+                      });
+                      categoriaController.text = newvalue!.toString();
                     },
-                    child: Icon(Icons.add),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(
-                          MediaQuery.of(context).size.height * 0.02,
-                          MediaQuery.of(context).size.height * 0.06),
-                    ),
+                    borderRadius: BorderRadius.circular(20),
+                    icon: const Icon(Icons.expand_more),
                   ),
                 ),
               ],
             ),
-            //   ],
-            // ),
             const SizedBox(
               height: 20,
             ),
@@ -248,6 +256,23 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
                 ),
               ),
               child: const Text('Volver'),
+            ),
+            Padding(
+              padding:
+                  EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.2),
+              child: TextButton(
+                onPressed: () async {
+                  await popUp();
+                },
+
+                // style: ElevatedButton.styleFrom(
+                //   minimumSize: Size(0,0,
+                // ),
+                child: Text(
+                  '',
+                  style: TextStyle(fontSize: 0),
+                ),
+              ),
             ),
           ],
         ),

@@ -39,23 +39,24 @@ class HomePageState extends State<HomePage> {
             ),
           ),
           Padding(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.01,
-                left: MediaQuery.of(context).size.height * 0.03,
-                right: MediaQuery.of(context).size.height * 0.03,
-              ),
-              child: Theme(
-                data: SweetCakeTheme.graphCardTheme,
-                child: SizedBox(
-                  // width: MediaQuery.of(context).size.width * 0.01,
-                  height: MediaQuery.of(context).size.width,
-                  child: Card(
-                    child: Center(
-                      child: Text('Aquí irá un gráfico'),
-                    ), // child: MyBarGraph(),
-                  ),
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.01,
+              left: MediaQuery.of(context).size.height * 0.03,
+              right: MediaQuery.of(context).size.height * 0.03,
+            ),
+            child: Theme(
+              data: SweetCakeTheme.graphCardTheme,
+              child: SizedBox(
+                // width: MediaQuery.of(context).size.width * 0.01,
+                height: MediaQuery.of(context).size.width,
+                child: Card(
+                  child: Center(
+                    child: Text('Aquí irá un gráfico'),
+                  ), // child: MyBarGraph(),
                 ),
-              )),
+              ),
+            ),
+          ),
         ],
       ),
     );

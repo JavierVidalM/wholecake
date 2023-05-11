@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/services/productos_services.dart';
+import 'package:wholecake/theme/theme.dart';
+import 'package:wholecake/views/products/products_filter_view.dart';
 import 'package:wholecake/views/utilities/sidebar.dart';
 import 'package:wholecake/views/utilities/loading_screen.dart';
 import 'package:wholecake/views/products/products_add.dart';
@@ -20,11 +24,95 @@ Future<void> _refresh() {
   return Future.delayed(Duration(seconds: 2));
 }
 
+String _selectedCategory = 'Seleccione categoría';
+String? _selectedDate;
+
+// void filterProducts(String category) {
+//     final listadoView = Provider.of<ProductService>();
+//     listadoView.filterProductsByCategory(category);
+//   }
+
 class _ProductsViewState extends State<ProductsView> {
+  String _selectedCategory = 'Seleccione categoría';
+
+  Future<String?> filterPopup() => showDialog<String>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Filtro"),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.02,
+                    bottom: MediaQuery.of(context).size.height * 0.01,
+                  ),
+                  child: const Text("Categoría"),
+                ),
+                DropdownButtonFormField<String>(
+                  value: _selectedCategory,
+                  items: <String>[
+                    'Seleccione categoría',
+                    'Tortas',
+                    'Tartaletas',
+                    'Pies',
+                    'Pasteles',
+                    'Dulces',
+                    'Masas',
+                  ].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 0),
+                        child: Text(value),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (newvalue) {
+                    setState(() {
+                      _selectedCategory = newvalue!;
+                    });
+                  },
+                  borderRadius: BorderRadius.circular(20),
+                  icon: const Icon(Icons.expand_more),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.02,
+                    bottom: MediaQuery.of(context).size.height * 0.01,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height * 0.02,
+                  right: MediaQuery.of(context).size.width * 0.03),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // Cierra el AlertDialog
+
+                  // Llama a la función de filtrado de productos pasando las opciones seleccionadas
+                  // filterProducts(_selectedCategory);
+                },
+                child: const Text("filtrar"),
+              ),
+            )
+          ],
+        ),
+      );
+
+  // void productosBusqueda(List<> searchProductsList) {}
+
   @override
   Widget build(BuildContext context) {
     final listadoView = Provider.of<ProductService>(context);
     if (listadoView.isLoading) return const LoadingScreen();
+    print('douuuuu ${listadoView.listadoproductos}');
+    final List<Listado> prod = listadoView.listadoproductos;
 
     return ChangeNotifierProvider(
         create: (_) => ProductService(),
@@ -39,6 +127,7 @@ class _ProductsViewState extends State<ProductsView> {
             drawer: const SideBar(),
             body: Consumer<ProductService>(
               builder: (context, listado, child) {
+                // final producto = listado.listadoproductos[index];
                 return Column(
                   children: [
                     Container(
@@ -51,7 +140,7 @@ class _ProductsViewState extends State<ProductsView> {
                           // Botón de filtro
                           IconButton(
                             onPressed: () {
-                              // Lógica para abrir el filtro
+                              filterPopup();
                             },
                             icon: const Icon(Icons.filter_alt_outlined),
                           ),
@@ -64,11 +153,16 @@ class _ProductsViewState extends State<ProductsView> {
                               ),
                               child: Row(
                                 children: [
-                                  const Expanded(
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                        hintText: 'Buscar',
-                                      ),
+                                  Expanded(
+                                    child: ListTile(
+                                      title: const Text('Buscar'),
+                                      onTap: () {
+                                        showSearch(
+                                          context: context,
+                                          delegate: ProductSearch(
+                                              listadoView.listadoproductos),
+                                        );
+                                      },
                                     ),
                                   ),
                                   IconButton(
@@ -107,7 +201,7 @@ class _ProductsViewState extends State<ProductsView> {
                             Image image = Image.memory(bytes);
                             return Card(
                               child: Padding(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(12),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -213,8 +307,8 @@ class _ProductsViewState extends State<ProductsView> {
                                               symbol: '\$',
                                               decimalDigits: 0,
                                               customPattern: '\$ #,##0',
-                                            ).format(
-                                                double.parse(product.precio.toString())),
+                                            ).format(double.parse(
+                                                product.precio.toString())),
                                           ),
                                         ],
                                       ),

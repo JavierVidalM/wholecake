@@ -75,7 +75,7 @@ class _ProductFormState extends State<_ProductForm> {
       Uint8List bytes = Uint8List.fromList(base64.decode(product.imagen));
       image = MemoryImage(bytes);
     } else {
-      image = AssetImage('assets/images/placeholder-image.png');
+      image = const AssetImage('assets/images/default.png');
     }
     return SingleChildScrollView(
       child: Padding(
@@ -121,7 +121,7 @@ class _ProductFormState extends State<_ProductForm> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Producto'),
+                      const Text('Producto'),
                       TextFormField(
                         initialValue: product.nombre,
                         onChanged: (value) => product.nombre = value,
@@ -143,14 +143,15 @@ class _ProductFormState extends State<_ProductForm> {
                       const Text('Categoría'),
                       TextFormField(
                         initialValue: product.categoria.toString(),
-                        onChanged: (value) => product.categoria = int.parse(value),
+                        onChanged: (value) =>
+                            product.categoria = int.parse(value),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'La categoría es obligatoria';
                           }
                         },
                         decoration: const InputDecoration(
-                          hintText: 'Categoria del producto',
+                          hintText: 'Nombre del producto',
                         ),
                       ),
                     ],

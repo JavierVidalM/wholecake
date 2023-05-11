@@ -1,26 +1,26 @@
-// import 'package:flutter/material.dart';
-// import 'package:wholecake/services/users_services.dart';
-// import 'package:file_picker/file_picker.dart';
-// import 'package:wholecake/views/utilities/sidebar.dart';
-// import 'package:wholecake/theme/theme.dart';
-// import 'package:wholecake/views/home/home.dart';
-// import 'dart:convert';
-// import 'dart:io';
-// import 'package:wholecake/views/users/users_list.dart';
+import 'package:flutter/material.dart';
+import 'package:wholecake/services/users_services.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:wholecake/views/utilities/sidebar.dart';
+import 'package:wholecake/theme/theme.dart';
+import 'package:wholecake/views/home/home.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:wholecake/views/users/users_list.dart';
 
-// class SuppliersAdd extends StatelessWidget {
-//   const SuppliersAdd({Key? key}) : super(key: key);
+class SuppliersAdd extends StatelessWidget {
+  const SuppliersAdd({Key? key}) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       theme: SweetCakeTheme.mainTheme,
-//       title: 'Agregar Proveedor',
-//       home: SuppliersAddPage(),
-//       ); 
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: SweetCakeTheme.mainTheme,
+      title: 'Agregar Proveedor',
+      // home: SuppliersAddPage(),
+    );
+  }
+}
 
 // class SuppliersAddPage extends StatefulWidget {
 //   const SuppliersAddPagePage({Key? key }) : super(key: key);

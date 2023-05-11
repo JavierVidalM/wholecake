@@ -34,7 +34,11 @@ class LoginMain extends StatelessWidget {
                         top: MediaQuery.of(context).size.height * 0.17),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/LoginUser');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const LoginMain()));
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(
