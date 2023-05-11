@@ -92,6 +92,10 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
     final listadoCategorias = Provider.of<ProductService>(context);
     if (listadoCategorias.isLoading) return const LoadingScreen();
 
+    // for (int cat =0; cat<listadoCategorias.listadocategorias.length; cat++) {
+    //   String catList = listadoCategorias.listadocategorias[cat];
+    // },
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -154,10 +158,6 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
             ),
             Row(
               children: [
-                // for (int cat =0; cat<listadoCategorias.listadocategorias.length; cat++) {
-                //   String catList = listadoCategorias.listadocategorias[cat];
-                // },
-
                 Expanded(
                   child: DropdownButtonFormField<dynamic>(
                     value: _selectedItem,
