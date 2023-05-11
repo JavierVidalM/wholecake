@@ -214,7 +214,7 @@ class _ProductsViewState extends State<ProductsView> {
                                               decimalDigits: 0,
                                               customPattern: '\$ #,##0',
                                             ).format(
-                                                double.parse(product.precio)),
+                                                double.parse(product.precio.toString())),
                                           ),
                                         ],
                                       ),

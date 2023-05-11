@@ -56,11 +56,12 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
       'fecha_elaboracion': fechaElaboracionController.text,
       'fecha_vencimiento': fechaVencimientoController.text,
       'precio': precioController.text,
-      'imagen': base64
+      'imagen': base64,
+      'estado': 'True',
     });
     await ProductService().addProducto(msg);
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProductsView()));
+        context, MaterialPageRoute(builder: (context) => const ProductsView()));
   }
 
   Future popUp() => showDialog(

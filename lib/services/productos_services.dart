@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:wholecake/models/productos.dart';
+import 'package:wholecake/models/categoria.dart';
 
 class ProductService extends ChangeNotifier {
   String APIUSER = 'sweetcake';
   String APIPASS = 'pasteldetula';
   String BASEURL = '3.85.128.77:8000';
   List<Listado> listadoproductos = [];
+  List<ListElement> listadocategorias = [];
+
   Listado? selectedProduct;
   bool isLoading = true;
   bool isEditCreate = true;
 //constructor
   ProductService() {
     loadProductos();
+    loadCategorias();
   }
 
   loadProductos() async {
@@ -95,5 +99,22 @@ class ProductService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
+  }
+
+  loadCategorias() async {
+    isLoading = true;
+    notifyListeners();
+    var url = Uri.http(
+      BASEURL,
+      'productos/productos_categoria_list_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.get(url, headers: {'authorization': basicAuth});
+    final categoriasMap = Categorias.fromJson(response.body);
+    print(response.body);
+    listadocategorias = categoriasMap.list;
+    isLoading = false;
+    notifyListeners();
   }
 }

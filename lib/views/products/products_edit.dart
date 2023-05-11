@@ -142,15 +142,15 @@ class _ProductFormState extends State<_ProductForm> {
                     children: [
                       const Text('Categoría'),
                       TextFormField(
-                        initialValue: product.categoria,
-                        onChanged: (value) => product.categoria = value,
+                        initialValue: product.categoria.toString(),
+                        onChanged: (value) => product.categoria = int.parse(value),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'La categoría es obligatoria';
                           }
                         },
                         decoration: const InputDecoration(
-                          hintText: 'Nombre del producto',
+                          hintText: 'Categoria del producto',
                         ),
                       ),
                     ],
@@ -197,9 +197,9 @@ class _ProductFormState extends State<_ProductForm> {
                         initialValue: product.precio.toString(),
                         onChanged: (value) {
                           if (int.tryParse(value) == null) {
-                            product.precio = "0";
+                            product.precio = 0;
                           } else {
-                            product.precio = value;
+                            product.precio = int.parse(value);
                           }
                         },
                         decoration: const InputDecoration(
