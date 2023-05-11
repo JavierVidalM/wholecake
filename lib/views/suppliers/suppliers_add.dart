@@ -1,34 +1,27 @@
-import 'package:flutter/material.dart';
-import 'package:wholecake/services/users_services.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:wholecake/views/utilities/sidebar.dart';
-import 'package:wholecake/theme/theme.dart';
-import 'package:wholecake/views/home/home.dart';
-import 'dart:convert';
-import 'dart:io';
-import 'package:wholecake/views/users/users_list.dart';
+// import 'package:flutter/material.dart';
+// import 'package:wholecake/services/users_services.dart';
+// import 'package:file_picker/file_picker.dart';
+// import 'package:wholecake/views/utilities/sidebar.dart';
+// import 'package:wholecake/theme/theme.dart';
+// import 'package:wholecake/views/home/home.dart';
+// import 'dart:convert';
+// import 'dart:io';
+// import 'package:wholecake/views/users/users_list.dart';
 
-class SuppliersAdd extends StatelessWidget {
-  const SuppliersAdd({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: SweetCakeTheme.mainTheme,
-      title: 'Agregar Proveedor',
-      // home: SuppliersAddPage(),
-    );
-  }
-}
-
-// class SuppliersAddPage extends StatefulWidget {
-//   const SuppliersAddPagePage({Key? key }) : super(key: key);
 //   @override
-//   SuppliersAddPageState createState() => SuppliersAddPageState();
+//   Widget build(BuildContext context) {
+//     return const SuppliersAddPage();
+//   }
 // }
 
-// class SuppliersAddPagePageState extends State<SuppliersAddPagePage> {
+// class SuppliersAddPage extends StatefulWidget {
+//   const SuppliersAddPage({Key? key}) : super(key: key);
+
+//   @override
+//   _SuppliersAddPageState createState() => _SuppliersAddPageState();
+// }
+
+// class _SuppliersAddPageState extends State<SuppliersAddPage> {
 //   TextEditingController rutproveedorController = TextEditingController();
 //   TextEditingController nombreproveedorController = TextEditingController();
 //   TextEditingController tipoproductoController = TextEditingController();
@@ -36,38 +29,46 @@ class SuppliersAdd extends StatelessWidget {
 //   TextEditingController numerotelefonoController = TextEditingController();
 
 //   @override
-//   void dispose(){
-//   rutproveedorController.dispose();
-//   nombreproveedorController.dispose();
-//   tipoproductoController.dispose();
-//   correoproveedorController.dispose();
-//   numerotelefonoController.dispose();
-//   super.dispose();
+//   void dispose() {
+//     rutproveedorController.dispose();
+//     nombreproveedorController.dispose();
+//     tipoproductoController.dispose();
+//     correoproveedorController.dispose();
+//     numerotelefonoController.dispose();
+//     super.dispose();
 //   }
 
-//   Future<void> _saveData() async{
+//   Future<void> _saveData() async {
 //     final msg = jsonEncode({
-//     'rut': rutproveedorController.text,
-//     'nombre_proveedor': nombreproveedorController.text,
-//     'tipo_producto': tipoproductoController.text,
-//     'correo_proveedor': correoproveedorController.text,
-//     'numero_telefono': numerotelefonoController.text,
-//   });
+//       'rut': rutproveedorController.text,
+//       'nombre_proveedor': nombreproveedorController.text,
+//       'tipo_producto': tipoproductoController.text,
+//       'correo_proveedor': correoproveedorController.text,
+//       'numero_telefono': numerotelefonoController.text,
+//     });
 //     await SuppliersService().SuppliersAdd(msg);
 //     Navigator.push(
 //         context, MaterialPageRoute(builder: (context) => SuppliersList()));
-// }
-
+//   }
 // @override
 // Widget build(BuildContext context) {
-//   return Scaffold(
-//     appBar: AppBar(
-//       title: Text('Agregar Proveedor',
-//         style: Theme.of(context).textTheme.titleLarge),
-//       toolbarHeight: MediaQuery.of(context).size.height * 0.1,
-//     ),
-//     drawer: const SideBar(),
-//     body: SingleChildScrollView(
+//   return MaterialApp(
+//     theme: SweetCakeTheme.mainTheme,
+//     home: Scaffold(
+//       appBar: AppBar(
+//         title: const Text(
+//           'Listado de usuarios',
+//           style: TextStyle(
+//             color: Color(0xFF5D2A42),
+//             fontSize: 24,
+//           ),
+//         ),
+//         backgroundColor: const Color(0xFFFFB5D7),
+//         centerTitle: true,
+//         titleSpacing: 0,
+//       ),
+//       drawer: const SideBar(),
+//       body: SingleChildScrollView(
 //       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
 //       child: Column(
 //         children: [
@@ -180,6 +181,6 @@ class SuppliersAdd extends StatelessWidget {
 //         ],
 //     ),
 //     ),
-//   );
+//   ));
 // }
 // }
