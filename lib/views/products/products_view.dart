@@ -3,6 +3,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/productos.dart';
+import 'package:wholecake/models/categoria.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/products/products_filter_view.dart';
@@ -24,8 +25,8 @@ Future<void> _refresh() {
   return Future.delayed(Duration(seconds: 2));
 }
 
-String _selectedCategory = 'Seleccione categoría';
 String? _selectedDate;
+ListElement? categoriaSeleccionada;
 
 // void filterProducts(String category) {
 //     final listadoView = Provider.of<ProductService>();
@@ -33,16 +34,16 @@ String? _selectedDate;
 //   }
 
 class _ProductsViewState extends State<ProductsView> {
-  String _selectedCategory = 'Seleccione categoría';
+  int? _selectedCategory = null;
 
-  Future<String?> filterPopup() => showDialog<String>(
-        context: context,
-        builder: (context) => AlertDialog(
+  Future<String?> filterPopup(ProductService listacat) => showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
           title: const Text("Filtro"),
           content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                 Padding(
                   padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.02,
@@ -50,60 +51,24 @@ class _ProductsViewState extends State<ProductsView> {
                   ),
                   child: const Text("Categoría"),
                 ),
-                DropdownButtonFormField<String>(
-                  value: _selectedCategory,
-                  items: <String>[
-                    'Seleccione categoría',
-                    'Tortas',
-                    'Tartaletas',
-                    'Pies',
-                    'Pasteles',
-                    'Dulces',
-                    'Masas',
-                  ].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 0),
-                        child: Text(value),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (newvalue) {
+                DropdownButton<ListElement>(
+                  hint: const Text('Selecciona una categoría'),
+                  value: categoriaSeleccionada,
+                  onChanged: (ListElement? nuevaCategoria) {
                     setState(() {
-                      _selectedCategory = newvalue!;
+                      _selectedCategory =
+                          nuevaCategoria!.categoriaId;
+                      print('la categoria es ${_selectedCategory}');
                     });
                   },
-                  borderRadius: BorderRadius.circular(20),
-                  icon: const Icon(Icons.expand_more),
+                  items: listacat.listadocategorias.map((categoria) {
+                    return DropdownMenuItem<ListElement>(
+                      value: categoria,
+                      child: Text(categoria.nombre),
+                    );
+                  }).toList(),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.02,
-                    bottom: MediaQuery.of(context).size.height * 0.01,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).size.height * 0.02,
-                  right: MediaQuery.of(context).size.width * 0.03),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // Cierra el AlertDialog
-
-                  // Llama a la función de filtrado de productos pasando las opciones seleccionadas
-                  // filterProducts(_selectedCategory);
-                },
-                child: const Text("filtrar"),
-              ),
-            )
-          ],
-        ),
-      );
+              ]))));
 
   // void productosBusqueda(List<> searchProductsList) {}
 
@@ -111,8 +76,8 @@ class _ProductsViewState extends State<ProductsView> {
   Widget build(BuildContext context) {
     final listadoView = Provider.of<ProductService>(context);
     if (listadoView.isLoading) return const LoadingScreen();
-    print('douuuuu ${listadoView.listadoproductos}');
     final List<Listado> prod = listadoView.listadoproductos;
+    final listacat = Provider.of<ProductService>(context);
 
     return ChangeNotifierProvider(
         create: (_) => ProductService(),
@@ -140,7 +105,7 @@ class _ProductsViewState extends State<ProductsView> {
                           // Botón de filtro
                           IconButton(
                             onPressed: () {
-                              filterPopup();
+                              filterPopup(listacat);
                             },
                             icon: const Icon(Icons.filter_alt_outlined),
                           ),
@@ -258,10 +223,6 @@ class _ProductsViewState extends State<ProductsView> {
                                                               .listadoproductos[
                                                                   index]
                                                               .copy();
-                                                      print(
-                                                          'este es el listado');
-                                                      print(listado
-                                                          .selectedProduct);
                                                       Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
