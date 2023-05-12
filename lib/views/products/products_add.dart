@@ -9,6 +9,7 @@ import 'package:wholecake/services/productos_services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
+import '../../models/categoria.dart';
 import '../utilities/loading_screen.dart';
 
 class ProductsAdd extends StatelessWidget {
@@ -55,7 +56,7 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
     final base64 = bytes != null ? base64Encode(bytes) : "";
     final msg = jsonEncode({
       'nombre': nombreController.text,
-      'categoria': categoriaController.text,
+      'categoria': int.parse(categoriaController.text),
       'fecha_elaboracion': fechaElaboracionController.text,
       'fecha_vencimiento': fechaVencimientoController.text,
       'precio': precioController.text,
@@ -89,13 +90,9 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
 
   @override
   Widget build(BuildContext context) {
-    final listadoCategorias = Provider.of<ProductService>(context);
-    if (listadoCategorias.isLoading) return const LoadingScreen();
-
-    // for (int cat =0; cat<listadoCategorias.listadocategorias.length; cat++) {
-    //   String catList = listadoCategorias.listadocategorias[cat];
-    // },
-
+    final listacat = Provider.of<ProductService>(context);
+    if (listacat.isLoading) return const LoadingScreen();
+    ListElement? categoriaSeleccionada;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -159,28 +156,21 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
             Row(
               children: [
                 Expanded(
-                  child: DropdownButtonFormField<dynamic>(
-                    value: _selectedItem,
-                    items: <dynamic>[listadoCategorias.listadocategorias]
-                        .map((value) {
-                      return DropdownMenuItem<dynamic>(
-                        value: value,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 0), // Agrega un margen izquierdo
-                          // child: Text(value),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (newvalue) {
-                      setState(() {
-                        _selectedItem = newvalue!;
-                      });
-                      categoriaController.text = newvalue!.toString();
-                    },
-                    borderRadius: BorderRadius.circular(20),
-                    icon: const Icon(Icons.expand_more),
-                  ),
+                  child:DropdownButton<ListElement>(
+                        hint: const Text('Selecciona una categoría'),
+                        value: categoriaSeleccionada,
+                        onChanged: (ListElement? nuevaCategoria) {
+                          setState(() {
+                            categoriaController.text = nuevaCategoria!.categoriaId.toString();
+                          });
+                        },
+                        items: listacat.listadocategorias.map((categoria) {
+                          return DropdownMenuItem<ListElement>(
+                            value: categoria,
+                            child: Text(categoria.nombre),
+                          );
+                        }).toList(),
+                      ),
                 ),
               ],
             ),
