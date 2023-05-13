@@ -56,8 +56,7 @@ class _ProductsViewState extends State<ProductsView> {
                   value: categoriaSeleccionada,
                   onChanged: (ListElement? nuevaCategoria) {
                     setState(() {
-                      _selectedCategory =
-                          nuevaCategoria!.categoriaId;
+                      _selectedCategory = nuevaCategoria!.categoriaId;
                       print('la categoria es ${_selectedCategory}');
                     });
                   },
@@ -161,6 +160,13 @@ class _ProductsViewState extends State<ProductsView> {
                           itemCount: listado.listadoproductos.length,
                           itemBuilder: (context, index) {
                             final product = listado.listadoproductos[index];
+                            String nombrecat='';
+                              for (var categoria in listacat.listadocategorias) {
+                                if (categoria.categoriaId == product.categoria) {
+                                  nombrecat = categoria.nombre;
+                                  break;
+                                }
+  }
                             Uint8List bytes = Uint8List.fromList(
                                 base64.decode(product.imagen));
                             Image image = Image.memory(bytes);
@@ -252,7 +258,7 @@ class _ProductsViewState extends State<ProductsView> {
                                           ),
                                           SizedBox(height: 10),
                                           Text(
-                                              'Categoría: ${product.categoria}'),
+                                              'Categoría:$nombrecat'),
                                           SizedBox(height: 10),
                                           Text(
                                             'Elaboración: ${product.fechaElaboracion.toString().substring(0, 10)}',
