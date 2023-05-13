@@ -46,4 +46,8 @@ class ListElement {
         "categoriaId": categoriaId,
         "nombre": nombre,
     };
+    ListElement copy() => ListElement(
+      categoriaId: categoriaId,
+      nombre: nombre,
+    );
 }
