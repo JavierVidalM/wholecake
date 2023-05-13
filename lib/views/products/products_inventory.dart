@@ -5,7 +5,7 @@ class Inventory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Insumos'),
+        title: Text('Inventario'),
       ),
       body: Center(
         child: Container(
