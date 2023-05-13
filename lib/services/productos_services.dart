@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/models/categoria.dart';
+import 'package:wholecake/models/suppliers.dart';
 
 class ProductService extends ChangeNotifier {
   String APIUSER = 'sweetcake';
@@ -10,6 +11,7 @@ class ProductService extends ChangeNotifier {
   String BASEURL = '3.85.128.77:8000';
   List<Listado> listadoproductos = [];
   List<ListElement> listadocategorias = [];
+  List<ListSup> listadosuppliers = [];
 
   Listado? selectedProduct;
   bool isLoading = true;
@@ -18,6 +20,7 @@ class ProductService extends ChangeNotifier {
   ProductService() {
     loadProductos();
     loadCategorias();
+    loadSuppliers();
   }
 
   loadProductos() async {
@@ -112,8 +115,24 @@ class ProductService extends ChangeNotifier {
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
     final response = await http.get(url, headers: {'authorization': basicAuth});
     final categoriasMap = Categorias.fromJson(response.body);
-    print(response.body);
     listadocategorias = categoriasMap.list;
+    isLoading = false;
+    notifyListeners();
+  }
+
+  loadSuppliers() async {
+    isLoading = true;
+    notifyListeners();
+    var url = Uri.http(
+      BASEURL,
+      'suppliers/suppliers_suppliers_list_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.get(url, headers: {'authorization': basicAuth});
+    final suppliersMap = Suppliers.fromJson(response.body);
+    print(response.body);
+    listadosuppliers = suppliersMap.listSup;
     isLoading = false;
     notifyListeners();
   }
