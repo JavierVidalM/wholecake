@@ -84,7 +84,7 @@ class _SideBarState extends State<SideBar> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const HomePage()), //Cambiar esto
+                                        const Supplies()), //Cambiar esto
                               )),
                     ),
                     Padding(
@@ -147,7 +147,8 @@ class _SideBarState extends State<SideBar> {
                   title: const Text("Proveedores"),
                   onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SuppliersAddPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const SuppliersAddPage()),
                   ),
                 ),
               ],

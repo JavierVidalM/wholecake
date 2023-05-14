@@ -17,7 +17,7 @@ import 'dart:typed_data';
 import 'package:intl/intl.dart';
 
 class ToExpire extends StatefulWidget {
-  const ToExpire({Key? key});
+  const ToExpire({super.key});
 
   @override
   _ToExpireState createState() => _ToExpireState();
@@ -87,7 +87,6 @@ class _ToExpireState extends State<ToExpire> {
     if (listadoView.isLoading) return const LoadingScreen();
     final List<Listado> prod = listadoView.listadoproductos;
     final listacat = Provider.of<ProductService>(context);
-    final now = DateTime.now();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -99,11 +98,7 @@ class _ToExpireState extends State<ToExpire> {
       drawer: const SideBar(),
       body: Consumer<ProductService>(
         builder: (context, listado, child) {
-          final productosPorCaducar = listado.listadoproductos.where((product) {
-            final fechaVencimiento = DateTime.parse(product.fechaVencimiento);
-            final diasRestantes = fechaVencimiento.difference(now).inDays;
-            return diasRestantes <= 2;
-          }).toList();
+          // final producto = listado.listadoproductos[index];
           return Column(
             children: [
               Container(
@@ -169,9 +164,9 @@ class _ToExpireState extends State<ToExpire> {
                 child: RefreshIndicator(
                   onRefresh: _refresh,
                   child: ListView.builder(
-                    itemCount: productosPorCaducar.length,
+                    itemCount: listado.listadoproductos.length,
                     itemBuilder: (context, index) {
-                      final product = productosPorCaducar[index];
+                      final product = listado.listadoproductos[index];
                       String nombrecat = '';
                       for (var categoria in listacat.listadocategorias) {
                         if (categoria.categoriaId == product.categoria) {
