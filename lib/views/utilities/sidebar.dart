@@ -65,48 +65,82 @@ class _SideBarState extends State<SideBar> {
                         )),
                 ListTile(
                     leading: const Icon(Icons.inventory_rounded),
-                    title: const Text("Inventario"),
-                    onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Inventory()),
-                        )),
-                ListTile(
-                    leading: const Icon(Icons.input_rounded),
-                    title: const Text("Insumos"),
+                    title: const Text("Ordenes de compra"),
                     onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const HomePage()), //Cambiar esto
+                              builder: (context) => PurchaseOrders()),
                         )),
-                ListTile(
-                    leading: const Icon(Icons.report_gmailerrorred_rounded),
-                    title: const Text("Por Expirar"),
-                    onTap: () => Navigator.push(
+                ExpansionTile(
+                  leading: const Icon(Icons.inventory_2_outlined),
+                  title: const Text("Inventario"),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25),
+                      child: ListTile(
+                          leading: const Icon(Icons.input_rounded),
+                          title: const Text("Insumos"),
+                          onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const HomePage()), //Cambiar esto
+                              )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25),
+                      child: ListTile(
+                          leading:
+                              const Icon(Icons.report_gmailerrorred_rounded),
+                          title: const Text("Por Expirar"),
+                          onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ToExpire()),
+                              )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25),
+                      child: ListTile(
+                        leading: const Icon(Icons.cake_outlined),
+                        title: const Text("Productos"),
+                        onTap: () => Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ToExpire()),
-                        )),
-                ListTile(
-                  leading: const Icon(Icons.cake_outlined),
-                  title: const Text("Productos"),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProductsView()),
-                  ),
-                  trailing: ClipOval(
-                    child: Container(
-                        color: const Color(0xFFF95959),
-                        width: 20,
-                        height: 20,
-                        child: Center(
-                          child: Text(
-                            getProductCount(context),
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 14),
-                          ),
-                        )),
-                  ),
+                          MaterialPageRoute(
+                              builder: (context) => const ProductsView()),
+                        ),
+                        trailing: ClipOval(
+                          child: Container(
+                              color: const Color(0xFFF95959),
+                              width: 20,
+                              height: 20,
+                              child: Center(
+                                child: Text(
+                                  getProductCount(context),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 14),
+                                ),
+                              )),
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      height: 1,
+                      indent: 15,
+                      endIndent: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 45),
+                      child: ListTile(
+                          leading: const Icon(Icons.category_outlined),
+                          title: const Text("Categorías"),
+                          onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const CategoryView()),
+                              )),
+                    ),
+                  ],
                 ),
                 ListTile(
                   leading: const Icon(Icons.local_shipping_outlined),

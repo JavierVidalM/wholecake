@@ -37,13 +37,13 @@ class _ProductsViewState extends State<ProductsView> {
   int? _selectedCategory = null;
 
   Future<String?> filterPopup(ProductService listacat) => showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
+        context: context,
+        builder: (context) => AlertDialog(
           title: const Text("Filtro"),
           content: SingleChildScrollView(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Padding(
                   padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.02,
@@ -51,7 +51,7 @@ class _ProductsViewState extends State<ProductsView> {
                   ),
                   child: const Text("Categoría"),
                 ),
-                DropdownButton<ListElement>(
+                DropdownButtonFormField<ListElement>(
                   hint: const Text('Selecciona una categoría'),
                   value: categoriaSeleccionada,
                   onChanged: (ListElement? nuevaCategoria) {
@@ -67,9 +67,50 @@ class _ProductsViewState extends State<ProductsView> {
                     );
                   }).toList(),
                 ),
-              ]))));
+              ],
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text(
+                  "Filtrar",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
 
-  // void productosBusqueda(List<> searchProductsList) {}
+  Future deletePopup() => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: const Text(
+              "Estás seguro de que deseas elimiar el producto?",
+              textAlign: TextAlign.center,
+            ),
+            content: const Text(
+                "Esta acción no podrá deshacerse una vez completada"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text(
+                  "Cancelar",
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text(
+                  "Eliminar",
+                  style: TextStyle(color: Colors.red, fontSize: 18),
+                ),
+              ),
+            ],
+          ));
 
   @override
   Widget build(BuildContext context) {
@@ -160,13 +201,13 @@ class _ProductsViewState extends State<ProductsView> {
                           itemCount: listado.listadoproductos.length,
                           itemBuilder: (context, index) {
                             final product = listado.listadoproductos[index];
-                            String nombrecat='';
-                              for (var categoria in listacat.listadocategorias) {
-                                if (categoria.categoriaId == product.categoria) {
-                                  nombrecat = categoria.nombre;
-                                  break;
-                                }
-  }
+                            String nombrecat = '';
+                            for (var categoria in listacat.listadocategorias) {
+                              if (categoria.categoriaId == product.categoria) {
+                                nombrecat = categoria.nombre;
+                                break;
+                              }
+                            }
                             Uint8List bytes = Uint8List.fromList(
                                 base64.decode(product.imagen));
                             Image image = Image.memory(bytes);
@@ -240,15 +281,16 @@ class _ProductsViewState extends State<ProductsView> {
                                                   ),
                                                   IconButton(
                                                     onPressed: () async {
-                                                      final msg = jsonEncode({
-                                                        'id': product.productoId
-                                                      });
-                                                      await ProductService()
-                                                          .deleteProducto(msg);
-                                                      setState(() {
-                                                        listado.listadoproductos
-                                                            .removeAt(index);
-                                                      });
+                                                      // final msg = jsonEncode({
+                                                      //   'id': product.productoId
+                                                      // });
+                                                      // await ProductService()
+                                                      //     .deleteProducto(msg);
+                                                      // setState(() {
+                                                      //   listado.listadoproductos
+                                                      //       .removeAt(index);
+                                                      // });
+                                                      deletePopup();
                                                     },
                                                     icon: Icon(Icons.delete),
                                                   ),
@@ -257,8 +299,7 @@ class _ProductsViewState extends State<ProductsView> {
                                             ],
                                           ),
                                           SizedBox(height: 10),
-                                          Text(
-                                              'Categoría:$nombrecat'),
+                                          Text('Categoría:$nombrecat'),
                                           SizedBox(height: 10),
                                           Text(
                                             'Elaboración: ${product.fechaElaboracion.toString().substring(0, 10)}',

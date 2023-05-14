@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/theme/theme.dart';
+import 'package:wholecake/views/login/login.dart';
 
 class LoginMain extends StatelessWidget {
   const LoginMain({Key? key}) : super(key: key);
@@ -38,7 +39,7 @@ class LoginMain extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    const LoginMain()));
+                                    const LoginUser()));
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(
@@ -57,7 +58,11 @@ class LoginMain extends StatelessWidget {
                         top: MediaQuery.of(context).size.height * 0.08),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/SigninUser');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SigninUser()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(

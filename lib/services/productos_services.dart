@@ -14,6 +14,7 @@ class ProductService extends ChangeNotifier {
   List<ListSup> listadosuppliers = [];
 
   Listado? selectedProduct;
+  ListElement? selectedCategory;
   bool isLoading = true;
   bool isEditCreate = true;
 //constructor

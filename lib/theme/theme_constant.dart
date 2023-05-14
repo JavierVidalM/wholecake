@@ -177,6 +177,34 @@ class SweetCakeTheme {
         borderRadius: BorderRadius.circular(10),
       ),
     ),
+    dropdownMenuTheme: DropdownMenuThemeData(
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: const TextStyle(
+            color: hint,
+            fontSize: 14,
+          ),
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        menuStyle: MenuStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
+        textStyle: const TextStyle(color: Colors.red)),
   );
 
   static final ThemeData graphCardTheme = ThemeData(
@@ -199,20 +227,37 @@ class SweetCakeTheme {
       )));
 
   static ThemeData sidebarTheme = ThemeData(
-      primaryColor: pink1,
-      iconTheme: const IconThemeData(
-        color: Colors.red,
+    primaryColor: pink1,
+    // secondaryHeaderColor: pink2,
+    iconTheme: const IconThemeData(
+      color: gray,
+    ),
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(
+        color: gray,
+        fontSize: 16,
       ),
-      textTheme: const TextTheme(
-        bodyLarge: TextStyle(
-          color: gray,
-          fontSize: 16,
-        ),
-      ),
-      dividerColor: Colors.black,
-      drawerTheme: const DrawerThemeData(
-        backgroundColor: pink1,
-      ),
-      colorScheme: const ColorScheme.light(primary: pink2),
-      dividerTheme: DividerThemeData(color: pink3));
+    ),
+    dividerColor: gray,
+    drawerTheme: const DrawerThemeData(
+      backgroundColor: pink1,
+    ),
+    listTileTheme: const ListTileThemeData(
+      iconColor: gray,
+      textColor: gray,
+      selectedColor: pink2,
+    ),
+    expansionTileTheme: const ExpansionTileThemeData(
+      iconColor: pink3,
+      textColor: pink3,
+      backgroundColor: pink2,
+      collapsedBackgroundColor: pink1,
+      collapsedIconColor: gray,
+      collapsedTextColor: gray,
+    ),
+    colorScheme: const ColorScheme.light(primary: pink2),
+    dividerTheme: const DividerThemeData(
+      color: gray,
+    ),
+  );
 }

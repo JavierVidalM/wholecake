@@ -106,163 +106,166 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).size.height * 0.04,
-              ),
-              child: InkWell(
-                onTap: () async {
-                  final result = await FilePicker.platform.pickFiles(
-                    type: FileType.image,
-                  );
-                  if (result != null) {
-                    setState(() {
-                      imagen = File(result.files.single.path!);
-                    });
-                  }
-                },
-                child: Container(
-                  width: 80.0,
-                  height: 80.0,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFF909090),
-                  ),
-                  child: ClipOval(
-                    child: imagen != null
-                        ? Image.file(
-                            imagen!,
-                            width: 80.0,
-                            height: 80.0,
-                            fit: BoxFit.cover,
-                          )
-                        : const Icon(
-                            Icons.add,
-                            size: 40.0,
-                            color: Color(0xFFC0C0C0),
-                          ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    final result = await FilePicker.platform.pickFiles(
+                      type: FileType.image,
+                    );
+                    if (result != null) {
+                      setState(() {
+                        imagen = File(result.files.single.path!);
+                      });
+                    }
+                  },
+                  child: Container(
+                    width: 80.0,
+                    height: 80.0,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFF909090),
+                    ),
+                    child: ClipOval(
+                      child: imagen != null
+                          ? Image.file(
+                              imagen!,
+                              width: 80.0,
+                              height: 80.0,
+                              fit: BoxFit.cover,
+                            )
+                          : const Icon(
+                              Icons.add,
+                              size: 40.0,
+                              color: Color(0xFFC0C0C0),
+                            ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            TextField(
-              controller: nombreController,
-              decoration:
-                  const InputDecoration(hintText: 'Nombre del producto'),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child:DropdownButton<ListElement>(
-                        hint: const Text('Selecciona una categoría'),
-                        value: categoriaSeleccionada,
-                        onChanged: (ListElement? nuevaCategoria) {
-                          setState(() {
-                            categoriaController.text = nuevaCategoria!.categoriaId.toString();
-                          });
-                        },
-                        items: listacat.listadocategorias.map((categoria) {
-                          return DropdownMenuItem<ListElement>(
-                            value: categoria,
-                            child: Text(categoria.nombre),
-                          );
-                        }).toList(),
-                      ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02),
+                  child: TextField(
+                    controller: nombreController,
+                    decoration:
+                        const InputDecoration(hintText: 'Nombre del producto'),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02),
+                  child: DropdownButtonFormField<ListElement>(
+                    hint: const Text('Selecciona una categoría'),
+                    value: categoriaSeleccionada,
+                    onChanged: (ListElement? nuevaCategoria) {
+                      setState(() {
+                        categoriaController.text =
+                            nuevaCategoria!.categoriaId.toString();
+                      });
+                    },
+                    items: listacat.listadocategorias.map((categoria) {
+                      return DropdownMenuItem<ListElement>(
+                        value: categoria,
+                        child: Text(categoria.nombre),
+                      );
+                    }).toList(),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02),
+                  child: Theme(
+                    data: SweetCakeTheme.calendarTheme,
+                    child: DateTimePicker(
+                      useRootNavigator: true,
+                      dateHintText: 'Fecha Elaboración',
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2100),
+                      controller: fechaElaboracionController,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02),
+                  child: Theme(
+                    data: SweetCakeTheme.calendarTheme,
+                    child: DateTimePicker(
+                      dateHintText: 'Fecha Vencimiento',
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2100),
+                      controller: fechaVencimientoController,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02),
+                  child: TextField(
+                    keyboardType: const TextInputType.numberWithOptions(),
+                    controller: precioController,
+                    onChanged: (value) {
+                      // Aquí puede agregar la lógica para actualizar el valor del controlador
+                    },
+                    decoration: const InputDecoration(hintText: 'Precio'),
+                  ),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Theme(
-              data: SweetCakeTheme.calendarTheme,
-              child: DateTimePicker(
-                useRootNavigator: true,
-                dateHintText: 'Fecha Elaboración',
-                firstDate: DateTime.now(),
-                lastDate: DateTime(2100),
-                controller: fechaElaboracionController,
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Theme(
-              data: SweetCakeTheme.calendarTheme,
-              child: DateTimePicker(
-                dateHintText: 'Fecha Vencimiento',
-                firstDate: DateTime.now(),
-                lastDate: DateTime(2100),
-                controller: fechaVencimientoController,
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextField(
-              keyboardType: const TextInputType.numberWithOptions(),
-              controller: precioController,
-              onChanged: (value) {
-                // Aquí puede agregar la lógica para actualizar el valor del controlador
-              },
-              decoration: const InputDecoration(hintText: 'Precio'),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _saveData();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProductsView()));
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(
-                  (MediaQuery.of(context).size.width * 0.6),
-                  (MediaQuery.of(context).size.height * 0.07),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _saveData();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ProductsView(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(
+                              (MediaQuery.of(context).size.width * 0.6),
+                              (MediaQuery.of(context).size.height * 0.07),
+                            ),
+                          ),
+                          child: const Text('Guardar'),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ProductsView(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(
+                              (MediaQuery.of(context).size.width * 0.6),
+                              (MediaQuery.of(context).size.height * 0.07),
+                            ),
+                          ),
+                          child: const Text('Volver'),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              child: const Text('Guardar'),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ProductsView()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(
-                  (MediaQuery.of(context).size.width * 0.6),
-                  (MediaQuery.of(context).size.height * 0.07),
-                ),
-              ),
-              child: const Text('Volver'),
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.2),
-              child: TextButton(
-                onPressed: () async {
-                  await popUp();
-                },
-
-                // style: ElevatedButton.styleFrom(
-                //   minimumSize: Size(0,0,
-                // ),
-                child: Text(
-                  '',
-                  style: TextStyle(fontSize: 0),
-                ),
-              ),
+              ],
             ),
           ],
         ),
