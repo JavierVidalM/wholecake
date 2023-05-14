@@ -226,12 +226,6 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
                         child: ElevatedButton(
                           onPressed: () {
                             _saveData();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ProductsView(),
-                              ),
-                            );
                           },
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(

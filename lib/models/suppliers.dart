@@ -61,4 +61,12 @@ class ListSup {
         "correo_proveedor": correoProveedor,
         "telefono_proveedor": telefonoProveedor,
     };
+      ListSup copy() => ListSup(
+        supplierId: supplierId,
+        nombreProveedor: nombreProveedor,
+        rut:rut,
+        tipoInsumo: tipoInsumo,
+        correoProveedor: correoProveedor,
+        telefonoProveedor: telefonoProveedor,
+      );
 }
