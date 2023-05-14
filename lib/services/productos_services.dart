@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:wholecake/models/ordendecompra.dart';
 import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/models/categoria.dart';
 import 'package:wholecake/models/suppliers.dart';
@@ -12,6 +13,7 @@ class ProductService extends ChangeNotifier {
   List<Listado> listadoproductos = [];
   List<ListElement> listadocategorias = [];
   List<ListSup> listadosuppliers = [];
+  List<ListOdc> listaOrdenes = [];
 
   Listado? selectedProduct;
   ListElement? selectedCategory;
@@ -22,6 +24,7 @@ class ProductService extends ChangeNotifier {
     loadProductos();
     loadCategorias();
     loadSuppliers();
+    loadOrdenCompra();
   }
 
   loadProductos() async {
@@ -140,6 +143,7 @@ class ProductService extends ChangeNotifier {
     await loadProductos(); //
     isEditCreate = false;
   }
+
   Future<String> updateCategoria(ListElement categoria) async {
     final url = Uri.http(
       BASEURL,
@@ -158,6 +162,7 @@ class ProductService extends ChangeNotifier {
     // listadoproductos[index] = product;
     return '';
   }
+
   deleteCategoria(String msg) async {
     final url = Uri.http(
       BASEURL,
@@ -207,7 +212,8 @@ class ProductService extends ChangeNotifier {
     await loadProductos(); //
     isEditCreate = false;
   }
-    Future<String> updateSupplier(ListSup supplier) async {
+
+  Future<String> updateSupplier(ListSup supplier) async {
     final url = Uri.http(
       BASEURL,
       'suppliers/suppliers_suppliers_update_rest/',
@@ -225,7 +231,8 @@ class ProductService extends ChangeNotifier {
     // listadoproductos[index] = product;
     return '';
   }
-    deleteSupplier(String msg) async {
+
+  deleteSupplier(String msg) async {
     final url = Uri.http(
       BASEURL,
       'suppliers/suppliers_suppliers_delete_rest/',
@@ -237,5 +244,23 @@ class ProductService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
+  }
+
+  //ordendecompra
+  loadOrdenCompra() async {
+    isLoading = true;
+    notifyListeners();
+    var url = Uri.http(
+      BASEURL,
+      'ordendc/ordendc_ordendc_list_rest',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.get(url, headers: {'authorization': basicAuth});
+    final OrdenMap = OrdenDeCompa.fromJson(response.body);
+    print(response.body);
+    listaOrdenes = OrdenMap.listOdc;
+    isLoading = false;
+    notifyListeners();
   }
 }
