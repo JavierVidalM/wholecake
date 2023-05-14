@@ -85,32 +85,65 @@ class _ProductsViewState extends State<ProductsView> {
         ),
       );
 
-  Future deletePopup() => showDialog(
+  Future<void> deletePopup(int productId, listadoProducto) async {
+    await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-            title: const Text(
-              "Estás seguro de que deseas elimiar el producto?",
-              textAlign: TextAlign.center,
+        title: const Text(
+          "¿Estás seguro de que deseas eliminar el producto?",
+          textAlign: TextAlign.center,
+        ),
+        content:
+            const Text("Esta acción no podrá deshacerse una vez completada."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              "Cancelar",
+              style: TextStyle(fontSize: 18),
             ),
-            content: const Text(
-                "Esta acción no podrá deshacerse una vez completada"),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text(
-                  "Cancelar",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text(
-                  "Eliminar",
-                  style: TextStyle(color: Colors.red, fontSize: 18),
-                ),
-              ),
-            ],
-          ));
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              final msg = jsonEncode({
+                'id': productId,
+              });
+              await ProductService().deleteProducto(msg);
+              setState(() {
+                listadoProducto
+                    .removeWhere((product) => product.productoId == productId);
+              });
+            },
+            child: const Text(
+              "Eliminar",
+              style: TextStyle(color: Colors.red, fontSize: 18),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> cargandoPantalla() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text("Diálogo sin cierre por el usuario"),
+        content: const Text("Este diálogo no se puede cerrar por el usuario."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // Acción del botón
+              Navigator.of(context).pop();
+            },
+            child: const Text("Cerrar"),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -281,16 +314,10 @@ class _ProductsViewState extends State<ProductsView> {
                                                   ),
                                                   IconButton(
                                                     onPressed: () async {
-                                                      // final msg = jsonEncode({
-                                                      //   'id': product.productoId
-                                                      // });
-                                                      // await ProductService()
-                                                      //     .deleteProducto(msg);
-                                                      // setState(() {
-                                                      //   listado.listadoproductos
-                                                      //       .removeAt(index);
-                                                      // });
-                                                      deletePopup();
+                                                      deletePopup(
+                                                          product.productoId,
+                                                          listado
+                                                              .listadoproductos);
                                                     },
                                                     icon: Icon(Icons.delete),
                                                   ),

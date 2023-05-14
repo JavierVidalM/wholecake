@@ -1,17 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wholecake/models/productos.dart';
-import 'package:wholecake/models/categoria.dart';
 import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/theme/theme.dart';
-import 'package:wholecake/views/products/products_filter_view.dart';
 import 'package:wholecake/views/utilities/sidebar.dart';
 import 'package:wholecake/views/utilities/loading_screen.dart';
-import 'package:wholecake/views/products/products_add.dart';
-import 'package:wholecake/views/products/products_edit.dart';
-import 'dart:typed_data';
-import 'package:intl/intl.dart';
+//
 
 class CategoryView extends StatefulWidget {
   const CategoryView({Key? key}) : super(key: key);
@@ -26,31 +18,81 @@ Future<void> _refresh() {
 
 class _CategoryViewState extends State<CategoryView> {
   Future deletePopup() => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: const Text(
-              "Estás seguro de que deseas elimiar el producto?",
-              textAlign: TextAlign.center,
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text(
+            "Estás seguro de que deseas elimiar el producto?",
+            textAlign: TextAlign.center,
+          ),
+          content:
+              const Text("Esta acción no podrá deshacerse una vez completada"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                "Cancelar",
+                style: TextStyle(fontSize: 18),
+              ),
             ),
-            content: const Text(
-                "Esta acción no podrá deshacerse una vez completada"),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text(
-                  "Cancelar",
-                  style: TextStyle(fontSize: 18),
-                ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                "Eliminar",
+                style: TextStyle(color: Colors.red, fontSize: 18),
               ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text(
-                  "Eliminar",
-                  style: TextStyle(color: Colors.red, fontSize: 18),
-                ),
-              ),
-            ],
-          ));
+            ),
+          ],
+        ),
+      );
+
+  Future<String?> editCategoryPopup(nombreCategoria) => showDialog<String>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Ingrese la categoría"),
+          content: TextFormField(
+            initialValue: nombreCategoria,
+            onChanged: (value) {},
+            autofocus: true,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Cancelar",
+                  //cambia el color
+                  style: TextStyle(color: Colors.red, fontSize: 18)),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Editar", style: TextStyle(fontSize: 18)),
+            ),
+          ],
+        ),
+      );
+
+  Future<String?> addCategoryPopup() => showDialog<String>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Agregar categoría"),
+          content: TextFormField(
+            decoration:
+                const InputDecoration(hintText: "Nombre de la categoría"),
+            onChanged: (value) {},
+            autofocus: true,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Cancelar",
+                  //cambia el color
+                  style: TextStyle(color: Colors.red, fontSize: 18)),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Agregar", style: TextStyle(fontSize: 18)),
+            ),
+          ],
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +147,7 @@ class _CategoryViewState extends State<CategoryView> {
                       ),
                       IconButton(
                         onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => const ProductsAdd()),
-                          // );
+                          addCategoryPopup();
                         },
                         icon: const Icon(Icons.add),
                       ),
@@ -150,33 +188,16 @@ class _CategoryViewState extends State<CategoryView> {
                                             children: [
                                               IconButton(
                                                 onPressed: () {
-                                                  // listacat.selectedCategory =
-                                                  //     listado.listadocategorias[
-                                                  //             index]
-                                                  //         .copy();
-                                                  // Navigator.push(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //       builder: (context) =>
-                                                  //           ProductsEdit()),
-                                                  // );
+                                                  editCategoryPopup(
+                                                      category.nombre);
                                                 },
-                                                icon: Icon(Icons.edit),
+                                                icon: const Icon(Icons.edit),
                                               ),
                                               IconButton(
                                                 onPressed: () async {
-                                                  // final msg = jsonEncode({
-                                                  //   'id': product.productoId
-                                                  // });
-                                                  // await ProductService()
-                                                  //     .deleteProducto(msg);
-                                                  // setState(() {
-                                                  //   listado.listadoproductos
-                                                  //       .removeAt(index);
-                                                  // });
                                                   deletePopup();
                                                 },
-                                                icon: Icon(Icons.delete),
+                                                icon: const Icon(Icons.delete),
                                               ),
                                             ],
                                           ),
