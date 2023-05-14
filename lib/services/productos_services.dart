@@ -121,6 +121,57 @@ class ProductService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future addCategoria(String msg) async {
+    notifyListeners();
+    final url = Uri.http(
+      BASEURL,
+      'productos/productos_categoria_add_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(url, body: msg, headers: {
+      'authorization': basicAuth,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final decodeResp = response.body;
+    final ListElement categoria = ListElement.fromJson(decodeResp);
+    listadocategorias.add(categoria);
+    // notifyListeners();
+    await loadProductos(); //
+    isEditCreate = false;
+  }
+  Future<String> updateCategoria(ListElement categoria) async {
+    final url = Uri.http(
+      BASEURL,
+      'productos/productos_categoria_update_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(url, body: categoria.toJson(), headers: {
+      'authorization': basicAuth,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final decodeResp = response.body;
+    //actualizamos el listado
+    // final index = listadoproductos
+    //     .indexWhere((element) => element.productoId == product.productoId);
+    // listadoproductos[index] = product;
+    return '';
+  }
+  deleteCategoria(String msg) async {
+    final url = Uri.http(
+      BASEURL,
+      'productos/productos_categoria_delete_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(url, body: msg, headers: {
+      'authorization': basicAuth,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final decodeResp = response.body;
+  }
+
   loadSuppliers() async {
     isLoading = true;
     notifyListeners();
