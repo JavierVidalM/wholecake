@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/productos.dart';
@@ -21,69 +22,120 @@ class ProductsView extends StatefulWidget {
   _ProductsViewState createState() => _ProductsViewState();
 }
 
-Future<void> _refresh() {
-  return Future.delayed(Duration(seconds: 2));
+Future<void> _refresh() async {
+  await ProductService().loadProductos();
 }
 
-String? _selectedDate;
-ListElement? categoriaSeleccionada;
-
-// void filterProducts(String category) {
-//     final listadoView = Provider.of<ProductService>();
-//     listadoView.filterProductsByCategory(category);
-//   }
-
 class _ProductsViewState extends State<ProductsView> {
-  int? _selectedCategory = null;
+  int? _selectedCategory;
+  bool _expireCheck = false;
+  List productsSelected = [];
 
   Future<String?> filterPopup(ProductService listacat) => showDialog<String>(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Filtro"),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.02,
-                    bottom: MediaQuery.of(context).size.height * 0.01,
-                  ),
-                  child: const Text("Categoría"),
-                ),
-                DropdownButtonFormField<ListElement>(
-                  hint: const Text('Selecciona una categoría'),
-                  value: categoriaSeleccionada,
-                  onChanged: (ListElement? nuevaCategoria) {
-                    setState(() {
-                      _selectedCategory = nuevaCategoria!.categoriaId;
-                      print('la categoria es ${_selectedCategory}');
-                    });
-                  },
-                  items: listacat.listadocategorias.map((categoria) {
-                    return DropdownMenuItem<ListElement>(
-                      value: categoria,
-                      child: Text(categoria.nombre),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  "Filtrar",
-                  style: TextStyle(fontSize: 16),
+        builder: (context) => StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text("Filtro"),
+              content: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.02,
+                        bottom: MediaQuery.of(context).size.height * 0.01,
+                      ),
+                      child: const Text("Categoría"),
+                    ),
+                    DropdownButtonFormField<ListElement>(
+                      hint: const Text('Selecciona una categoría'),
+                      value: _selectedCategory != null
+                          ? listacat.listadocategorias.firstWhere((categoria) =>
+                              categoria.categoriaId == _selectedCategory)
+                          : null,
+                      onChanged: (ListElement? nuevaCategoria) {
+                        setState(() {
+                          _selectedCategory = nuevaCategoria?.categoriaId;
+                          print('la categoria es $_selectedCategory');
+                        });
+                      },
+                      items: listacat.listadocategorias.map((categoria) {
+                        return DropdownMenuItem<ListElement>(
+                          value: categoria,
+                          child: Text(categoria.nombre),
+                        );
+                      }).toList(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.02,
+                        bottom: MediaQuery.of(context).size.height * 0.01,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Checkbox(
+                            value: _expireCheck,
+                            onChanged: (value) {
+                              setState(() {
+                                _expireCheck = value ?? false;
+                              });
+                            },
+                          ),
+                          const Text("Prontos a caduar"),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text(
+                        "Cancelar",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          updateFilterProducts(listacat);
+                          // if (_selectedCategory != null) {
+                          //   productsSelected.add(_selectedCategory);
+                          // } else {
+                          //   productsSelected.clear();
+                          // }
+                        });
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text(
+                        "Filtrar",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
         ),
       );
+
+  void updateFilterProducts(ProductService listacat) {
+    productsSelected.clear();
+    if (_selectedCategory != null) {
+      productsSelected.add(_selectedCategory!);
+    }
+    if (_expireCheck) {
+      productsSelected.add(0); // 0 represents "expiring soon" filter
+    }
+    setState(() {});
+  }
 
   Future<void> deletePopup(int productId, listadoProducto) async {
     await showDialog(
@@ -151,6 +203,11 @@ class _ProductsViewState extends State<ProductsView> {
     if (listadoView.isLoading) return const LoadingScreen();
     final List<Listado> prod = listadoView.listadoproductos;
     final listacat = Provider.of<ProductService>(context);
+
+    final filterProducts = listadoView.listadoproductos.where((product) {
+      return productsSelected.isEmpty ||
+          productsSelected.contains(product.categoria);
+    }).toList();
 
     return ChangeNotifierProvider(
         create: (_) => ProductService(),
@@ -231,9 +288,12 @@ class _ProductsViewState extends State<ProductsView> {
                       child: RefreshIndicator(
                         onRefresh: _refresh,
                         child: ListView.builder(
-                          itemCount: listado.listadoproductos.length,
+                          itemCount: filterProducts.length,
+                          // itemCount: (productsSelected.isEmpty)
+                          //     ? listado.listadoproductos.length
+                          //     : productsSelected.length,
                           itemBuilder: (context, index) {
-                            final product = listado.listadoproductos[index];
+                            final product = filterProducts[index];
                             String nombrecat = '';
                             for (var categoria in listacat.listadocategorias) {
                               if (categoria.categoriaId == product.categoria) {
@@ -297,12 +357,8 @@ class _ProductsViewState extends State<ProductsView> {
                                                 children: [
                                                   IconButton(
                                                     onPressed: () {
-                                                      listadoView
-                                                              .selectedProduct =
-                                                          listado
-                                                              .listadoproductos[
-                                                                  index]
-                                                              .copy();
+                                                      filterProducts[index]
+                                                          .copy();
                                                       Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
