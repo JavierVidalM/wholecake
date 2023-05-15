@@ -63,6 +63,41 @@ class SweetCakeTheme {
     ),
   );
 
+  static ThemeData sidebarTheme = ThemeData(
+    primaryColor: pink1,
+    // secondaryHeaderColor: pink2,
+    iconTheme: const IconThemeData(
+      color: gray,
+    ),
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(
+        color: gray,
+        fontSize: 16,
+      ),
+    ),
+    // dividerColor: gray,
+    drawerTheme: const DrawerThemeData(
+      backgroundColor: pink1,
+    ),
+    listTileTheme: const ListTileThemeData(
+        iconColor: gray,
+        textColor: gray,
+        selectedColor: pink2,
+        tileColor: pink1),
+    expansionTileTheme: const ExpansionTileThemeData(
+      iconColor: pink3,
+      textColor: pink3,
+      backgroundColor: pink2,
+      collapsedBackgroundColor: pink1,
+      collapsedIconColor: gray,
+      collapsedTextColor: gray,
+    ),
+    colorScheme: const ColorScheme.light(primary: pink2),
+    dividerTheme: const DividerThemeData(
+      color: gray,
+    ),
+  );
+
   static final ThemeData mainTheme = ThemeData(
     //Color principal
     primaryColor: pink1,
@@ -145,6 +180,10 @@ class SweetCakeTheme {
     ),
   );
 
+  static final ThemeData searchBarTheme = ThemeData(
+    listTileTheme: const ListTileThemeData(tileColor: blue),
+  );
+
   static final ThemeData calendarTheme = ThemeData(
     primarySwatch: pink_1,
     dialogBackgroundColor: blue,
@@ -208,56 +247,23 @@ class SweetCakeTheme {
   );
 
   static final ThemeData graphCardTheme = ThemeData(
-      cardTheme: CardTheme(
-        color: const Color(0xFF343434),
-        elevation: 10,
-        margin: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 10,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+    cardTheme: CardTheme(
+      color: const Color(0xFF343434),
+      elevation: 10,
+      margin: const EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 10,
       ),
-      textTheme: const TextTheme(
-          bodyMedium: TextStyle(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+    ),
+    textTheme: const TextTheme(
+      bodyMedium: TextStyle(
         color: Colors.white,
         fontSize: 18,
         fontWeight: FontWeight.bold,
-      )));
-
-  static ThemeData sidebarTheme = ThemeData(
-    primaryColor: pink1,
-    // secondaryHeaderColor: pink2,
-    iconTheme: const IconThemeData(
-      color: gray,
-    ),
-    textTheme: const TextTheme(
-      bodyLarge: TextStyle(
-        color: gray,
-        fontSize: 16,
       ),
-    ),
-    dividerColor: gray,
-    drawerTheme: const DrawerThemeData(
-      backgroundColor: pink1,
-    ),
-    listTileTheme: const ListTileThemeData(
-      iconColor: gray,
-      textColor: gray,
-      selectedColor: pink2,
-    ),
-    expansionTileTheme: const ExpansionTileThemeData(
-      iconColor: pink3,
-      textColor: pink3,
-      backgroundColor: pink2,
-      collapsedBackgroundColor: pink1,
-      collapsedIconColor: gray,
-      collapsedTextColor: gray,
-    ),
-    colorScheme: const ColorScheme.light(primary: pink2),
-    dividerTheme: const DividerThemeData(
-      color: gray,
     ),
   );
 }

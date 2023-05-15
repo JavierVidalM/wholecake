@@ -26,7 +26,7 @@ class AppRoutes {
     //Pantallas de producto
     '/ProductsView': (BuildContext context) => const ProductsView(),
     '/ProductsAdd': (BuildContext context) => const ProductsAdd(),
-    '/ProductsEdit': (BuildContext context) => ProductsEdit(),
+    // '/ProductsEdit': (BuildContext context) => ProductsEdit(),
     '/CategoryList': (BuildContext context) => const CategoryView(),
 
     // '/SuppliersAdd': (BuildContext context) => const SuppliersAdd(),

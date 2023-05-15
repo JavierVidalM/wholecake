@@ -1,20 +1,20 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/productos.dart';
-
-import '../../services/productos_services.dart';
+import 'package:wholecake/views/products/products_edit.dart';
+import 'package:wholecake/services/productos_services.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 
 class ProductSearch extends SearchDelegate<Listado> {
-  final listadoView = Provider.of<ProductService>;
-
-  List<Listado> _filter = [];
-
   late final List<Listado> prod;
 
   ProductSearch(this.prod);
 
   @override
-  List<Widget>? buildActions(BuildContext context) {
+  List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
         onPressed: () {
@@ -26,53 +26,126 @@ class ProductSearch extends SearchDelegate<Listado> {
   }
 
   @override
-  Widget? buildLeading(BuildContext context) {
+  Widget buildLeading(BuildContext context) {
     return IconButton(
         onPressed: () {
-          // close(
-          // context,
-          // Listado(
-          //     productoId: 48,
-          //     nombre: '',
-          //     fechaElaboracion: '',
-          //     fechaVencimiento: '',
-          //     precio: '',
-          //     categoria: '',
-          //     imagen: ''));
+          close(
+            context,
+            Listado(
+                productoId: 0,
+                nombre: '',
+                fechaElaboracion: '',
+                fechaVencimiento: '',
+                precio: 0,
+                categoria: 0,
+                imagen: '',
+                estado: ''),
+          );
         },
         icon: const Icon(Icons.arrow_back_ios_new_rounded));
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    return Center();
+    final listadoView = Provider.of<ProductService>(context);
+    final List<Listado> searchProducts = listadoView.listadoproductos;
+    List<Listado> matchQuery = [];
+    for (var product in searchProducts) {
+      if (product.nombre.toLowerCase().contains(
+            query.toLowerCase(),
+          )) {
+        matchQuery.add(product);
+      }
+    }
+
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        var result = matchQuery[index];
+        Uint8List bytes = Uint8List.fromList(
+          base64.decode(result.imagen),
+        );
+        Image image = Image.memory(bytes);
+        return Column(
+          children: [
+            ListTile(
+              contentPadding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.015,
+                  horizontal: MediaQuery.of(context).size.width * 0.02),
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(0),
+                child: image,
+              ),
+              title: Text(result.nombre),
+              onTap: () {
+                // result.copy();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductsEdit(
+                      productId: result.productoId,
+                    ),
+                  ),
+                );
+              },
+            ),
+            const Divider(
+              height: 1,
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // _filter = prod.where((element) {}.toList());
-    return Center();
+    final listadoView = Provider.of<ProductService>(context);
+    final List<Listado> searchProducts = listadoView.listadoproductos;
+    List<Listado> matchQuery = [];
+    for (var product in searchProducts) {
+      if (product.nombre.toLowerCase().contains(
+            query.toLowerCase(),
+          )) {
+        matchQuery.add(product);
+      }
+    }
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        var result = matchQuery[index];
+        Uint8List bytes = Uint8List.fromList(
+          base64.decode(result.imagen),
+        );
+        Image image = Image.memory(bytes);
+        return Column(
+          children: [
+            ListTile(
+              contentPadding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.015,
+                  horizontal: MediaQuery.of(context).size.width * 0.02),
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(25),
+                child: image,
+              ),
+              title: Text(result.nombre),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductsEdit(
+                      productId: result.productoId,
+                    ),
+                  ),
+                );
+              },
+            ),
+            const Divider(
+              height: 1,
+            ),
+          ],
+        );
+      },
+    );
   }
 }
-
-// class ProductFilter extends StatelessWidget {
-//   const ProductFilter({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text("Filtro"),
-//       ),
-//       body: Padding(
-//         padding: EdgeInsets.only(
-//             top: MediaQuery.of(context).size.height * 0.02,
-//             left: MediaQuery.of(context).size.width * 0.05),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [Text("Categoría"), Text("Fecha de elaboración")],
-//         ),
-//       ),
-//     );
-//   }
-// }
