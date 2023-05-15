@@ -74,7 +74,11 @@ class _ProductsViewState extends State<ProductsView> {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _selectedCategory = null;
+                            clearFilter();
+                            Navigator.of(context).pop();
+                          },
                           icon: const Icon(Icons.filter_alt_off_outlined),
                         ),
                       ],
@@ -101,7 +105,7 @@ class _ProductsViewState extends State<ProductsView> {
                       TextButton(
                         onPressed: () {
                           setState(() {
-                            updateFilterProducts(listacat);
+                            updateFilterProducts();
                           });
                           Navigator.of(context).pop();
                         },
@@ -119,11 +123,16 @@ class _ProductsViewState extends State<ProductsView> {
         ),
       );
 
-  void updateFilterProducts(ProductService listacat) {
+  void updateFilterProducts() {
     productsSelected.clear();
     if (_selectedCategory != null) {
       productsSelected.add(_selectedCategory!);
     }
+    setState(() {});
+  }
+
+  void clearFilter() {
+    productsSelected.clear();
     setState(() {});
   }
 
@@ -429,82 +438,91 @@ class _ProductsViewState extends State<ProductsView> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    product.nombre,
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    IconButton(
-                                                      onPressed: () {
-                                                        // filterProducts[index]
-                                                        //     .copy();
-                                                        print(
-                                                            product.productoId);
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ProductsEdit(
-                                                                    productId:
-                                                                        product
-                                                                            .productoId),
+                                            Card(
+                                              color: SweetCakeTheme.pink1,
+                                              elevation: 0,
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Text(
+                                                          product.nombre,
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          IconButton(
+                                                            onPressed: () {
+                                                              // filterProducts[index]
+                                                              //     .copy();
+                                                              print(product
+                                                                  .productoId);
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      ProductsEdit(
+                                                                          productId:
+                                                                              product.productoId),
+                                                                ),
+                                                              );
+                                                              // Navigator.push(
+                                                              //   context,
+                                                              //   MaterialPageRoute(
+                                                              //       builder: (context) =>
+                                                              //           ProductsEdit()),
+                                                              // );
+                                                            },
+                                                            icon: const Icon(
+                                                                Icons.edit),
                                                           ),
-                                                        );
-                                                        // Navigator.push(
-                                                        //   context,
-                                                        //   MaterialPageRoute(
-                                                        //       builder: (context) =>
-                                                        //           ProductsEdit()),
-                                                        // );
-                                                      },
-                                                      icon: const Icon(
-                                                          Icons.edit),
-                                                    ),
-                                                    IconButton(
-                                                      onPressed: () async {
-                                                        deletePopup(
-                                                            product.productoId,
-                                                            listado
-                                                                .listadoproductos);
-                                                      },
-                                                      icon: const Icon(
-                                                          Icons.delete),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                                          IconButton(
+                                                            onPressed:
+                                                                () async {
+                                                              deletePopup(
+                                                                  product
+                                                                      .productoId,
+                                                                  listado
+                                                                      .listadoproductos);
+                                                            },
+                                                            icon: const Icon(
+                                                                Icons.delete),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 10),
+                                                  Text('Categoría:$nombrecat'),
+                                                  const SizedBox(height: 10),
+                                                  // Text(
+                                                  //   'Elaboración: ${product.fechaElaboracion.toString().substring(0, 10)}',
+                                                  // ),
+                                                  // const SizedBox(height: 5),
+                                                  // Text(
+                                                  //   'Vencimiento: ${product.fechaVencimiento.toString().substring(0, 10)}',
+                                                  // ),
+                                                  const SizedBox(height: 10),
+                                                  Text(
+                                                    NumberFormat.currency(
+                                                      locale: 'es',
+                                                      symbol: '\$',
+                                                      decimalDigits: 0,
+                                                      customPattern: '\$ #,##0',
+                                                    ).format(double.parse(
+                                                        product.precio
+                                                            .toString())),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                            const SizedBox(height: 10),
-                                            Text('Categoría:$nombrecat'),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Elaboración: ${product.fechaElaboracion.toString().substring(0, 10)}',
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              'Vencimiento: ${product.fechaVencimiento.toString().substring(0, 10)}',
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              NumberFormat.currency(
-                                                locale: 'es',
-                                                symbol: '\$',
-                                                decimalDigits: 0,
-                                                customPattern: '\$ #,##0',
-                                              ).format(double.parse(
-                                                  product.precio.toString())),
-                                            ),
-                                            Text('Id: ${product.productoId}')
                                           ],
                                         ),
                                       ),
