@@ -16,7 +16,7 @@ class MyBox extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                padding: EdgeInsets.all(12),
+                padding: EdgeInsets.all(14),
                 decoration: BoxDecoration(
                     color: Color(0xFFFFB5D7),
                     borderRadius: BorderRadius.circular(12)),

@@ -27,13 +27,24 @@ class _SuppliesState extends State<Supplies> {
       drawer: SideBar(),
       body: Column(
         children: [
+          ElevatedButton(
+            onPressed: () {
+              child:
+              Row(mainAxisSize: MainAxisSize.min, children: [
+                Icon(Icons.add),
+                SizedBox(width: 1),
+                Text('Añadir')
+              ]);
+            },
+            child: null,
+          ),
           //4 cajas arriba
           AspectRatio(
             aspectRatio: 1,
             child: SizedBox(
               width: double.infinity,
               child: GridView.builder(
-                itemCount: 8,
+                itemCount: 4,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                 ),
