@@ -17,6 +17,7 @@ class ProductService extends ChangeNotifier {
 
   Listado? selectedProduct;
   ListElement? selectedCategory;
+  ListSup? selectedSupplier;
   bool isLoading = true;
   bool isEditCreate = true;
 //constructor
@@ -263,6 +264,7 @@ class ProductService extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
+
   Future addOrdenCompra(String msg) async {
     notifyListeners();
     final url = Uri.http(
@@ -282,6 +284,7 @@ class ProductService extends ChangeNotifier {
     await loadProductos(); //
     isEditCreate = false;
   }
+
   Future<String> updateOrdenCompra(ListOdc odc) async {
     final url = Uri.http(
       BASEURL,
@@ -300,6 +303,7 @@ class ProductService extends ChangeNotifier {
     // listadoproductos[index] = product;
     return '';
   }
+
   deleteOrdenCompra(String msg) async {
     final url = Uri.http(
       BASEURL,

@@ -147,8 +147,7 @@ class _SideBarState extends State<SideBar> {
                   title: const Text("Proveedores"),
                   onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const SuppliersAddPage()),
+                    MaterialPageRoute(builder: (context) => SuppliersView()),
                   ),
                 ),
               ],
