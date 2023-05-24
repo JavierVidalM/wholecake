@@ -37,7 +37,9 @@ class ProductSearch extends SearchDelegate<Listado> {
                 precio: 0,
                 categoria: 0,
                 imagen: '',
-                estado: ''),
+                estado: '',
+                cantidad:0,
+                lote:''),
           );
         },
         icon: const Icon(Icons.arrow_back_ios_new_rounded));

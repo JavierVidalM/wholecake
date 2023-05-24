@@ -59,6 +59,8 @@ class _ProductsEditState extends State<ProductsEdit> {
         categoria: 0,
         imagen: '',
         estado: '',
+        cantidad:0,
+        lote:''
       ),
     );
     _nameController.text = product.nombre;
@@ -83,6 +85,8 @@ class _ProductsEditState extends State<ProductsEdit> {
         categoria: 0,
         imagen: '',
         estado: '',
+        cantidad:0,
+        lote:''
       ),
     );
     ImageProvider image;
