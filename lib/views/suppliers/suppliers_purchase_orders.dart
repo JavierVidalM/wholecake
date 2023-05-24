@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:wholecake/views/suppliers/suppliers.dart';
-import 'package:wholecake/views/suppliers/suppliers_view.dart';
 import 'package:wholecake/views/utilities/sidebar.dart';
 
 import '../../services/productos_services.dart';
