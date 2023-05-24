@@ -86,8 +86,6 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
             ],
           ));
 
-  String _selectedItem = 'Tortas';
-
   @override
   Widget build(BuildContext context) {
     final listacat = Provider.of<ProductService>(context);
@@ -107,7 +105,6 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
         child: Column(
           children: [
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
                   onTap: () async {
@@ -225,21 +222,6 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            _saveData();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(
-                              (MediaQuery.of(context).size.width * 0.6),
-                              (MediaQuery.of(context).size.height * 0.07),
-                            ),
-                          ),
-                          child: const Text('Guardar'),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -254,6 +236,21 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
                             ),
                           ),
                           child: const Text('Volver'),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _saveData();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(
+                              (MediaQuery.of(context).size.width * 0.6),
+                              (MediaQuery.of(context).size.height * 0.07),
+                            ),
+                          ),
+                          child: const Text('Guardar'),
                         ),
                       ),
                     ],

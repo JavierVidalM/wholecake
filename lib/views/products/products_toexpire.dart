@@ -24,13 +24,13 @@ class ToExpire extends StatefulWidget {
 }
 
 Future<void> _refresh() {
-  return Future.delayed(Duration(seconds: 2));
+  return Future.delayed(const Duration(seconds: 2));
 }
 
 ListElement? catSelect;
 
 class _ToExpireState extends State<ToExpire> {
-  int? _selectedCategory = null;
+  int? _selectedCategory;
 
   Future<String?> filterPopup(ProductService listacat) => showDialog<String>(
         context: context,
@@ -53,7 +53,7 @@ class _ToExpireState extends State<ToExpire> {
                   onChanged: (ListElement? nuevaCategoria) {
                     setState(() {
                       _selectedCategory = nuevaCategoria!.categoriaId;
-                      print('la categoria es ${_selectedCategory}');
+                      // print('la categoria es ${_selectedCategory}');
                     });
                   },
                   items: listacat.listadocategorias.map((categoria) {
@@ -224,17 +224,17 @@ class _ToExpireState extends State<ToExpire> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 10),
+                                    const SizedBox(height: 10),
                                     Text('Categoría:$nombrecat'),
-                                    SizedBox(height: 10),
+                                    const SizedBox(height: 10),
                                     Text(
                                       'Elaboración: ${product.fechaElaboracion.toString().substring(0, 10)}',
                                     ),
-                                    SizedBox(height: 5),
+                                    const SizedBox(height: 5),
                                     Text(
                                       'Vencimiento: ${product.fechaVencimiento.toString().substring(0, 10)}',
                                     ),
-                                    SizedBox(height: 10),
+                                    const SizedBox(height: 10),
                                     Text(
                                       NumberFormat.currency(
                                         locale: 'es',

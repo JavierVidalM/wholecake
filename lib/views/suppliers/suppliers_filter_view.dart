@@ -1,15 +1,18 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wholecake/models/productos.dart';
-import 'package:wholecake/views/products/products_edit.dart';
+import 'package:wholecake/models/suppliers.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
-class ProductSearch extends SearchDelegate<Listado> {
-  late final List<Listado> prod;
+import 'package:wholecake/views/suppliers/suppliers_edit.dart';
 
-  ProductSearch(this.prod);
+class SupplierSearch extends SearchDelegate<ListSup> {
+  late final List<ListSup> sup;
+
+  SupplierSearch(this.sup);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -29,15 +32,14 @@ class ProductSearch extends SearchDelegate<Listado> {
         onPressed: () {
           close(
             context,
-            Listado(
-                productoId: 0,
-                nombre: '',
-                fechaElaboracion: '',
-                fechaVencimiento: '',
-                precio: 0,
-                categoria: 0,
-                imagen: '',
-                estado: ''),
+            ListSup(
+                supplierId: 0,
+                nombreProveedor: '',
+                rut: '',
+                tipoInsumo: '',
+                correoProveedor: '',
+                telefonoProveedor: 0,
+                imagen_insumo: ''),
           );
         },
         icon: const Icon(Icons.arrow_back_ios_new_rounded));
@@ -46,13 +48,13 @@ class ProductSearch extends SearchDelegate<Listado> {
   @override
   Widget buildResults(BuildContext context) {
     final listadoView = Provider.of<ProductService>(context);
-    final List<Listado> searchProducts = listadoView.listadoproductos;
-    List<Listado> matchQuery = [];
-    for (var product in searchProducts) {
-      if (product.nombre.toLowerCase().contains(
+    final List<ListSup> searchSuppliers = listadoView.listadosuppliers;
+    List<ListSup> matchQuery = [];
+    for (var supplier in searchSuppliers) {
+      if (supplier.nombreProveedor.toLowerCase().contains(
             query.toLowerCase(),
           )) {
-        matchQuery.add(product);
+        matchQuery.add(supplier);
       }
     }
 
@@ -61,7 +63,7 @@ class ProductSearch extends SearchDelegate<Listado> {
       itemBuilder: (context, index) {
         var result = matchQuery[index];
         Uint8List bytes = Uint8List.fromList(
-          base64.decode(result.imagen),
+          base64.decode(result.imagen_insumo),
         );
         Image image = Image.memory(bytes);
         return Column(
@@ -74,17 +76,17 @@ class ProductSearch extends SearchDelegate<Listado> {
                 borderRadius: BorderRadius.circular(0),
                 child: image,
               ),
-              title: Text(result.nombre),
+              title: Text(result.nombreProveedor),
               onTap: () {
-                // result.copy();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductsEdit(
-                      productId: result.productoId,
-                    ),
-                  ),
-                );
+                // // result.copy();
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => SuppliersEdit(
+                //         // supplierId: result.supplierId,
+                //         ),
+                //   ),
+                // );
               },
             ),
             const Divider(
@@ -99,10 +101,10 @@ class ProductSearch extends SearchDelegate<Listado> {
   @override
   Widget buildSuggestions(BuildContext context) {
     final listadoView = Provider.of<ProductService>(context);
-    final List<Listado> searchProducts = listadoView.listadoproductos;
-    List<Listado> matchQuery = [];
+    final List<ListSup> searchProducts = listadoView.listadosuppliers;
+    List<ListSup> matchQuery = [];
     for (var product in searchProducts) {
-      if (product.nombre.toLowerCase().contains(
+      if (product.nombreProveedor.toLowerCase().contains(
             query.toLowerCase(),
           )) {
         matchQuery.add(product);
@@ -113,7 +115,7 @@ class ProductSearch extends SearchDelegate<Listado> {
       itemBuilder: (context, index) {
         var result = matchQuery[index];
         Uint8List bytes = Uint8List.fromList(
-          base64.decode(result.imagen),
+          base64.decode(result.imagen_insumo),
         );
         Image image = Image.memory(bytes);
         return Column(
@@ -126,16 +128,16 @@ class ProductSearch extends SearchDelegate<Listado> {
                 borderRadius: BorderRadius.circular(25),
                 child: image,
               ),
-              title: Text(result.nombre),
+              title: Text(result.nombreProveedor),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductsEdit(
-                      productId: result.productoId,
-                    ),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => SuppliersEdit(
+                //         // supplierId: result.supplierId,
+                //         ),
+                //   ),
+                // );
               },
             ),
             const Divider(

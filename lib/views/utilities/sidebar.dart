@@ -69,7 +69,7 @@ class _SideBarState extends State<SideBar> {
                     onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PurchaseOrders()),
+                              builder: (context) => PurchaseList()),
                         )),
                 ExpansionTile(
                   leading: const Icon(Icons.inventory_2_outlined),
@@ -96,7 +96,7 @@ class _SideBarState extends State<SideBar> {
                           onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ToExpire()),
+                                    builder: (context) => const ToExpire()),
                               )),
                     ),
                     Padding(
@@ -147,7 +147,16 @@ class _SideBarState extends State<SideBar> {
                   title: const Text("Proveedores"),
                   onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SuppliersView()),
+                    MaterialPageRoute(
+                        builder: (context) => const SuppliersView()),
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.point_of_sale_sharp),
+                  title: const Text("Módulo de ventas"),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SellsView()),
                   ),
                 ),
               ],

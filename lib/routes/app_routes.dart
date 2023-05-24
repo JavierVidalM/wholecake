@@ -8,11 +8,11 @@ import 'package:wholecake/views/users/users.dart';
 import 'package:wholecake/views/utilities/utilities.dart';
 
 class AppRoutes {
-  static const initialRoute = '/HomePage';
+  static const initialRoute = '/';
 
   static Map<String, Widget Function(BuildContext)> routes = {
     //Pantallas del Login
-    '/LoginMain': (BuildContext context) => const LoginMain(),
+    '/': (BuildContext context) => const LoginMain(),
     '/LoginUser': (BuildContext context) => const LoginUser(),
     '/SigninUser': (BuildContext context) => const SigninUser(),
 
@@ -21,7 +21,7 @@ class AppRoutes {
 
     '/Inventory': (BuildContext context) => Inventory(),
     '/Inputs': (BuildContext context) => const Supplies(),
-    '/ToExpire': (BuildContext context) => ToExpire(),
+    '/ToExpire': (BuildContext context) => const ToExpire(),
 
     //Pantallas de producto
     '/ProductsView': (BuildContext context) => const ProductsView(),
@@ -30,7 +30,7 @@ class AppRoutes {
     '/CategoryList': (BuildContext context) => const CategoryView(),
 
     // '/SuppliersAdd': (BuildContext context) => const SuppliersAdd(),
-    '/SuppliersView': (BuildContext context) => SuppliersView(),
+    '/SuppliersView': (BuildContext context) => const SuppliersView(),
     '/InputsRecipt': (BuildContext context) => InputsRecipt(),
     '/PurchaseOrders': (BuildContext context) => PurchaseOrders(),
     '/PurchaseList': (BuildContext context) => PurchaseList(),
