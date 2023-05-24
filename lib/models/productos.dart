@@ -34,6 +34,8 @@ class Listado {
   int categoria;
   String imagen;
   String estado;
+  int cantidad;
+  String lote;
 
   Listado({
     required this.productoId,
@@ -44,6 +46,8 @@ class Listado {
     required this.categoria,
     required this.imagen,
     required this.estado,
+    required this.cantidad,
+    required this.lote,
   });
 
   factory Listado.fromJson(String str) => Listado.fromMap(json.decode(str));
@@ -51,15 +55,16 @@ class Listado {
   String toJson() => json.encode(toMap());
 
   factory Listado.fromMap(Map<String, dynamic> json) => Listado(
-        productoId: json["id"],
-        nombre: json["nombre"],
-        fechaElaboracion: json["fecha_elaboracion"],
-        fechaVencimiento: json["fecha_vencimiento"],
-        precio: json["precio"],
-        categoria: json["categoria"],
-        imagen: json["imagen"],
-        estado:json["estado"],
-      );
+      productoId: json["id"],
+      nombre: json["nombre"],
+      fechaElaboracion: json["fecha_elaboracion"],
+      fechaVencimiento: json["fecha_vencimiento"],
+      precio: json["precio"],
+      categoria: json["categoria"],
+      imagen: json["imagen"],
+      estado: json["estado"],
+      cantidad: json["cantidad"],
+      lote: json["lote"]);
 
   Map<String, dynamic> toMap() => {
         "productoId": productoId,
@@ -69,7 +74,9 @@ class Listado {
         "precio": precio,
         "categoria": categoria,
         "imagen": imagen,
-        'estado':estado
+        'estado': estado,
+        "cantidad":cantidad,
+        "lote":lote
       };
   Listado copy() => Listado(
         productoId: productoId,
@@ -80,5 +87,7 @@ class Listado {
         fechaElaboracion: fechaElaboracion,
         imagen: imagen,
         estado: estado,
+        cantidad: cantidad,
+        lote:lote,
       );
 }
