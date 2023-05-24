@@ -182,7 +182,7 @@ class _PurchaseListState extends State<PurchaseList> {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            listaOdc.proveedor as String,
+                                            listaOdc.proveedor.toString(),
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),

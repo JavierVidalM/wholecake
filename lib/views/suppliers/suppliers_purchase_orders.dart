@@ -31,11 +31,11 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
 
   Future<void> _saveData() async {
     final msg = jsonEncode({
-      'Id': ordenIdController.text,
-      'Fecha': fechaController.text,
-      'Cantidad': cantidadController.text,
-      'Proveedor': proveedorController.text,
-      'Costo Total': costotalController.text,
+      // 'Id': ordenIdController.text,
+      // 'Fecha': fechaController.text,
+      'cantidad': cantidadController.text,
+      'proveedor': proveedorController.text,
+      'costotal': costotalController.text,
     });
     await ProductService().addOrdenCompra(msg);
     print('saved');
