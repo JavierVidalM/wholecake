@@ -9,53 +9,52 @@ class Supplies extends StatefulWidget {
   State<Supplies> createState() => _SuppliesState();
 }
 
-class _SuppliesState extends State<Supplies> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFBDE0FE),
-      appBar: AppBar(
-        title: Text("Insumos"),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFFFB5D7),
-        toolbarHeight: MediaQuery.of(context).size.height * 0.1,
-        titleTextStyle: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: 30,
-            color: Color.fromARGB(255, 93, 42, 66)),
-      ),
-      drawer: SideBar(),
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              child:
-              Row(mainAxisSize: MainAxisSize.min, children: [
-                Icon(Icons.add),
-                SizedBox(width: 1),
-                Text('Añadir')
-              ]);
-            },
-            child: null,
-          ),
-          //4 cajas arriba
-          AspectRatio(
-            aspectRatio: 1,
-            child: SizedBox(
-              width: double.infinity,
-              child: GridView.builder(
-                itemCount: 4,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                ),
-                itemBuilder: (context, index) {
-                  return MyBox();
-                },
+_SuppliesState() {}
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: const Color(0xFFBDE0FE),
+    appBar: AppBar(
+      title: Text("Insumos"),
+      centerTitle: true,
+      backgroundColor: const Color(0xFFFFB5D7),
+      toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+      titleTextStyle: TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 30,
+          color: Color.fromARGB(255, 93, 42, 66)),
+    ),
+    drawer: SideBar(),
+    body: Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            child:
+            Row(mainAxisSize: MainAxisSize.min, children: [
+              Icon(Icons.add),
+              SizedBox(width: 1),
+              Text('Añadir')
+            ]);
+          },
+          child: null,
+        ),
+        //4 cajas arriba
+        AspectRatio(
+          aspectRatio: 1,
+          child: SizedBox(
+            width: double.infinity,
+            child: GridView.builder(
+              itemCount: 4,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
               ),
+              itemBuilder: (context, index) {
+                return MyBox();
+              },
             ),
-          )
-        ],
-      ),
-    );
-  }
+          ),
+        )
+      ],
+    ),
+  );
 }

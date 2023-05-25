@@ -14,7 +14,6 @@ class PurchaseOrders extends StatefulWidget {
 
 class _PurchaseOrdersState extends State<PurchaseOrders> {
   TextEditingController ordenIdController = TextEditingController();
-  TextEditingController fechaController = TextEditingController();
   TextEditingController cantidadController = TextEditingController();
   TextEditingController proveedorController = TextEditingController();
   TextEditingController costotalController = TextEditingController();
@@ -22,7 +21,6 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
   @override
   void dispose() {
     ordenIdController.dispose();
-    fechaController.dispose();
     cantidadController.dispose();
     proveedorController.dispose();
     costotalController.dispose();
@@ -31,11 +29,10 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
 
   Future<void> _saveData() async {
     final msg = jsonEncode({
-      // 'Id': ordenIdController.text,
-      // 'Fecha': fechaController.text,
-      'cantidad': cantidadController.text,
-      'proveedor': proveedorController.text,
-      'costotal': costotalController.text,
+      'Id': ordenIdController.text,
+      'Cantidad': cantidadController.text,
+      'Proveedor': proveedorController.text,
+      'Costo Total': costotalController.text,
     });
     await ProductService().addOrdenCompra(msg);
     print('saved');
@@ -72,15 +69,6 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
                   child: TextField(
                     controller: ordenIdController,
                     decoration: const InputDecoration(hintText: 'ID de Orden'),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.02),
-                  child: TextField(
-                    controller: fechaController,
-                    decoration:
-                        const InputDecoration(hintText: 'Fecha de Orden'),
                   ),
                 ),
                 Padding(
