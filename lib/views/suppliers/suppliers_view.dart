@@ -14,6 +14,7 @@ import 'package:wholecake/views/suppliers/suppliers_add.dart';
 import 'package:wholecake/views/suppliers/suppliers_edit.dart';
 import 'dart:typed_data';
 import 'package:intl/intl.dart';
+import '../../services/suppliers_services.dart';
 
 class SuppliersView extends StatefulWidget {
   const SuppliersView({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ Future<void> _refresh() {
   return Future.delayed(Duration(seconds: 2));
 }
 
-ListElement? categoriaSeleccionada;
+ListSup? supplierSeleccionada;
 
 // void filterProducts(String category) {
 //     final listadoView = Provider.of<ProductService>();
@@ -36,7 +37,7 @@ ListElement? categoriaSeleccionada;
 class _SuppliersViewState extends State<SuppliersView> {
   int? _selectedCategory = null;
 
-  Future<String?> filterPopup(ProductService listacat) => showDialog<String>(
+  Future<String?> filterPopup(SuppliersService listacat) => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text("Filtro"),
@@ -91,7 +92,7 @@ class _SuppliersViewState extends State<SuppliersView> {
               final msg = jsonEncode({
                 'id': supplierId,
               });
-              await ProductService().deleteSupplier(msg);
+              await SuppliersService().deleteSupplier(msg);
               setState(() {
                 ListSup.removeWhere(
                     (suppliers) => suppliers.supplierId == supplierId);
@@ -129,13 +130,13 @@ class _SuppliersViewState extends State<SuppliersView> {
 
   @override
   Widget build(BuildContext context) {
-    final listadoView = Provider.of<ProductService>(context);
+    final listadoView = Provider.of<SuppliersService>(context);
     if (listadoView.isLoading) return const LoadingScreen();
     final List<ListSup> prod = listadoView.listadosuppliers;
-    final listacat = Provider.of<ProductService>(context);
+    final listacat = Provider.of<SuppliersService>(context);
 
     return ChangeNotifierProvider(
-        create: (_) => ProductService(),
+        create: (_) => SuppliersService(),
         child: Scaffold(
             appBar: AppBar(
               title: Text(
@@ -145,7 +146,7 @@ class _SuppliersViewState extends State<SuppliersView> {
               toolbarHeight: MediaQuery.of(context).size.height * 0.1,
             ),
             drawer: const SideBar(),
-            body: Consumer<ProductService>(
+            body: Consumer<SuppliersService>(
               builder: (context, listado, child) {
                 // final producto = listado.listadoproductos[index];
                 return Column(

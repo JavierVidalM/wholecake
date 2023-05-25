@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/services/productos_services.dart';
+import 'package:wholecake/services/suppliers_services.dart';
 import 'package:wholecake/views/utilities/sidebar.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/providers/suppliers_form_provider.dart';
@@ -16,11 +16,11 @@ class SuppliersEdit extends StatefulWidget {
 }
 
 class _SuppliersEditState extends State<SuppliersEdit> {
-  late ProductService _productService;
+  late SuppliersService _productService;
   @override
   void initState() {
     super.initState();
-    _productService = Provider.of<ProductService>(context, listen: false);
+    _productService = Provider.of<SuppliersService>(context, listen: false);
   }
 
   @override
@@ -43,7 +43,7 @@ class _SuppliersEditState extends State<SuppliersEdit> {
 }
 
 class _ProductForm extends StatefulWidget {
-  final ProductService productService;
+  final SuppliersService productService;
 
   const _ProductForm({Key? key, required this.productService})
       : super(key: key);

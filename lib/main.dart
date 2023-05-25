@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/routes/app_routes.dart';
+import 'package:wholecake/services/suppliers_services.dart';
 import 'package:wholecake/theme/theme.dart';
 
 void main() {
@@ -15,6 +16,10 @@ class ProviderState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => ProductService(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SuppliersService(),
           lazy: false,
         ),
       ],
