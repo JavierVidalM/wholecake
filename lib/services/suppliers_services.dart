@@ -32,7 +32,7 @@ class SuppliersService extends ChangeNotifier {
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
     final response = await http.get(url, headers: {'authorization': basicAuth});
     final suppliersMap = Suppliers.fromJson(response.body);
-    print(response.body);
+
     listadosuppliers = suppliersMap.listSup;
     isLoading = false;
     notifyListeners();
