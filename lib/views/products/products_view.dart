@@ -381,10 +381,7 @@ class _ProductsViewState extends State<ProductsView> {
     // final List<Listado> prod = listadoView.listadoproductos;
     final listacat = Provider.of<ProductService>(context);
 
-    final filterProducts = listadoView.listadoproductos.where((product) {
-      return productsSelected.isEmpty ||
-          productsSelected.contains(product.categoria);
-    }).toList();
+
 
     return ChangeNotifierProvider(
         create: (_) => ProductService(),
@@ -399,6 +396,10 @@ class _ProductsViewState extends State<ProductsView> {
             drawer: const SideBar(),
             body: Consumer<ProductService>(
               builder: (context, listado, child) {
+                final filterProducts = listado.listadoproductos.where((product) {
+                  return productsSelected.isEmpty ||
+                productsSelected.contains(product.categoria);
+                }).toList();
                 // final producto = listado.listadoproductos[index];
                 return Column(
                   children: [

@@ -74,8 +74,7 @@ class ProductService extends ChangeNotifier {
     final decodeResp = response.body;
     final Listado producto = Listado.fromJson(decodeResp);
     listadoproductos.add(producto);
-    // notifyListeners();
-    await loadProductos(); //
+    notifyListeners();
     isEditCreate = false;
   }
 
@@ -91,6 +90,7 @@ class ProductService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
+    notifyListeners();
     //actualizamos el listado
     // final index = listadoproductos
     //     .indexWhere((element) => element.productoId == product.productoId);
@@ -110,6 +110,7 @@ class ProductService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
+    notifyListeners();
   }
 
   loadCategorias() async {
@@ -180,6 +181,7 @@ class ProductService extends ChangeNotifier {
     });
     final decodeResp = response.body;
   }
+
   //ordendecompra
   loadOrdenCompra() async {
     isLoading = true;
