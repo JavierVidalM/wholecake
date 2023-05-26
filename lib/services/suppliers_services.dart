@@ -8,8 +8,8 @@ import 'package:wholecake/models/suppliers.dart';
 import 'package:wholecake/models/supplies.dart';
 
 class SuppliersService extends ChangeNotifier {
-  String APIUSER = 'sweetcake';
-  String APIPASS = 'pasteldetula';
+  String APIUSER = 'test';
+  String APIPASS = 'test01';
   String BASEURL = '3.85.128.77:8000';
   List<ListSup> listadosuppliers = [];
 

@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:wholecake/models/ordendecompra.dart';
 
 class OrdencompraService extends ChangeNotifier {
-  String APIUSER = 'sweetcake';
-  String APIPASS = 'pasteldetula';
+  String APIUSER = 'test';
+  String APIPASS = 'test01';
   String BASEURL = '3.85.128.77:8000';
   List<ListOdc> listaOrdenes = [];
   ListOdc? selectedOdc;

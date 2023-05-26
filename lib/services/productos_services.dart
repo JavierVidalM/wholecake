@@ -5,8 +5,8 @@ import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/models/categoria.dart';
 
 class ProductService extends ChangeNotifier {
-  String APIUSER = 'sweetcake';
-  String APIPASS = 'pasteldetula';
+  String APIUSER = 'test';
+  String APIPASS = 'test01';
   String BASEURL = '3.85.128.77:8000';
   List<Listado> listadoproductos = [];
   List<ListElement> listadocategorias = [];
