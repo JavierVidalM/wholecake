@@ -139,6 +139,18 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
     return null;
   }
 
+  String? validateExpirationDate(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, seleccione una fecha de vencimiento.';
+    }
+    final selectedDate = DateFormat('yyyy-MM-dd').parse(value);
+    final currentDate = DateTime.now();
+    if (selectedDate.isBefore(currentDate)) {
+      return 'La fecha de vencimiento no puede ser anterior a la fecha actual.';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final listacat = Provider.of<ProductService>(context);
@@ -236,18 +248,7 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
                       lastDate: DateTime(2100),
                       dateLabelText: 'Fecha de vencimiento',
                       controller: fechaVencimientoController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Por favor, seleccione una fecha de vencimiento.';
-                        }
-                        final selectedDate =
-                            DateFormat('yyyy-MM-dd').parse(value);
-                        final currentDate = DateTime.now();
-                        if (selectedDate.isBefore(currentDate)) {
-                          return 'La fecha de vencimiento no puede ser anterior a la fecha actual.';
-                        }
-                        return null;
-                      },
+                      validator: validateExpirationDate,
                     ),
                   ),
                   Padding(
