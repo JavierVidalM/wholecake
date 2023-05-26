@@ -42,7 +42,7 @@ class _CategoryViewState extends State<CategoryView> {
       'id': id,
       'nombre': nombreController.text,
     });
-    await ProductService().updateCategoria(editmsg);
+    // await ProductService().updateCategoria(editmsg);
     Navigator.of(context).pop();
   }
 

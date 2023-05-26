@@ -8,7 +8,7 @@ import 'package:wholecake/views/products/products.dart';
 import 'package:wholecake/views/sells/sells.dart';
 import 'package:wholecake/views/suppliers/suppliers.dart';
 import 'package:wholecake/views/users/users.dart';
-
+import 'package:wholecake/views/supplies/products_supplies.dart';
 class SideBar extends StatefulWidget {
   const SideBar({super.key});
 
