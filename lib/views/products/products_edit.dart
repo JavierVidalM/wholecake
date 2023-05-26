@@ -6,6 +6,8 @@ import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/products/products.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:file_picker/file_picker.dart';
+import '../../models/categoria.dart';
+
 import 'dart:typed_data';
 import 'dart:convert';
 import 'dart:io';
@@ -29,7 +31,6 @@ class _ProductsEditState extends State<ProductsEdit> {
   final TextEditingController _imageController = TextEditingController();
 
   File? imageSelected;
-  final _formKey = GlobalKey<FormState>();
 
   Future<void> seleccionarImagen() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
@@ -44,6 +45,13 @@ class _ProductsEditState extends State<ProductsEdit> {
   void initState() {
     super.initState();
     loadProductDetails();
+  }
+
+  String? validateCategory(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, seleccione una categoría.';
+    }
+    return null;
   }
 
   void loadProductDetails() {
@@ -68,39 +76,6 @@ class _ProductsEditState extends State<ProductsEdit> {
     _priceController.text = product.precio.toString();
     _expiryDateController.text = product.fechaVencimiento;
     _imageController.text = product.imagen;
-  }
-
-  void updateProductDetails() {
-    final productService = Provider.of<ProductService>(context, listen: false);
-    final product = productService.listadoproductos.firstWhere(
-      (product) => product.productoId == widget.productId,
-      orElse: () => Listado(
-          productoId: 0,
-          nombre: '',
-          fechaElaboracion: '',
-          fechaVencimiento: '',
-          precio: 0,
-          categoria: 0,
-          imagen: '',
-          estado: '',
-          cantidad: 0,
-          lote: ''),
-    );
-    product.nombre = _nameController.text;
-    product.categoria = int.parse(_categoryController.text);
-    product.precio = int.parse(_priceController.text);
-    product.fechaVencimiento = _expiryDateController.text;
-
-    if (_formKey.currentState!.validate()) {
-      // Save the updated product to the database
-      productService.updateProduct(product);
-
-      // Navigate back to the products view
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const ProductsView()),
-      );
-    }
   }
 
   @override
@@ -141,216 +116,204 @@ class _ProductsEditState extends State<ProductsEdit> {
       drawer: const SideBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).size.height * 0.04,
-                ),
-                child: InkWell(
-                  onTap: seleccionarImagen,
-                  child: Container(
-                    width: 80.0,
-                    height: 80.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: image,
-                        fit: BoxFit.cover,
-                      ),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * 0.04,
+              ),
+              child: InkWell(
+                onTap: seleccionarImagen,
+                child: Container(
+                  width: 80.0,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: image,
+                      fit: BoxFit.cover,
                     ),
-                    child: ClipOval(
-                      child: imageSelected != null
-                          ? Image.file(
-                              imageSelected!,
-                              width: 80.0,
-                              height: 80.0,
-                              fit: BoxFit.cover,
-                            )
-                          : const SizedBox(),
-                    ),
+                  ),
+                  child: ClipOval(
+                    child: imageSelected != null
+                        ? Image.file(
+                            imageSelected!,
+                            width: 80.0,
+                            height: 80.0,
+                            fit: BoxFit.cover,
+                          )
+                        : const SizedBox(),
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Producto'),
-                  TextFormField(
-                    controller: _nameController,
-                    onChanged: (value) => product.nombre = value,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'El nombre es obligatorio';
-                      } else if (_containsNumbersOrSpecialCharacters(value)) {
-                        return 'El nombre no debe contener números ni caracteres especiales';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Nombre del producto',
-                    ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Producto'),
+                TextFormField(
+                  initialValue: product.nombre,
+                  onChanged: (value) => product.nombre = value,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'El nombre es obligatorio';
+                    }
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'Nombre del producto',
                   ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Categoría'),
-                  TextFormField(
-                    controller: _categoryController,
-                    onChanged: (value) => product.categoria = int.parse(value),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'La categoría es obligatoria';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Categoría',
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Fecha Vencimiento'),
-                  Theme(
-                    data: SweetCakeTheme.calendarTheme,
-                    child: DateTimePicker(
-                      controller: _expiryDateController,
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
-                      validator: (val) {
-                        product.fechaVencimiento = val!;
-                        if (val.isEmpty) {
-                          return 'La fecha de vencimiento es obligatoria';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Cantidad'),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: _quantityController,
-                    onChanged: (value) {
-                      if (_isNumeric(value)) {
-                        product.cantidad = int.parse(value);
-                      } else {
-                        product.cantidad = 0;
-                      }
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'La cantidad es obligatoria';
-                      } else if (!_isNumeric(value)) {
-                        return 'La cantidad debe ser un número';
-                      } else if (int.parse(value) < 0) {
-                        return 'La cantidad no puede ser negativa';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Cantidad',
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Precio'),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: _priceController,
-                    onChanged: (value) {
-                      if (_isNumeric(value)) {
-                        product.precio = int.parse(value);
-                      } else {
-                        product.precio = 0;
-                      }
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'El precio es obligatorio';
-                      } else if (!_isNumeric(value)) {
-                        return 'El precio debe ser un número';
-                      } else if (int.parse(value) < 0) {
-                        return 'El precio no puede ser negativo';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Precio',
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        updateProductDetails();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(
-                        (MediaQuery.of(context).size.width * 0.4),
-                        (MediaQuery.of(context).size.height * 0.07),
-                      ),
-                    ),
-                    child: const Text('Guardar'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProductsView()),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  child: Consumer<ProductService>(
+                    builder: (context, listacat, _) {
+                      ListElement? categoriaSeleccionada;
+                      return DropdownButtonFormField<ListElement>(
+                        validator: (ListElement? value) =>
+                            validateCategory(value?.nombre),
+                        hint: const Text('Selecciona una categoría'),
+                        value: categoriaSeleccionada,
+                        onChanged: (ListElement? nuevaCategoria) {
+                          setState(() {
+                            product.categoria = nuevaCategoria!.categoriaId;
+                            _categoryController.text =
+                                nuevaCategoria.categoriaId.toString();
+                          });
+                        },
+                        items: listacat.listadocategorias.map((categoria) {
+                          return DropdownMenuItem<ListElement>(
+                            value: categoria,
+                            child: Text(categoria.nombre),
+                          );
+                        }).toList(),
                       );
                     },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(
-                        (MediaQuery.of(context).size.width * 0.4),
-                        (MediaQuery.of(context).size.height * 0.07),
-                      ),
-                    ),
-                    child: const Text('Volver'),
                   ),
-                ],
+                ),
+              ],
+            ),
+            // const Text('Categoría'),
+            // TextFormField(
+            //   initialValue: product.categoria.toString(),
+            //   onChanged: (value) => product.categoria = int.parse(value),
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'La categoría es obligatoria';
+            //     }
+            //   },
+            //   decoration: const InputDecoration(
+            //     hintText: 'Nombre del producto',
+            //   ),
+            // ),
+            const SizedBox(height: 20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Fecha Vencimiento'),
+                Theme(
+                  data: SweetCakeTheme.calendarTheme,
+                  child: DateTimePicker(
+                    initialValue: product.fechaElaboracion,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                    // onChanged: (val) => print(val),
+                    validator: (val) {
+                      product.fechaVencimiento = val!;
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Cantidad'),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  initialValue: product.cantidad.toString(),
+                  onChanged: (value) {
+                    if (int.tryParse(value) == null) {
+                      product.cantidad = 0;
+                    } else {
+                      product.cantidad = int.parse(value);
+                    }
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'Cantidad',
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Precio'),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  initialValue: product.precio.toString(),
+                  onChanged: (value) {
+                    if (int.tryParse(value) == null) {
+                      product.precio = 0;
+                    } else {
+                      product.precio = int.parse(value);
+                    }
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'Nombre del producto',
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () async {
+                await productService.editOrCreateProduct(product);
+                // print(product.toJson());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProductsView()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(
+                  (MediaQuery.of(context).size.width * 0.6),
+                  (MediaQuery.of(context).size.height * 0.07),
+                ),
               ),
-            ],
-          ),
+              child: const Text('Guardar'),
+            ),
+            const SizedBox(height: 20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProductsView()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(
+                      (MediaQuery.of(context).size.width * 0.6),
+                      (MediaQuery.of(context).size.height * 0.07),
+                    ),
+                  ),
+                  child: const Text('Volver'),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
-  }
-
-  bool _isNumeric(String value) {
-    if (value == null) {
-      return false;
-    }
-    return double.tryParse(value) != null;
-  }
-
-  bool _containsNumbersOrSpecialCharacters(String value) {
-    final pattern = RegExp(r'[0-9@#^&*()\[\]{}\-?_+=%$]');
-    return pattern.hasMatch(value);
   }
 }
