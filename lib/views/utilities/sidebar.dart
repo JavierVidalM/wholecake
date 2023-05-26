@@ -25,6 +25,7 @@ class _SideBarState extends State<SideBar> {
     final productCount = productService.listadoproductos.length;
     return productCount.toString();
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,7 @@ class _SideBarState extends State<SideBar> {
         child:Consumer<UserService>(
           builder: (context,user,_){
             print(user.name);
+            print(user.typeuser);
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -159,7 +161,7 @@ class _SideBarState extends State<SideBar> {
                         builder: (context) => const SuppliersView()),
                   ),
                 ),
-                if (user.typeuser == 'cajero')
+                if (user.typeuser == '')
                   ListTile(
                     leading: const Icon(Icons.point_of_sale_sharp),
                     title: const Text("Módulo de ventas"),
