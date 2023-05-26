@@ -134,8 +134,7 @@ class ProductService extends ChangeNotifier {
     final decodeResp = response.body;
     final ListElement categoria = ListElement.fromJson(decodeResp);
     listadocategorias.add(categoria);
-    // notifyListeners();
-    await loadProductos(); //
+    notifyListeners();
     isEditCreate = false;
   }
 

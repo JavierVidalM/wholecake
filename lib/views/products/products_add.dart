@@ -153,180 +153,186 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
 
   @override
   Widget build(BuildContext context) {
-    final listacat = Provider.of<ProductService>(context);
-    if (listacat.isLoading) return const LoadingScreen();
-    ListElement? categoriaSeleccionada;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Agregar Productos',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        toolbarHeight: MediaQuery.of(context).size.height * 0.1,
-      ),
-      drawer: const SideBar(),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  InkWell(
-                    onTap: () async {
-                      final result = await FilePicker.platform.pickFiles(
-                        type: FileType.image,
-                      );
-                      if (result != null) {
-                        setState(() {
-                          imagen = File(result.files.single.path!);
-                        });
-                      }
-                    },
-                    child: Container(
-                      width: 80.0,
-                      height: 80.0,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFF909090),
-                      ),
-                      child: ClipOval(
-                        child: imagen != null
-                            ? Image.file(
-                                imagen!,
-                                width: 80.0,
-                                height: 80.0,
-                                fit: BoxFit.cover,
-                              )
-                            : const Icon(
-                                Icons.add,
-                                size: 40.0,
-                                color: Color(0xFFC0C0C0),
-                              ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.02),
-                    child: TextFormField(
-                      controller: nombreController,
-                      validator: validateName,
-                      decoration: const InputDecoration(
-                          hintText: 'Nombre del producto'),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.02),
-                    child: DropdownButtonFormField<ListElement>(
-                      validator: (ListElement? value) =>
-                          validateCategory(value?.nombre),
-                      hint: const Text('Selecciona una categoría'),
-                      value: categoriaSeleccionada,
-                      onChanged: (ListElement? nuevaCategoria) {
-                        setState(() {
-                          categoriaController.text =
-                              nuevaCategoria!.categoriaId.toString();
-                        });
-                      },
-                      items: listacat.listadocategorias.map((categoria) {
-                        return DropdownMenuItem<ListElement>(
-                          value: categoria,
-                          child: Text(categoria.nombre),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.02),
-                    child: DateTimePicker(
-                      type: DateTimePickerType.date,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2100),
-                      dateLabelText: 'Fecha de vencimiento',
-                      controller: fechaVencimientoController,
-                      validator: validateExpirationDate,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.02),
-                    child: TextFormField(
-                      controller: cantidadController,
-                      validator: validateQuantity,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(hintText: 'Cantidad'),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.02),
-                    child: TextFormField(
-                      controller: precioController,
-                      validator: validatePrice,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(hintText: 'Precio'),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.02),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const ProductsView(),
-                                ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(
-                                (MediaQuery.of(context).size.width * 0.6),
-                                (MediaQuery.of(context).size.height * 0.07),
-                              ),
-                            ),
-                            child: const Text('Volver'),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                _saveData();
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(
-                                (MediaQuery.of(context).size.width * 0.6),
-                                (MediaQuery.of(context).size.height * 0.07),
-                              ),
-                            ),
-                            child: const Text('Guardar'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
+
+    return ChangeNotifierProvider(
+        create: (_) => ProductService(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Agregar Productos',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            toolbarHeight: MediaQuery.of(context).size.height * 0.1,
           ),
-        ),
-      ),
-    );
+          drawer: const SideBar(),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          final result = await FilePicker.platform.pickFiles(
+                            type: FileType.image,
+                          );
+                          if (result != null) {
+                            setState(() {
+                              imagen = File(result.files.single.path!);
+                            });
+                          }
+                        },
+                        child: Container(
+                          width: 80.0,
+                          height: 80.0,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFF909090),
+                          ),
+                          child: ClipOval(
+                            child: imagen != null
+                                ? Image.file(
+                                    imagen!,
+                                    width: 80.0,
+                                    height: 80.0,
+                                    fit: BoxFit.cover,
+                                  )
+                                : const Icon(
+                                    Icons.add,
+                                    size: 40.0,
+                                    color: Color(0xFFC0C0C0),
+                                  ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.02),
+                        child: TextFormField(
+                          controller: nombreController,
+                          validator: validateName,
+                          decoration: const InputDecoration(
+                              hintText: 'Nombre del producto'),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
+                        child: Consumer<ProductService>(
+                          
+                          builder: (context, listacat, _) {
+                            ListElement? categoriaSeleccionada;
+                            return DropdownButtonFormField<ListElement>(
+                              validator: (ListElement? value) => validateCategory(value?.nombre),
+                              hint: const Text('Selecciona una categoría'),
+                              value: categoriaSeleccionada,
+                              onChanged: (ListElement? nuevaCategoria) {
+                                setState(() {
+                                  categoriaController.text =
+                                      nuevaCategoria!.categoriaId.toString();
+                                });
+                              },
+                              items: listacat.listadocategorias.map((categoria) {
+                                return DropdownMenuItem<ListElement>(
+                                  value: categoria,
+                                  child: Text(categoria.nombre),
+                                );
+                              }).toList(),
+                            );
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.02),
+                        child: DateTimePicker(
+                          type: DateTimePickerType.date,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100),
+                          dateLabelText: 'Fecha de vencimiento',
+                          controller: fechaVencimientoController,
+                          validator: validateExpirationDate,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.02),
+                        child: TextFormField(
+                          controller: cantidadController,
+                          validator: validateQuantity,
+                          keyboardType: TextInputType.number,
+                          decoration:
+                              const InputDecoration(hintText: 'Cantidad'),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.02),
+                        child: TextFormField(
+                          controller: precioController,
+                          validator: validatePrice,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(hintText: 'Precio'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.02),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ProductsView(),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(
+                                    (MediaQuery.of(context).size.width * 0.6),
+                                    (MediaQuery.of(context).size.height * 0.07),
+                                  ),
+                                ),
+                                child: const Text('Volver'),
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    _saveData();
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(
+                                    (MediaQuery.of(context).size.width * 0.6),
+                                    (MediaQuery.of(context).size.height * 0.07),
+                                  ),
+                                ),
+                                child: const Text('Guardar'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 }
