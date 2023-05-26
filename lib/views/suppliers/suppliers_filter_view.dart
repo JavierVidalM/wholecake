@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/suppliers.dart';
 import 'package:wholecake/services/productos_services.dart';
+import 'package:wholecake/services/suppliers_services.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -47,7 +48,7 @@ class SupplierSearch extends SearchDelegate<ListSup> {
 
   @override
   Widget buildResults(BuildContext context) {
-    final listadoView = Provider.of<ProductService>(context);
+    final listadoView = Provider.of<SuppliersService>(context);
     final List<ListSup> searchSuppliers = listadoView.listadosuppliers;
     List<ListSup> matchQuery = [];
     for (var supplier in searchSuppliers) {
@@ -100,7 +101,7 @@ class SupplierSearch extends SearchDelegate<ListSup> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final listadoView = Provider.of<ProductService>(context);
+    final listadoView = Provider.of<SuppliersService>(context);
     final List<ListSup> searchProducts = listadoView.listadosuppliers;
     List<ListSup> matchQuery = [];
     for (var product in searchProducts) {

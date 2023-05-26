@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/views/suppliers/suppliers.dart';
 import 'package:wholecake/views/utilities/sidebar.dart';
-
+import '../../services/suppliers_services.dart';
 import '../../models/suppliers.dart';
-import '../../services/productos_services.dart';
+import '../../services/ordencompra_services.dart';
 
 class PurchaseOrders extends StatefulWidget {
   const PurchaseOrders({Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
       'proveedor': proveedorController.text,
       'costotal': costotalController.text,
     });
-    await ProductService().addOrdenCompra(msg);
+    await OrdencompraService().addOrdenCompra(msg);
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => SuppliersView()));
   }
@@ -49,7 +49,7 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
   }
   @override
   Widget build(BuildContext context) {
-    final listaprov = Provider.of<ProductService>(context);
+    final listaprov = Provider.of<SuppliersService>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(

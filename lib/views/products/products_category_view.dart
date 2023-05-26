@@ -38,12 +38,12 @@ class _CategoryViewState extends State<CategoryView> {
   }
 
   Future<void> _editData(id) async {
-    final editmsg = jsonEncode({
-      'id': id,
-      'nombre': nombreController.text,
-    });
+    // final editmsg = jsonEncode({
+    //   'id': id,
+    //   'nombre': nombreController.text,
+    // });
     // await ProductService().updateCategoria(editmsg);
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
   }
 
   Future deletePopup() => showDialog(

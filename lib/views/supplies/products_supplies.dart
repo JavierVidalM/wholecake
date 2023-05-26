@@ -23,7 +23,7 @@ Future<void> _refresh() {
 SuppliesList? suppliesSeleccionada;
 
 // void filterProducts(String category) {
-//     final listadoView = Provider.of<ProductService>();
+//     final listadoView = Provider.of<SuppliesService>();
 //     listadoView.filterProductsByCategory(category);
 //   }
 
@@ -85,7 +85,7 @@ class _SuppliesState extends State<Supplies> {
               final msg = jsonEncode({
                 'id': suppliesId,
               });
-              await ProductService().deleteSupplies(msg);
+              await SuppliesService().deleteSupplies(msg);
               setState(() {
                 SuppliesList.removeWhere(
                     (supplies) => supplies.suppliesId == suppliesId);
@@ -123,13 +123,13 @@ class _SuppliesState extends State<Supplies> {
 
   @override
   Widget build(BuildContext context) {
-    final listadoView = Provider.of<ProductService>(context);
+    final listadoView = Provider.of<SuppliesService>(context);
     if (listadoView.isLoading) return const LoadingScreen();
     final List<SuppliesList> prod = listadoView.suppliesList;
-    final listacat = Provider.of<ProductService>(context);
+    final listacat = Provider.of<SuppliesService>(context);
 
     return ChangeNotifierProvider(
-      create: (_) => ProductService(),
+      create: (_) => SuppliesService(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -139,7 +139,7 @@ class _SuppliesState extends State<Supplies> {
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
         ),
         drawer: const SideBar(),
-        body: Consumer<ProductService>(
+        body: Consumer<SuppliesService>(
           builder: (context, listado, child) {
             // final producto = listado.listadoproductos[index];
             return Column(
