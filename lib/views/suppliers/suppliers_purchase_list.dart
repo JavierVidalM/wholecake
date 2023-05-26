@@ -8,6 +8,8 @@ import 'package:wholecake/views/utilities/sidebar.dart';
 import 'package:wholecake/views/utilities/loading_screen.dart';
 import 'package:wholecake/views/suppliers/suppliers_edit.dart';
 
+import '../../services/ordencompra_services.dart';
+
 class PurchaseList extends StatefulWidget {
   const PurchaseList({Key? key}) : super(key: key);
 
@@ -17,7 +19,7 @@ class PurchaseList extends StatefulWidget {
 
 class _PurchaseListState extends State<PurchaseList> {
   final int? _selectedCategory = null;
-  Future<String?> filterPopup(ProductService listacat) => showDialog<String>(
+  Future<String?> filterPopup(OrdencompraService listacat) => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text("Filtro"),
@@ -73,7 +75,7 @@ class _PurchaseListState extends State<PurchaseList> {
               final msg = jsonEncode({
                 'id': ordenId,
               });
-              await ProductService().deleteOrdenCompra(msg);
+              await OrdencompraService().deleteOrdenCompra(msg);
               setState(() {
                 ListOdc.removeWhere(
                     (OrdenDeCompa) => OrdenDeCompa.ordenId == ordenId);
@@ -91,7 +93,7 @@ class _PurchaseListState extends State<PurchaseList> {
 
   @override
   Widget build(BuildContext context) {
-    final listadoView = Provider.of<ProductService>(context);
+    final listadoView = Provider.of<OrdencompraService>(context);
     if (listadoView.isLoading) return const LoadingScreen();
     final List<ListOdc> prod = listadoView.listaOrdenes;
     final listacat = Provider.of<ProductService>(context);
@@ -107,7 +109,7 @@ class _PurchaseListState extends State<PurchaseList> {
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
         ),
         drawer: const SideBar(),
-        body: Consumer<ProductService>(
+        body: Consumer<OrdencompraService>(
           builder: (context, listado, child) {
             return Column(
               children: [
@@ -180,9 +182,9 @@ class _PurchaseListState extends State<PurchaseList> {
                                           children: [
                                             IconButton(
                                               onPressed: () {
-                                                listadoView.selectedSupplier =
+                                                listadoView.selectedOdc=
                                                     listado
-                                                        .listadosuppliers[index]
+                                                        .listaOrdenes[index]
                                                         .copy();
                                                 Navigator.push(
                                                   context,

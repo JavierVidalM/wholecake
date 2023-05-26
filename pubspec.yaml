@@ -70,7 +70,6 @@ flutter:
   assets:
     - assets/
     - assets/images/
-    - assets/images/ejemplo/
     - assets/images/error_SW.png
     - assets/images/logo_SW.png
   #   - images/a_dot_burr.jpeg

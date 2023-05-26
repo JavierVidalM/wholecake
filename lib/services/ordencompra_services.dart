@@ -8,6 +8,7 @@ class OrdencompraService extends ChangeNotifier {
   String APIPASS = 'pasteldetula';
   String BASEURL = '3.85.128.77:8000';
   List<ListOdc> listaOrdenes = [];
+  ListOdc? selectedOdc;
 
   bool isLoading = true;
   bool isEditCreate = true;
