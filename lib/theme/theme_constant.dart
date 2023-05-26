@@ -138,6 +138,7 @@ class SweetCakeTheme {
     cardTheme: CardTheme(
       color: const Color(0xFFBDE0FE),
       elevation: 10,
+      shadowColor: blue2,
       margin: const EdgeInsets.symmetric(
         vertical: 10,
         horizontal: 10,
@@ -178,6 +179,11 @@ class SweetCakeTheme {
       backgroundColor: blue,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
+    chipTheme: const ChipThemeData(
+        backgroundColor: SweetCakeTheme.pink2,
+        selectedColor: pink1,
+        checkmarkColor: pink3,
+        labelStyle: TextStyle(color: pink3, fontWeight: FontWeight.w600)),
   );
 
   static final ThemeData searchBarTheme = ThemeData(

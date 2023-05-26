@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/views/utilities/sidebar.dart';
 import 'package:wholecake/views/utilities/loading_screen.dart';
-//
+import 'package:wholecake/models/categoria.dart';
 
 class CategoryView extends StatefulWidget {
   const CategoryView({Key? key}) : super(key: key);
@@ -13,10 +15,37 @@ class CategoryView extends StatefulWidget {
 }
 
 Future<void> _refresh() {
-  return Future.delayed(Duration(seconds: 2));
+  return ProductService().loadCategorias();
 }
 
 class _CategoryViewState extends State<CategoryView> {
+  // TextEditingController idController = TextEditingController();
+  TextEditingController nombreController = TextEditingController();
+
+  @override
+  void dispose() {
+    // idController.dispose();
+    nombreController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _saveData() async {
+    final msg = jsonEncode({
+      'nombre': nombreController.text,
+    });
+    await ProductService().addCategoria(msg);
+    // Navigator.of(context).pop();
+  }
+
+  Future<void> _editData(id) async {
+    final editmsg = jsonEncode({
+      'id': id,
+      'nombre': nombreController.text,
+    });
+    await ProductService().updateCategoria(editmsg);
+    Navigator.of(context).pop();
+  }
+
   Future deletePopup() => showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -45,13 +74,17 @@ class _CategoryViewState extends State<CategoryView> {
         ),
       );
 
-  Future<String?> editCategoryPopup(nombreCategoria) => showDialog<String>(
+  Future<String?> editCategoryPopup(id, nombre) => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text("Ingrese la categoría"),
           content: TextFormField(
-            initialValue: nombreCategoria,
-            onChanged: (value) {},
+            initialValue: nombre,
+            onChanged: (value) {
+              setState(() {
+                nombreController.text = value;
+              });
+            },
             autofocus: true,
           ),
           actions: [
@@ -62,21 +95,25 @@ class _CategoryViewState extends State<CategoryView> {
                   style: TextStyle(color: Colors.red, fontSize: 18)),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                _editData(id);
+                // Navigator.of(context).pop();
+                ProductService().loadCategorias();
+              },
               child: const Text("Editar", style: TextStyle(fontSize: 18)),
             ),
           ],
         ),
       );
-
   Future<String?> addCategoryPopup() => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text("Agregar categoría"),
           content: TextFormField(
+            controller: nombreController,
             decoration:
                 const InputDecoration(hintText: "Nombre de la categoría"),
-            onChanged: (value) {},
+            // onChanged: (value) {},
             autofocus: true,
           ),
           actions: [
@@ -87,7 +124,10 @@ class _CategoryViewState extends State<CategoryView> {
                   style: TextStyle(color: Colors.red, fontSize: 18)),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                _saveData();
+                Navigator.of(context).pop();
+              },
               child: const Text("Agregar", style: TextStyle(fontSize: 18)),
             ),
           ],
@@ -111,7 +151,7 @@ class _CategoryViewState extends State<CategoryView> {
         ),
         drawer: const SideBar(),
         body: Consumer<ProductService>(
-          builder: (context, listado, child) {
+          builder: (context, list, child) {
             return Column(
               children: [
                 Container(
@@ -159,9 +199,9 @@ class _CategoryViewState extends State<CategoryView> {
                   child: RefreshIndicator(
                     onRefresh: _refresh,
                     child: ListView.builder(
-                      itemCount: listado.listadocategorias.length,
+                      itemCount: list.listadocategorias.length,
                       itemBuilder: (context, index) {
-                        final category = listado.listadocategorias[index];
+                        final category = list.listadocategorias[index];
                         return Card(
                           child: Padding(
                             padding: const EdgeInsets.all(12),
@@ -189,6 +229,7 @@ class _CategoryViewState extends State<CategoryView> {
                                               IconButton(
                                                 onPressed: () {
                                                   editCategoryPopup(
+                                                      category.categoriaId,
                                                       category.nombre);
                                                 },
                                                 icon: const Icon(Icons.edit),

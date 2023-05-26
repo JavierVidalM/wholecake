@@ -1,12 +1,14 @@
-import 'dart:math';
-import 'package:provider/provider.dart';
-
-import 'lista_ejemplo.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/theme/theme_constant.dart';
+import 'package:wholecake/views/utilities/loading_screen.dart';
 import 'package:wholecake/views/utilities/sidebar.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:intl/intl.dart';
+// import 'lista_ejemplo.dart';
+import 'package:wholecake/services/productos_services.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 
 class SellsView extends StatefulWidget {
   const SellsView({super.key});
@@ -20,9 +22,8 @@ Future<void> _refresh() async {
 }
 
 class _SellsViewState extends State<SellsView> {
-  List<ProductoEjemplo> productselected = [];
-  Map<ProductoEjemplo, int> cartQuantities = {};
-  Map<ProductoEjemplo, int> cartItems = {};
+  bool isSelected = false;
+  List selectedCategories = [];
 
   void sinProductos(BuildContext context) async {
     await showDialog<void>(
@@ -41,39 +42,38 @@ class _SellsViewState extends State<SellsView> {
         });
   }
 
-  Future<void> detalleVenta(BuildContext context) async {
+  Future<void> detalleVenta(BuildContext context, productselected) async {
     await showDialog<void>(
       context: context,
-      builder:
-          // (BuildContext context) {
-          //   return AlertDialog(
-          //     title: Text('Carrito de compras'),
-          //     content:
-          //     Column(
-          //       children: productselected.map((item) => Text(item.name)).toList(),
-          //     ),
-          //     actions: [
-          //       TextButton(
-          //         onPressed: () {
-          //           Navigator.pop(context);
-          //         },
-          //         child: const Text("Aceptar"),
-          //       ),
-          //     ],
-          //   );
-          // },
-
-          (BuildContext context) {
+      builder: (BuildContext context) {
         return AlertDialog(
           scrollable: true,
-          title: Text('Carrito de compras'),
+          contentPadding: const EdgeInsets.only(right: 0, left: 0),
+          insetPadding: const EdgeInsets.all(0),
+          // titlePadding: EdgeInsets.all(10),
+          title: Column(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 1,
+              ),
+              const Text('Carrito de compras'),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 10,
+              ),
+            ],
+          ),
           content: Column(
             children: productselected.map((item) {
               final int quantityInCart = productselected
                   .where((product) => product.id == item.id)
                   .length;
               return ListTile(
-                leading: Image.asset(item.image),
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: Image.asset(item.image),
+                ),
                 title: Text(item.name),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,135 +114,25 @@ class _SellsViewState extends State<SellsView> {
           ],
         );
       },
-
-      //     (BuildContext context) {
-      //   return AlertDialog(
-      //     actionsAlignment: MainAxisAlignment.center,
-      //     actionsPadding: const EdgeInsets.only(bottom: 10),
-      //     contentPadding: const EdgeInsets.all(10),
-      //     insetPadding: const EdgeInsets.all(20),
-      //     scrollable: true,
-      //     title: Column(
-      //       children: [
-      //         Row(
-      //           mainAxisAlignment: MainAxisAlignment.end,
-      //           children: [
-      //             IconButton(
-      //                 onPressed: () {
-      //                   Navigator.of(context).pop();
-      //                 },
-      //                 icon: const Icon(Icons.close_rounded)),
-      //           ],
-      //         ),
-      //         const Text('Detalle de esta venta'),
-      //       ],
-      //     ),
-      //     content: SizedBox(
-      //       width: double.maxFinite,
-      //       height: MediaQuery.of(context).size.height * 0.6,
-      //       child: ListView.builder(
-      //         itemCount: listaVenta,
-      //         itemBuilder: (BuildContext context, int index) {
-      //           final product = productselected[productselected.length];
-      //           return Column(
-      //             children: [
-      //               ListTile(
-      //                 leading: ClipRRect(
-      //                   borderRadius: BorderRadius.circular(100),
-      //                   child: Image.asset(product.image),
-      //                 ),
-      //                 title: Text(product.name,
-      //                     style: const TextStyle(
-      //                         fontWeight: FontWeight.bold,
-      //                         color: SweetCakeTheme.pink3)),
-      //                 contentPadding: const EdgeInsets.all(5),
-      //                 subtitle: Column(
-      //                   crossAxisAlignment: CrossAxisAlignment.start,
-      //                   children: [
-      //                     Text(
-      //                       product.category,
-      //                       style:
-      //                           const TextStyle(fontWeight: FontWeight.normal),
-      //                     ),
-      //                     Text(
-      //                       NumberFormat.currency(
-      //                         locale: 'es',
-      //                         symbol: '\$',
-      //                         decimalDigits: 0,
-      //                         customPattern: '\$ #,##0',
-      //                       ).format(double.parse(product.price.toString())),
-      //                     ),
-      //                   ],
-      //                 ),
-      //                 trailing: IconButton(
-      //                     onPressed: () {},
-      //                     icon: Icon(
-      //                       Icons.delete_outline_rounded,
-      //                       color: Colors.red[300],
-      //                       size: 40,
-      //                     )),
-
-      //                 // trailing: ClipOval(
-      //                 //   child: Container(
-      //                 //     color: Colors.white,
-      //                 //     width: 50,
-      //                 //     height: 50,
-      //                 //     child: Center(
-      //                 //       child: Text('${product.quantity}'),
-      //                 //     ),
-      //                 //   ),
-      //                 // ),
-      //               ),
-      //               Row(
-      //                 mainAxisAlignment: MainAxisAlignment.center,
-      //                 children: [
-      //                   IconButton(
-      //                     onPressed: () {},
-      //                     icon: const Icon(Icons.remove_circle_outline_rounded),
-      //                   ),
-      //                   ClipRRect(
-      //                     borderRadius:
-      //                         const BorderRadius.all(Radius.circular(10)),
-      //                     child: Container(
-      //                       color: Colors.white,
-      //                       width: 50,
-      //                       height: 30,
-      //                       child: Center(
-      //                         child: Text('${product.quantity}'),
-      //                       ),
-      //                     ),
-      //                   ),
-      //                   IconButton(
-      //                     onPressed: () {},
-      //                     icon: const Icon(Icons.add_circle_outline_rounded),
-      //                   ),
-      //                 ],
-      //               ),
-      //               const Divider(),
-      //             ],
-      //           );
-      //         },
-      //       ),
-      //     ),
-      //     actions: [
-      //       ElevatedButton(
-      //         onPressed: () {},
-      //         style: ElevatedButton.styleFrom(
-      //           minimumSize: Size(
-      //             (MediaQuery.of(context).size.width * 0.3),
-      //             (MediaQuery.of(context).size.height * 0.06),
-      //           ),
-      //         ),
-      //         child: const Text('Emitir boleta'),
-      //       )
-      //     ],
-      //   );
-      // },
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final listado = Provider.of<ProductService>(context);
+    final listadoProductos = listado.listadoproductos;
+    final listacat = Provider.of<ProductService>(context);
+
+    List productselected = [];
+    Map<Listado, int> cartQuantities = {};
+    Map<Listado, int> cartItems = {};
+
+    final filterProducts = listado.listadoproductos.where((product) {
+      return productselected.isEmpty ||
+          productselected.contains(product.categoria);
+    }).toList();
+
+    if (listado.isLoading) return const LoadingScreen();
     bool cartWithProducts = false;
     // bool isInCart = false;
     if (productselected.isNotEmpty) {
@@ -251,6 +141,20 @@ class _SellsViewState extends State<SellsView> {
     // if (productselected.isNotEmpty) {
     //   isInCart = !isInCart;
     // }
+    List listadoCategorias = [];
+    for (var producto in listadoProductos) {
+      if (!listadoCategorias.contains(producto.categoria)) {
+        listadoCategorias.add(producto.categoria);
+      }
+    }
+
+    final filteredProducts = listadoProductos.where(
+      (product) {
+        return selectedCategories.isEmpty ||
+            selectedCategories.contains(product.categoria);
+      },
+    ).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -265,7 +169,7 @@ class _SellsViewState extends State<SellsView> {
               onPressed: () async {
                 if (productselected.isEmpty == false) {
                   {
-                    detalleVenta(context);
+                    detalleVenta(context, productselected);
                   }
                 } else {
                   sinProductos(context);
@@ -273,7 +177,7 @@ class _SellsViewState extends State<SellsView> {
               },
               icon: Stack(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.shopping_cart_outlined,
                     size: 35,
                   ),
@@ -282,16 +186,17 @@ class _SellsViewState extends State<SellsView> {
                     child: Positioned(
                       child: ClipOval(
                         child: Container(
-                            color: const Color(0xFFF95959),
-                            width: 15,
-                            height: 15,
-                            child: Center(
-                              child: Text(
-                                productselected.length.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 14),
-                              ),
-                            )),
+                          color: const Color(0xFFF95959),
+                          width: 15,
+                          height: 15,
+                          child: Center(
+                            child: Text(
+                              productselected.length.toString(),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 12),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -305,97 +210,129 @@ class _SellsViewState extends State<SellsView> {
       drawer: const SideBar(),
       body: Column(
         children: [
+          Stack(
+            children: [
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //   child:
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Wrap(
+                  spacing: 10.0, // Espacio horizontal entre los chips
+                  runSpacing: 10.0,
+                  children: listadoCategorias.map((categoria) {
+                    return FilterChip(
+                      selected: listadoCategorias.contains(categoria),
+                      label: Text(categoria),
+                      onSelected: (selected) {
+                        setState(() {
+                          if (selected) {
+                            selectedCategories.add(categoria);
+                          } else {
+                            selectedCategories.remove(categoria);
+                          }
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+              ),
+              // ),
+              Positioned(
+                  top: MediaQuery.of(context).size.height * 0.01,
+                  right: 0,
+                  child: const Icon(Icons.arrow_forward_ios_rounded))
+            ],
+          ),
+          const Divider(
+            height: 1,
+          ),
           Expanded(
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, childAspectRatio: 0.66),
-              itemCount: pastryProducts.length,
+              itemCount: filteredProducts.length,
               itemBuilder: (context, index) {
-                final product = pastryProducts[index];
+                final product = filteredProducts[index];
+
+                String nombrecat = '';
+                for (var categoria in listacat.listadocategorias) {
+                  if (categoria.categoriaId == product.categoria) {
+                    nombrecat = categoria.nombre;
+                    break;
+                  }
+                }
+
                 final int? quantityInCart =
                     cartItems.containsKey(product) ? cartItems[product] : 0;
                 // final int quantityInCart = productselected
                 //     .where((item) => item.id == product.id)
                 //     .length;
+
+                Uint8List bytes =
+                    Uint8List.fromList(base64.decode(product.imagen));
+                Image image = Image.memory(bytes);
+
                 return Card(
                   color: SweetCakeTheme.blue,
                   elevation: 8,
-                  margin: EdgeInsets.all(5),
-                  child: Stack(
+                  margin: const EdgeInsets.all(5),
+                  child: Column(
                     children: [
-                      Column(
-                        children: [
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    width: 90,
-                                    height: 90,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(200),
-                                      shape: BoxShape.rectangle,
-                                      image: DecorationImage(
-                                        image: AssetImage(product.image),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    product.name,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  Text(
-                                    NumberFormat.currency(
-                                      locale: 'es',
-                                      symbol: '\$',
-                                      decimalDigits: 0,
-                                      customPattern: '\$ #,##0',
-                                    ).format(
-                                        double.parse(product.price.toString())),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w400),
-                                  ),
-                                ],
+                      Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 90,
+                              height: 90,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(200),
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  image: image.image,
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  setState(
-                                    () {
-                                      productselected.add(product);
-                                    },
-                                  );
-                                },
-                                child: const Icon(Icons.add),
-                              ),
-                              // Container(
-                              //   color: Colors.green,
-                              //   child:
-                              // )
-                            ],
-                          )
-                        ],
+                            Text(
+                              product.nombre,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              NumberFormat.currency(
+                                locale: 'es',
+                                symbol: '\$',
+                                decimalDigits: 0,
+                                customPattern: '\$ #,##0',
+                              ).format(double.parse(product.precio.toString())),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
                       ),
-                      // Visibility(
-                      //   visible: isInCart,
-                      //   child: Container(
-                      //       width: 0,
-                      //       height: 0,
-                      //       margin: EdgeInsets.all(5),
-                      //       // color: Colors.green,
-                      //       child: Icon(
-                      //         Icons.circle,
-                      //         color: Colors.green[300],
-                      //       )),
-                      // )
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(
+                                () {
+                                  productselected.add(product);
+                                },
+                              );
+                            },
+                            child: const Icon(Icons.add),
+                          ),
+                          // Container(
+                          //   color: Colors.green,
+                          //   child:
+                          // )
+                        ],
+                      )
                     ],
                   ),
                 );
@@ -410,7 +347,7 @@ class _SellsViewState extends State<SellsView> {
                 onPressed: () {
                   if (productselected.isEmpty == false) {
                     {
-                      detalleVenta(context);
+                      detalleVenta(context, productselected);
                     }
                   } else {
                     return sinProductos(context);
