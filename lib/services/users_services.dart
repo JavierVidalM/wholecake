@@ -10,9 +10,9 @@ import 'package:wholecake/models/users.dart';
 // 'accounts/user_user_add_rest/'
 
 class UserService extends ChangeNotifier {
-  String APIUSER = 'niko';
-  String APIPASS = 'nicolas15';
-  String BASEURL = '192.168.1.10:8000';
+  String APIUSER = 'sweetcake';
+  String APIPASS = 'pasteldetula';
+  String BASEURL = '3.85.128.77:8000';
 
   bool isLoading = true;
   bool isEditCreate = true;
