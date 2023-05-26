@@ -1,6 +1,5 @@
 import 'dart:convert';
-import 'package:date_time_picker/date_time_picker.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/productos.dart';
@@ -188,7 +187,7 @@ class _ProductsViewState extends State<ProductsView> {
   }
 
   Future<void> viewProductPopup(prodImage, prodName, prodCategory, prodElab,
-      prodExpire, prodPrice) async {
+      prodExpire, prodPrice, prodId, listado) async {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -221,151 +220,156 @@ class _ProductsViewState extends State<ProductsView> {
               content: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Card(
-                    color: SweetCakeTheme.pink1,
-                    child: Table(
-                      border: TableBorder(
-                          top: BorderSide.none,
-                          bottom: BorderSide.none,
-                          left: BorderSide.none,
-                          right: BorderSide.none,
-                          horizontalInside:
-                              BorderSide(width: 1, color: Colors.black12),
-                          verticalInside:
-                              BorderSide(width: 1, color: Colors.black12)),
-                      defaultVerticalAlignment:
-                          TableCellVerticalAlignment.middle,
-                      children: [
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('Nombre producto'),
-                              ),
-                            ),
-                            TableCell(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(prodName),
-                              ),
-                            ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('Categoría'),
-                              ),
-                            ),
-                            TableCell(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(prodCategory),
-                              ),
-                            ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('Fecha Elaboración'),
-                              ),
-                            ),
-                            TableCell(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(prodElab),
-                              ),
-                            ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('Fecha Vencimiento'),
-                              ),
-                            ),
-                            TableCell(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(prodExpire),
-                              ),
-                            ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('Precio'),
-                              ),
-                            ),
-                            TableCell(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  NumberFormat.currency(
-                                    locale: 'es',
-                                    symbol: '\$',
-                                    decimalDigits: 0,
-                                    customPattern: '\$ #,##0',
-                                  ).format(double.parse(prodPrice.toString())),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                    // Column(
-                    //   mainAxisSize: MainAxisSize.min,
-                    //   children: [
-                    //     Padding(
-                    //       padding: EdgeInsets.only(
-                    //           top: MediaQuery.of(context).size.height * 0.01),
-                    //       child: Text("Producto: $prodName"),
-                    //     ),
-                    //     Padding(
-                    //       padding: EdgeInsets.only(
-                    //           top: MediaQuery.of(context).size.height * 0.01),
-                    //       child: Text("Categoria $prodCategory"),
-                    //     ),
-                    //     Padding(
-                    //       padding: EdgeInsets.only(
-                    //           top: MediaQuery.of(context).size.height * 0.01),
-                    //       child: Text("Fecha elaboración $prodElab"),
-                    //     ),
-                    //     Padding(
-                    //       padding: EdgeInsets.only(
-                    //           top: MediaQuery.of(context).size.height * 0.01),
-                    //       child: Text("Fecha vencimiento $prodExpire"),
-                    //     ),
-                    //     Padding(
-                    //       padding: EdgeInsets.only(
-                    //           top: MediaQuery.of(context).size.height * 0.01),
-                    //       child: Text("Precio $prodPrice"),
-                    //     ),
-                    //   ],
-                    // ),
-                    ),
+                  color: SweetCakeTheme.pink1,
+                  child:
+                      // Table(
+                      //   border: TableBorder(
+                      //       top: BorderSide.none,
+                      //       bottom: BorderSide.none,
+                      //       left: BorderSide.none,
+                      //       right: BorderSide.none,
+                      //       horizontalInside:
+                      //           BorderSide(width: 1, color: Colors.black12),
+                      //       verticalInside:
+                      //           BorderSide(width: 1, color: Colors.black12)),
+                      //   defaultVerticalAlignment:
+                      //       TableCellVerticalAlignment.middle,
+                      //   children: [
+                      //     TableRow(
+                      //       children: [
+                      //         TableCell(
+                      //           child: Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Text('Nombre producto'),
+                      //           ),
+                      //         ),
+                      //         TableCell(
+                      //           child: Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Text(prodName),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     TableRow(
+                      //       children: [
+                      //         TableCell(
+                      //           child: Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Text('Categoría'),
+                      //           ),
+                      //         ),
+                      //         TableCell(
+                      //           child: Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Text(prodCategory),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     TableRow(
+                      //       children: [
+                      //         TableCell(
+                      //           child: Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Text('Fecha Elaboración'),
+                      //           ),
+                      //         ),
+                      //         TableCell(
+                      //           child: Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Text(prodElab),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     TableRow(
+                      //       children: [
+                      //         TableCell(
+                      //           child: Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Text('Fecha Vencimiento'),
+                      //           ),
+                      //         ),
+                      //         TableCell(
+                      //           child: Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Text(prodExpire),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     TableRow(
+                      //       children: [
+                      //         TableCell(
+                      //           child: Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Text('Precio'),
+                      //           ),
+                      //         ),
+                      //         TableCell(
+                      //           child: Padding(
+                      //             padding: EdgeInsets.all(8.0),
+                      //             child: Text(
+                      //               NumberFormat.currency(
+                      //                 locale: 'es',
+                      //                 symbol: '\$',
+                      //                 decimalDigits: 0,
+                      //                 customPattern: '\$ #,##0',
+                      //               ).format(double.parse(prodPrice.toString())),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ],
+                      // )
+                      Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.01),
+                        child: Text("Producto: $prodName"),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.01),
+                        child: Text("Categoria $prodCategory"),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.01),
+                        child: Text("Fecha elaboración $prodElab"),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.01),
+                        child: Text("Fecha vencimiento $prodExpire"),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.01),
+                        child: Text("Precio $prodPrice"),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               actions: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+
+                      },
                       icon: const Icon(Icons.edit),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        deletePopup(prodId, listado);
+                      },
                       icon: const Icon(Icons.delete),
                     ),
                   ],
@@ -381,11 +385,6 @@ class _ProductsViewState extends State<ProductsView> {
     // final List<Listado> prod = listadoView.listadoproductos;
     final listacat = Provider.of<ProductService>(context);
 
-    final filterProducts = listadoView.listadoproductos.where((product) {
-      return productsSelected.isEmpty ||
-          productsSelected.contains(product.categoria);
-    }).toList();
-
     return ChangeNotifierProvider(
         create: (_) => ProductService(),
         child: Scaffold(
@@ -399,6 +398,11 @@ class _ProductsViewState extends State<ProductsView> {
             drawer: const SideBar(),
             body: Consumer<ProductService>(
               builder: (context, listado, child) {
+                final filterProducts =
+                    listado.listadoproductos.where((product) {
+                  return productsSelected.isEmpty ||
+                      productsSelected.contains(product.categoria);
+                }).toList();
                 // final producto = listado.listadoproductos[index];
                 return Column(
                   children: [
@@ -489,257 +493,269 @@ class _ProductsViewState extends State<ProductsView> {
                                     nombrecat,
                                     product.fechaElaboracion,
                                     product.fechaVencimiento,
-                                    product.precio);
+                                    product.precio,
+                                    product.productoId,
+                                    listado.listadoproductos);
                               },
                               child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12),
                                   child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 120,
-                                        height: 120,
-                                        margin: EdgeInsets.only(
-                                            right: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.01,
-                                            top: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.01,
-                                            bottom: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.01),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          shape: BoxShape.rectangle,
-                                          image: DecorationImage(
-                                            image: image.image,
-                                            fit: BoxFit.fill,
+                                children: [
+                                  Container(
+                                    width: 130,
+                                    height: 130,
+                                    margin: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      shape: BoxShape.rectangle,
+                                      image: DecorationImage(
+                                        image: image.image,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.15,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.01),
+                                          child: Text(product.nombre),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.01),
+                                          child: Text("Categoría: $nombrecat"),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.01),
+                                          child: Text(
+                                              "Cantidad: ${product.cantidad}"),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.01),
+                                          child: Text(
+                                            NumberFormat.currency(
+                                              locale: 'es',
+                                              symbol: '\$',
+                                              decimalDigits: 0,
+                                              customPattern: '\$ #,##0',
+                                            ).format(double.parse(
+                                                product.precio.toString())),
                                           ),
                                         ),
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Card(
-                                                color: SweetCakeTheme.pink1,
-                                                elevation: 3,
-                                                child: Table(
-                                                  border: TableBorder(
-                                                    top: BorderSide.none,
-                                                    bottom: BorderSide.none,
-                                                    left: BorderSide.none,
-                                                    right: BorderSide.none,
-                                                    horizontalInside:
-                                                        BorderSide(
-                                                            width: 1,
-                                                            color:
-                                                                Colors.black26),
-                                                    verticalInside: BorderSide(
-                                                        width: 1,
-                                                        color: Colors.black26),
-                                                  ),
-                                                  defaultVerticalAlignment:
-                                                      TableCellVerticalAlignment
-                                                          .middle,
-                                                  children: [
-                                                    TableRow(
-                                                      children: [
-                                                        TableCell(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0),
-                                                            child: Text(
-                                                                'Nombre producto'),
-                                                          ),
-                                                        ),
-                                                        TableCell(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0),
-                                                            child: Text(
-                                                              product.nombre,
-                                                              maxLines: 1,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    TableRow(
-                                                      children: [
-                                                        TableCell(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0),
-                                                            child: Text(
-                                                                'Categoría'),
-                                                          ),
-                                                        ),
-                                                        TableCell(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0),
-                                                            child: Text(
-                                                                '$nombrecat'),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    TableRow(
-                                                      children: [
-                                                        TableCell(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0),
-                                                            child:
-                                                                Text('Precio'),
-                                                          ),
-                                                        ),
-                                                        TableCell(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0),
-                                                            child: Text(
-                                                              NumberFormat
-                                                                  .currency(
-                                                                locale: 'es',
-                                                                symbol: '\$',
-                                                                decimalDigits:
-                                                                    0,
-                                                                customPattern:
-                                                                    '\$ #,##0',
-                                                              ).format(double
-                                                                  .parse(product
-                                                                      .precio
-                                                                      .toString())),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                )
-                                                //     Column(
-                                                //   children: [
-                                                //     Row(
-                                                //       children: [
-                                                //         Expanded(
-                                                //           child: Text(
-                                                //             product.nombre,
-                                                //             maxLines: 2,
-                                                //             overflow: TextOverflow
-                                                //                 .ellipsis,
-                                                //           ),
-                                                //         ),
-                                                //         Row(
-                                                //           children: [
-                                                //             IconButton(
-                                                //               onPressed: () {
-                                                //                 // filterProducts[index]
-                                                //                 //     .copy();
-                                                //                 print(product
-                                                //                     .productoId);
-                                                //                 Navigator.push(
-                                                //                   context,
-                                                //                   MaterialPageRoute(
-                                                //                     builder: (context) =>
-                                                //                         ProductsEdit(
-                                                //                             productId:
-                                                //                                 product.productoId),
-                                                //                   ),
-                                                //                 );
-                                                //                 // Navigator.push(
-                                                //                 //   context,
-                                                //                 //   MaterialPageRoute(
-                                                //                 //       builder: (context) =>
-                                                //                 //           ProductsEdit()),
-                                                //                 // );
-                                                //               },
-                                                //               icon: const Icon(
-                                                //                   Icons.edit),
-                                                //             ),
-                                                //             IconButton(
-                                                //               onPressed:
-                                                //                   () async {
-                                                //                 deletePopup(
-                                                //                     product
-                                                //                         .productoId,
-                                                //                     listado
-                                                //                         .listadoproductos);
-                                                //               },
-                                                //               icon: const Icon(
-                                                //                   Icons.delete),
-                                                //             ),
-                                                //           ],
-                                                //         ),
-                                                //       ],
-                                                //     ),
-                                                //     SizedBox(
-                                                //       height: 25,
-                                                //       width:
-                                                //           MediaQuery.of(context)
-                                                //               .size
-                                                //               .width,
-                                                //       child: Text(
-                                                //         'Categoría:$nombrecat',
-                                                //         textAlign:
-                                                //             TextAlign.start,
-                                                //       ),
-                                                //     ),
-
-                                                //     // const SizedBox(height: 10),
-                                                //     // Text(
-                                                //     //   'Elaboración: ${product.fechaElaboracion.toString().substring(0, 10)}',
-                                                //     // ),
-                                                //     // const SizedBox(height: 5),
-                                                //     // Text(
-                                                //     //   'Vencimiento: ${product.fechaVencimiento.toString().substring(0, 10)}',
-                                                //     // ),
-                                                //     SizedBox(
-                                                //       height: 25,
-                                                //       width:
-                                                //           MediaQuery.of(context)
-                                                //               .size
-                                                //               .width,
-                                                //       child: Text(
-                                                //         NumberFormat.currency(
-                                                //           locale: 'es',
-                                                //           symbol: '\$',
-                                                //           decimalDigits: 0,
-                                                //           customPattern:
-                                                //               '\$ #,##0',
-                                                //         ).format(double.parse(
-                                                //             product.precio
-                                                //                 .toString())),
-                                                //       ),
-                                                //     ),
-                                                //   ],
-                                                // ),
-                                                ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.1,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.15,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Container(
+                                            width: 40,
+                                            height: 50,
+                                            child: IconButton(
+                                              onPressed: () {
+                                                // filterProducts[index]
+                                                //     .copy();
+                                                print(product.productoId);
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProductsEdit(
+                                                            productId: product
+                                                                .productoId),
+                                                  ),
+                                                );
+                                                // Navigator.push(
+                                                //   context,
+                                                //   MaterialPageRoute(
+                                                //       builder: (context) =>
+                                                //           ProductsEdit()),
+                                                // );
+                                              },
+                                              icon: const Icon(Icons.edit),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 40,
+                                            height: 50,
+                                            child: IconButton(
+                                              onPressed: () async {
+                                                deletePopup(product.productoId,
+                                                    listado.listadoproductos);
+                                              },
+                                              icon: const Icon(
+                                                  Icons.delete_outline_rounded),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                  // Padding(
+                                  //   padding: const EdgeInsets.all(12),
+                                  //   child: Row(
+                                  //     crossAxisAlignment:
+                                  //         CrossAxisAlignment.center,
+                                  //     children: [
+                                  //       Container(
+                                  //         width: 120,
+                                  //         height: 120,
+                                  //         margin: EdgeInsets.only(
+                                  //             right: MediaQuery.of(context)
+                                  //                     .size
+                                  //                     .width *
+                                  //                 0.01,
+                                  //             top: MediaQuery.of(context)
+                                  //                     .size
+                                  //                     .height *
+                                  //                 0.01,
+                                  //             bottom: MediaQuery.of(context)
+                                  //                     .size
+                                  //                     .height *
+                                  //                 0.01),
+                                  //         decoration: BoxDecoration(
+                                  //           borderRadius:
+                                  //               BorderRadius.circular(100),
+                                  //           shape: BoxShape.rectangle,
+                                  //           image: DecorationImage(
+                                  //             image: image.image,
+                                  //             fit: BoxFit.fill,
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //       Expanded(
+                                  //         child: Column(
+                                  //           children: [
+                                  //             SizedBox(
+                                  //               height: 25,
+                                  //               width: MediaQuery.of(context)
+                                  //                   .size
+                                  //                   .width,
+                                  //               child: Text(
+                                  //                 product.nombre,
+                                  //                 textAlign: TextAlign.start,
+                                  //               ),
+                                  //             ),
+                                  //             SizedBox(
+                                  //               height: 25,
+                                  //               width: MediaQuery.of(context)
+                                  //                   .size
+                                  //                   .width,
+                                  //               child: Text(
+                                  //                 'Categoría:$nombrecat',
+                                  //                 textAlign: TextAlign.start,
+                                  //               ),
+                                  //             ),
+                                  //             SizedBox(
+                                  //               height: 25,
+                                  //               width: MediaQuery.of(context)
+                                  //                   .size
+                                  //                   .width,
+                                  //               child: Text(
+                                  //                 'Cantidad: ${product.cantidad}',
+                                  //                 textAlign: TextAlign.start,
+                                  //               ),
+                                  //             ),
+                                  //             SizedBox(
+                                  //               height: 25,
+                                  //               width: MediaQuery.of(context)
+                                  //                   .size
+                                  //                   .width,
+                                  //               child: Text(
+                                  //                 NumberFormat.currency(
+                                  //                   locale: 'es',
+                                  //                   symbol: '\$',
+                                  //                   decimalDigits: 0,
+                                  //                   customPattern: '\$ #,##0',
+                                  //                 ).format(double.parse(
+                                  //                     product.precio.toString())),
+                                  //               ),
+                                  //             ),
+                                  //           ],
+                                  //         ),
+                                  //       ),
+                                  //       Container(
+                                  //         // color: Colors.red,
+                                  //         child: Column(
+                                  //           crossAxisAlignment:
+                                  //               CrossAxisAlignment.end,
+                                  //           children: [
+                                  //             IconButton(
+                                  //               onPressed: () {
+                                  //                 // filterProducts[index]
+                                  //                 //     .copy();
+                                  //                 print(product.productoId);
+                                  //                 Navigator.push(
+                                  //                   context,
+                                  //                   MaterialPageRoute(
+                                  //                     builder: (context) =>
+                                  //                         ProductsEdit(
+                                  //                             productId: product
+                                  //                                 .productoId),
+                                  //                   ),
+                                  //                 );
+                                  //                 // Navigator.push(
+                                  //                 //   context,
+                                  //                 //   MaterialPageRoute(
+                                  //                 //       builder: (context) =>
+                                  //                 //           ProductsEdit()),
+                                  //                 // );
+                                  //               },
+                                  //               icon: const Icon(Icons.edit),
+                                  //             ),
+                                  //             IconButton(
+                                  //               onPressed: () async {
+                                  //                 deletePopup(product.productoId,
+                                  //                     listado.listadoproductos);
+                                  //               },
+                                  //               icon: const Icon(Icons.delete),
+                                  //             ),
+                                  //           ],
+                                  //         ),
+                                  //       )
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                  ),
                             );
                           },
                         ),

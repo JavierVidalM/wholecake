@@ -5,9 +5,9 @@
 import 'dart:convert';
 
 class Supplies {
-  List<ListSupplies> listSupplies;
+  List<SuppliesList> suppliesList;
   Supplies({
-    required this.listSupplies,
+    required this.suppliesList,
   });
 
   factory Supplies.fromJson(String str) => Supplies.fromMap(json.decode(str));
@@ -15,90 +15,90 @@ class Supplies {
   String toJson() => json.encode(toMap());
 
   factory Supplies.fromMap(Map<String, dynamic> json) => Supplies(
-        listSupplies: List<ListSupplies>.from(
-            json["ListSupplies"].map((x) => ListSupplies.fromMap(x))),
+        suppliesList: List<SuppliesList>.from(
+            json["List"].map((x) => SuppliesList.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
-        "ListSupplies": List<dynamic>.from(listSupplies.map((x) => x.toMap())),
+        "List": List<dynamic>.from(suppliesList.map((x) => x.toMap())),
       };
 }
 
-class ListSupplies {
+class SuppliesList {
   int suppliesId;
-  String nombreinsumoSupplies;
-  String fechallegadaSupplies;
-  String fechavencimientoSupplies;
-  String preciounidadSupplies;
-  String proveedorSupplies;
-  String estadoSupplies;
-  String tipoinsumoSupplies;
-  int numeroloteSupplies;
-  String marcaproductoSupplies;
-  int cantidadSupplies;
+  String nombreInsumo;
+  String fechaLlegada;
+  String fechaVencimiento;
+  int preciounidad;
+  String proveedor;
+  String estado;
+  String tipoInsumo;
+  String numeroLote;
+  String marcaProducto;
+  int cantidad;
   String imagen_supplies;
 
-  ListSupplies({
+  SuppliesList({
     required this.suppliesId,
-    required this.nombreinsumoSupplies,
-    required this.fechallegadaSupplies,
-    required this.fechavencimientoSupplies,
-    required this.preciounidadSupplies,
-    required this.proveedorSupplies,
-    required this.estadoSupplies,
-    required this.tipoinsumoSupplies,
-    required this.numeroloteSupplies,
-    required this.marcaproductoSupplies,
-    required this.cantidadSupplies,
+    required this.nombreInsumo,
+    required this.fechaLlegada,
+    required this.fechaVencimiento,
+    required this.preciounidad,
+    required this.proveedor,
+    required this.estado,
+    required this.tipoInsumo,
+    required this.numeroLote,
+    required this.marcaProducto,
+    required this.cantidad,
     required this.imagen_supplies,
   });
 
-  factory ListSupplies.fromJson(String str) =>
-      ListSupplies.fromMap(json.decode(str));
+  factory SuppliesList.fromJson(String str) =>
+      SuppliesList.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory ListSupplies.fromMap(Map<String, dynamic> json) => ListSupplies(
+  factory SuppliesList.fromMap(Map<String, dynamic> json) => SuppliesList(
         suppliesId: json["id"],
-        nombreinsumoSupplies: json["nombre_insumo"],
-        fechallegadaSupplies: json["fecha_llegada"],
-        fechavencimientoSupplies: json["fecha_vencimiento"],
-        preciounidadSupplies: json["precio_unidad"],
-        proveedorSupplies: json["proveedor_insumo"],
-        estadoSupplies: json["estado"],
-        tipoinsumoSupplies: json["tipo_insumo"],
-        numeroloteSupplies: json["numero_lote"],
-        marcaproductoSupplies: json["marca_producto"],
-        cantidadSupplies: json["cantidad_insumo"],
-        imagen_supplies: json["imagen_insumo"],
+        nombreInsumo: json["nombre_insumo"],
+        fechaLlegada: json["fecha_llegada"],
+        fechaVencimiento: json["fecha_vencimiento"],
+        preciounidad: json["preciounidad"],
+        proveedor: json["proveedor"],
+        estado: json["estado"],
+        tipoInsumo: json["tipo_insumo"],
+        numeroLote: json["numero_lote"],
+        marcaProducto: json["marca_producto"],
+        cantidad: json["cantidad"],
+        imagen_supplies: json["imagen_supplies"],
       );
 
   Map<String, dynamic> toMap() => {
         "suppliesId": suppliesId,
-        "nombre_insumo": nombreinsumoSupplies,
-        "fecha_llegada": fechallegadaSupplies,
-        "fecha_vencimiento": fechavencimientoSupplies,
-        "precio_unidad": preciounidadSupplies,
-        "proveedor_insumo": proveedorSupplies,
-        "estado": estadoSupplies,
-        "tipo_insumo": tipoinsumoSupplies,
-        "numero_lote": numeroloteSupplies,
-        "marca_producto": marcaproductoSupplies,
-        "cantidad_insumo": cantidadSupplies,
-        "imagen_insumo": imagen_supplies,
+        "nombre_insumo": nombreInsumo,
+        "fecha_llegada": fechaLlegada,
+        "fecha_vencimiento": fechaVencimiento,
+        "preciounidad": preciounidad,
+        "proveedor": proveedor,
+        "estado": estado,
+        "tipo_insumo": tipoInsumo,
+        "numero_lote": numeroLote,
+        "marca_producto": marcaProducto,
+        "cantidad_insumo": cantidad,
+        "imagen_supplies": imagen_supplies,
       };
-  ListSupplies copy() => ListSupplies(
+  SuppliesList copy() => SuppliesList(
         suppliesId: suppliesId,
-        nombreinsumoSupplies: nombreinsumoSupplies,
-        fechallegadaSupplies: fechallegadaSupplies,
-        fechavencimientoSupplies: fechavencimientoSupplies,
-        preciounidadSupplies: preciounidadSupplies,
-        proveedorSupplies: proveedorSupplies,
-        estadoSupplies: estadoSupplies,
-        tipoinsumoSupplies: tipoinsumoSupplies,
-        numeroloteSupplies: numeroloteSupplies,
-        marcaproductoSupplies: marcaproductoSupplies,
-        cantidadSupplies: cantidadSupplies,
+        nombreInsumo: nombreInsumo,
+        fechaLlegada: fechaLlegada,
+        fechaVencimiento: fechaVencimiento,
+        preciounidad: preciounidad,
+        proveedor: proveedor,
+        estado: estado,
+        tipoInsumo: tipoInsumo,
+        numeroLote: numeroLote,
+        marcaProducto: marcaProducto,
+        cantidad: cantidad,
         imagen_supplies: imagen_supplies,
       );
 }

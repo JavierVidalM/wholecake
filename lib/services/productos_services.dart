@@ -15,19 +15,18 @@ class ProductService extends ChangeNotifier {
   List<ListElement> listadocategorias = [];
   List<ListSup> listadosuppliers = [];
   List<ListOdc> listaOrdenes = [];
-  List<ListSupplies> listSupplies = [];
+  List<SuppliesList> suppliesList = [];
 
   Listado? selectedProduct;
   ListElement? selectedCategory;
   ListSup? selectedSupplier;
-  ListSupplies? selectedSupplies;
+  SuppliesList? selectedSupplies;
   bool isLoading = true;
   bool isEditCreate = true;
 //constructor
   ProductService() {
     loadProductos();
     loadCategorias();
-    loadSuppliers();
     loadOrdenCompra();
     loadSupplies();
   }
@@ -75,8 +74,7 @@ class ProductService extends ChangeNotifier {
     final decodeResp = response.body;
     final Listado producto = Listado.fromJson(decodeResp);
     listadoproductos.add(producto);
-    // notifyListeners();
-    await loadProductos(); //
+    notifyListeners();
     isEditCreate = false;
   }
 
@@ -92,6 +90,7 @@ class ProductService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
+    notifyListeners();
     //actualizamos el listado
     // final index = listadoproductos
     //     .indexWhere((element) => element.productoId == product.productoId);
@@ -111,6 +110,7 @@ class ProductService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
+    notifyListeners();
   }
 
   loadCategorias() async {
@@ -172,76 +172,6 @@ class ProductService extends ChangeNotifier {
     final url = Uri.http(
       BASEURL,
       'productos/productos_categoria_delete_rest/',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.post(url, body: msg, headers: {
-      'authorization': basicAuth,
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-    final decodeResp = response.body;
-  }
-
-  loadSuppliers() async {
-    isLoading = true;
-    notifyListeners();
-    var url = Uri.http(
-      BASEURL,
-      'suppliers/suppliers_suppliers_list_rest/',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.get(url, headers: {'authorization': basicAuth});
-    final suppliersMap = Suppliers.fromJson(response.body);
-    print(response.body);
-    listadosuppliers = suppliersMap.listSup;
-    isLoading = false;
-    notifyListeners();
-  }
-
-  Future addSupplier(String msg) async {
-    notifyListeners();
-    final url = Uri.http(
-      BASEURL,
-      'suppliers/suppliers_suppliers_add_rest/',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.post(url, body: msg, headers: {
-      'authorization': basicAuth,
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-    final decodeResp = response.body;
-    final ListSup supplier = ListSup.fromJson(decodeResp);
-    listadosuppliers.add(supplier);
-    // notifyListeners();
-    await loadProductos(); //
-    isEditCreate = false;
-  }
-
-  Future<String> updateSupplier(ListSup supplier) async {
-    final url = Uri.http(
-      BASEURL,
-      'suppliers/suppliers_suppliers_update_rest/',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.post(url, body: supplier.toJson(), headers: {
-      'authorization': basicAuth,
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-    final decodeResp = response.body;
-    //actualizamos el listado
-    // final index = listadoproductos
-    //     .indexWhere((element) => element.productoId == product.productoId);
-    // listadoproductos[index] = product;
-    return '';
-  }
-
-  deleteSupplier(String msg) async {
-    final url = Uri.http(
-      BASEURL,
-      'suppliers/suppliers_suppliers_delete_rest/',
     );
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
@@ -335,7 +265,7 @@ class ProductService extends ChangeNotifier {
     final response = await http.get(url, headers: {'authorization': basicAuth});
     if (response.statusCode == 200) {
       final suppliesMap = Supplies.fromJson(response.body);
-      listSupplies = suppliesMap.listSupplies;
+      suppliesList = suppliesMap.suppliesList;
     }
     isLoading = false;
     notifyListeners();
@@ -352,7 +282,7 @@ class ProductService extends ChangeNotifier {
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
     final response = await http.get(url, headers: {'authorization': basicAuth});
     final suppliesMap = Supplies.fromJson(response.body);
-    listSupplies = suppliesMap.listSupplies;
+    suppliesList = suppliesMap.suppliesList;
     isLoading = false;
     notifyListeners();
   }
@@ -368,12 +298,12 @@ class ProductService extends ChangeNotifier {
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
     final response = await http.get(url, headers: {'authorization': basicAuth});
     final suppliesMap = Supplies.fromJson(response.body);
-    listSupplies = suppliesMap.listSupplies;
+    suppliesList = suppliesMap.suppliesList;
     isLoading = false;
     notifyListeners();
   }
 
-  Future<String> updateSupplies(ListSupplies supplies) async {
+  Future<String> updateSupplies(SuppliesList supplies) async {
     final url = Uri.http(
       BASEURL,
       'supplies/supplies_update_rest/',

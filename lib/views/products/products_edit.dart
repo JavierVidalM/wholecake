@@ -23,9 +23,8 @@ class ProductsEdit extends StatefulWidget {
 class _ProductsEditState extends State<ProductsEdit> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _manufacturingDateController =
-      TextEditingController();
   final TextEditingController _expiryDateController = TextEditingController();
   final TextEditingController _imageController = TextEditingController();
 
@@ -51,22 +50,21 @@ class _ProductsEditState extends State<ProductsEdit> {
     final product = productService.listadoproductos.firstWhere(
       (product) => product.productoId == widget.productId,
       orElse: () => Listado(
-        productoId: 0,
-        nombre: '',
-        fechaElaboracion: '',
-        fechaVencimiento: '',
-        precio: 0,
-        categoria: 0,
-        imagen: '',
-        estado: '',
-        cantidad:0,
-        lote:''
-      ),
+          productoId: 0,
+          nombre: '',
+          fechaElaboracion: '',
+          fechaVencimiento: '',
+          precio: 0,
+          categoria: 0,
+          imagen: '',
+          estado: '',
+          cantidad: 0,
+          lote: ''),
     );
     _nameController.text = product.nombre;
     _categoryController.text = product.categoria.toString();
+    _quantityController.text = product.precio.toString();
     _priceController.text = product.precio.toString();
-    _manufacturingDateController.text = product.fechaElaboracion;
     _expiryDateController.text = product.fechaVencimiento;
     _imageController.text = product.imagen;
   }
@@ -77,17 +75,16 @@ class _ProductsEditState extends State<ProductsEdit> {
     final product = productService.listadoproductos.firstWhere(
       (product) => product.productoId == widget.productId,
       orElse: () => Listado(
-        productoId: 0,
-        nombre: '',
-        fechaElaboracion: '',
-        fechaVencimiento: '',
-        precio: 0,
-        categoria: 0,
-        imagen: '',
-        estado: '',
-        cantidad:0,
-        lote:''
-      ),
+          productoId: 0,
+          nombre: '',
+          fechaElaboracion: '',
+          fechaVencimiento: '',
+          precio: 0,
+          categoria: 0,
+          imagen: '',
+          estado: '',
+          cantidad: 0,
+          lote: ''),
     );
     ImageProvider image;
     if (imageSelected != null) {
@@ -182,7 +179,7 @@ class _ProductsEditState extends State<ProductsEdit> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Fecha Elaboración'),
+                const Text('Fecha Vencimiento'),
                 Theme(
                   data: SweetCakeTheme.calendarTheme,
                   child: DateTimePicker(
@@ -201,17 +198,19 @@ class _ProductsEditState extends State<ProductsEdit> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Fecha Vencimiento'),
-                Theme(
-                  data: SweetCakeTheme.calendarTheme,
-                  child: DateTimePicker(
-                    initialValue: product.fechaElaboracion,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                    // onChanged: (val) => print(val),
-                    validator: (val) {
-                      product.fechaVencimiento = val!;
-                    },
+                const Text('Cantidad'),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  initialValue: product.cantidad.toString(),
+                  onChanged: (value) {
+                    if (int.tryParse(value) == null) {
+                      product.cantidad = 0;
+                    } else {
+                      product.cantidad = int.parse(value);
+                    }
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'Cantidad',
                   ),
                 ),
               ],

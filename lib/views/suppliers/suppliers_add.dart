@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:wholecake/views/users/users_list.dart';
 
 import '../../services/productos_services.dart';
+import '../../services/suppliers_services.dart';
 
 @override
 Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class _SuppliersAddPageState extends State<SuppliersAddPage> {
       'telefono_proveedor': numerotelefonoController.text,
       'imagen_insumo': base64,
     });
-    await ProductService().addSupplier(msg);
+    await SuppliersService().addSupplier(msg);
     print('saved');
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => SuppliersView()));

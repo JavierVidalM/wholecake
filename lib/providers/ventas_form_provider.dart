@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/models/supplies.dart';
+import 'package:wholecake/models/ventas.dart';
 
-class SuppliesFormProvider extends ChangeNotifier {
+class VentasFormProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = new GlobalKey<FormState>();
-  SuppliesList supplies;
-  SuppliesFormProvider(this.supplies);
+  Listventa ventas;
+  VentasFormProvider(this.ventas);
 
   bool isLoading = false;
 
