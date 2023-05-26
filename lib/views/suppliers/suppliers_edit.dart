@@ -73,7 +73,7 @@ class _ProductFormState extends State<_ProductForm> {
       image = FileImage(imageSelected!);
     } else if (supplier.imagen_insumo.isNotEmpty) {
       Uint8List bytes =
-          Uint8List.fromList(base64.decode(supplier.imagen_insumo!));
+          Uint8List.fromList(base64.decode(supplier.imagen_insumo));
       image = MemoryImage(bytes);
     } else {
       image = const AssetImage('assets/images/default.png');
