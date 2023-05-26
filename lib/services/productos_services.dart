@@ -81,6 +81,7 @@ class ProductService extends ChangeNotifier {
     });
     final decodeResp = response.body;
     notifyListeners();
+    loadProductos();
     //actualizamos el listado
     // final index = listadoproductos
     //     .indexWhere((element) => element.productoId == product.productoId);
