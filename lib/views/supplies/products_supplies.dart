@@ -7,6 +7,7 @@ import 'package:wholecake/views/suppliers/suppliers.dart';
 import 'package:wholecake/views/utilities/sidebar.dart';
 import 'package:wholecake/views/utilities/loading_screen.dart';
 import 'package:wholecake/views/suppliers/suppliers_edit.dart';
+import '../../services/supplies_services.dart';
 
 class Supplies extends StatefulWidget {
   const Supplies({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ SuppliesList? suppliesSeleccionada;
 class _SuppliesState extends State<Supplies> {
   int? _selectedCategory = null;
 
-  Future<String?> filterPopup(ProductService listacat) => showDialog<String>(
+  Future<String?> filterPopup(SuppliesService listacat) => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text("Filtro"),

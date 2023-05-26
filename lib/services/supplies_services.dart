@@ -9,6 +9,7 @@ class SuppliesService extends ChangeNotifier {
   String BASEURL = '3.85.128.77:8000';
 
   List<SuppliesList> suppliesList = [];
+  SuppliesList? selectedSupplies;
   bool isLoading = true;
   bool isEditCreate = true;
 //constructor

@@ -7,6 +7,7 @@ import 'package:wholecake/views/suppliers/suppliers.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:wholecake/theme/theme_constant.dart';
 export 'package:wholecake/routes/app_routes.dart';
+import '../../services/supplies_services.dart';
 
 class InputsReciptSupplies extends StatefulWidget {
   const InputsReciptSupplies({super.key});
@@ -16,17 +17,17 @@ class InputsReciptSupplies extends StatefulWidget {
 }
 
 class _InputsReciptSuppliesState extends State<InputsReciptSupplies> {
-  late ProductService _productService;
+  late SuppliesService _suppliesService;
   @override
   void initState() {
     super.initState();
-    _productService = Provider.of<ProductService>(context, listen: false);
+    _suppliesService = Provider.of<SuppliesService>(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SuppliesFormProvider(_productService.selectedSupplies!),
+      create: (_) => SuppliesFormProvider(_suppliesService.selectedSupplies!),
       child: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -36,16 +37,16 @@ class _InputsReciptSuppliesState extends State<InputsReciptSupplies> {
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
         ),
         drawer: const SideBar(),
-        body: _ProductForm(productService: _productService),
+        body: _ProductForm(suppliesService: _suppliesService),
       ),
     );
   }
 }
 
 class _ProductForm extends StatefulWidget {
-  final ProductService productService;
+  final SuppliesService suppliesService;
 
-  const _ProductForm({Key? key, required this.productService})
+  const _ProductForm({Key? key, required this.suppliesService})
       : super(key: key);
 
   @override

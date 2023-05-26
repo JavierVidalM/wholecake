@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:wholecake/models/ordendecompra.dart';
 import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/models/categoria.dart';
-import 'package:wholecake/models/suppliers.dart';
-import 'package:wholecake/models/supplies.dart';
 
 class ProductService extends ChangeNotifier {
   String APIUSER = 'sweetcake';
@@ -13,22 +10,15 @@ class ProductService extends ChangeNotifier {
   String BASEURL = '3.85.128.77:8000';
   List<Listado> listadoproductos = [];
   List<ListElement> listadocategorias = [];
-  List<ListSup> listadosuppliers = [];
-  List<ListOdc> listaOrdenes = [];
-  List<SuppliesList> suppliesList = [];
 
   Listado? selectedProduct;
   ListElement? selectedCategory;
-  ListSup? selectedSupplier;
-  SuppliesList? selectedSupplies;
   bool isLoading = true;
   bool isEditCreate = true;
 //constructor
   ProductService() {
     loadProductos();
     loadCategorias();
-    loadOrdenCompra();
-    loadSupplies();
   }
 
   loadProductos() async {
@@ -172,156 +162,6 @@ class ProductService extends ChangeNotifier {
     final url = Uri.http(
       BASEURL,
       'productos/productos_categoria_delete_rest/',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.post(url, body: msg, headers: {
-      'authorization': basicAuth,
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-    final decodeResp = response.body;
-  }
-
-  //ordendecompra
-  loadOrdenCompra() async {
-    isLoading = true;
-    notifyListeners();
-    var url = Uri.http(
-      BASEURL,
-      'ordendc/ordendc_ordendc_list_rest',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.get(url, headers: {'authorization': basicAuth});
-    final ordenMap = OrdenDeCompa.fromJson(response.body);
-    listaOrdenes = ordenMap.listOdc;
-    isLoading = false;
-    notifyListeners();
-  }
-
-  Future addOrdenCompra(String msg) async {
-    notifyListeners();
-    final url = Uri.http(
-      BASEURL,
-      'ordendc/ordendc_ordendc_add_rest/',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.post(url, body: msg, headers: {
-      'authorization': basicAuth,
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-    final decodeResp = response.body;
-    final ListOdc odc = ListOdc.fromJson(decodeResp);
-    listaOrdenes.add(odc);
-    // notifyListeners();
-    await loadProductos(); //
-    isEditCreate = false;
-  }
-
-  Future<String> updateOrdenCompra(ListOdc odc) async {
-    final url = Uri.http(
-      BASEURL,
-      'ordendc/ordendc_ordendc_update_rest/',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.post(url, body: odc.toJson(), headers: {
-      'authorization': basicAuth,
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-    final decodeResp = response.body;
-    //actualizamos el listado
-    // final index = listadoproductos
-    //     .indexWhere((element) => element.productoId == product.productoId);
-    // listadoproductos[index] = product;
-    return '';
-  }
-
-  deleteOrdenCompra(String msg) async {
-    final url = Uri.http(
-      BASEURL,
-      'ordendc/ordendc_ordendc_delete_rest/',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.post(url, body: msg, headers: {
-      'authorization': basicAuth,
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-    final decodeResp = response.body;
-  }
-
-//INSUMOS
-
-  Future<void> loadSupplies() async {
-    isLoading = true;
-    notifyListeners();
-
-    var url = Uri.http(BASEURL, 'supplies/supplies_list_rest');
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-
-    final response = await http.get(url, headers: {'authorization': basicAuth});
-    if (response.statusCode == 200) {
-      final suppliesMap = Supplies.fromJson(response.body);
-      suppliesList = suppliesMap.suppliesList;
-    }
-    isLoading = false;
-    notifyListeners();
-  }
-
-  Future<void> listSuppliescorrecto() async {
-    isLoading = true;
-    notifyListeners();
-    var url = Uri.http(
-      BASEURL,
-      'supplies/supplies_list_rest_estadocorrecto',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.get(url, headers: {'authorization': basicAuth});
-    final suppliesMap = Supplies.fromJson(response.body);
-    suppliesList = suppliesMap.suppliesList;
-    isLoading = false;
-    notifyListeners();
-  }
-
-  Future<void> listSuppliesprogreso() async {
-    isLoading = true;
-    notifyListeners();
-    var url = Uri.http(
-      BASEURL,
-      'supplies/supplies_list_rest_estadoprogreso',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.get(url, headers: {'authorization': basicAuth});
-    final suppliesMap = Supplies.fromJson(response.body);
-    suppliesList = suppliesMap.suppliesList;
-    isLoading = false;
-    notifyListeners();
-  }
-
-  Future<String> updateSupplies(SuppliesList supplies) async {
-    final url = Uri.http(
-      BASEURL,
-      'supplies/supplies_update_rest/',
-    );
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.post(url, body: supplies.toJson(), headers: {
-      'authorization': basicAuth,
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-    final decodeResp = response.body;
-    return '';
-  }
-
-  deleteSupplies(String msg) async {
-    final url = Uri.http(
-      BASEURL,
-      'supplies/supplies_delete_rest/',
     );
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
