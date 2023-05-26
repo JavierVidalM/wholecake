@@ -7,9 +7,10 @@ class LoginMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: SweetCakeTheme.loginTheme,
-      child: Scaffold(
+    return MaterialApp(
+      theme: SweetCakeTheme.loginTheme,
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
         backgroundColor: const Color(0xFFBDE0FE),
         body: Center(
           child: Column(
