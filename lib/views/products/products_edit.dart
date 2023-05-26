@@ -6,6 +6,8 @@ import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/products/products.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:file_picker/file_picker.dart';
+import '../../models/categoria.dart';
+
 import 'dart:typed_data';
 import 'dart:convert';
 import 'dart:io';
@@ -43,6 +45,13 @@ class _ProductsEditState extends State<ProductsEdit> {
   void initState() {
     super.initState();
     loadProductDetails();
+  }
+
+  String? validateCategory(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, seleccione una categoría.';
+    }
+    return null;
   }
 
   void loadProductDetails() {
@@ -160,19 +169,44 @@ class _ProductsEditState extends State<ProductsEdit> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Categoría'),
-                TextFormField(
-                  initialValue: product.categoria.toString(),
-                  onChanged: (value) => product.categoria = int.parse(value),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'La categoría es obligatoria';
-                    }
-                  },
-                  decoration: const InputDecoration(
-                    hintText: 'Nombre del producto',
+                SizedBox(
+                  child: Consumer<ProductService>(
+                    builder: (context, listacat, _) {
+                      ListElement? categoriaSeleccionada;
+                      return DropdownButtonFormField<ListElement>(
+                        validator: (ListElement? value) =>
+                            validateCategory(value?.nombre),
+                        hint: const Text('Selecciona una categoría'),
+                        value: categoriaSeleccionada,
+                        onChanged: (ListElement? nuevaCategoria) {
+                          setState(() {
+                            _categoryController.text =
+                                nuevaCategoria!.categoriaId.toString();
+                          });
+                        },
+                        items: listacat.listadocategorias.map((categoria) {
+                          return DropdownMenuItem<ListElement>(
+                            value: categoria,
+                            child: Text(categoria.nombre),
+                          );
+                        }).toList(),
+                      );
+                    },
                   ),
                 ),
+                // const Text('Categoría'),
+                // TextFormField(
+                //   initialValue: product.categoria.toString(),
+                //   onChanged: (value) => product.categoria = int.parse(value),
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'La categoría es obligatoria';
+                //     }
+                //   },
+                //   decoration: const InputDecoration(
+                //     hintText: 'Nombre del producto',
+                //   ),
+                // ),
               ],
             ),
             const SizedBox(height: 20),
