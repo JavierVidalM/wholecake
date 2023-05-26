@@ -96,10 +96,10 @@ class _PurchaseListState extends State<PurchaseList> {
     final listadoView = Provider.of<OrdencompraService>(context);
     if (listadoView.isLoading) return const LoadingScreen();
     final List<ListOdc> prod = listadoView.listaOrdenes;
-    final listacat = Provider.of<ProductService>(context);
+    final listacat = Provider.of<OrdencompraService>(context);
 
     return ChangeNotifierProvider(
-      create: (_) => ProductService(),
+      create: (_) => OrdencompraService(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(

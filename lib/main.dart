@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wholecake/services/ordencompra_services.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/routes/app_routes.dart';
 import 'package:wholecake/services/suppliers_services.dart';
+import 'package:wholecake/services/supplies_services.dart';
 import 'package:wholecake/services/ventas_services.dart';
 import 'package:wholecake/theme/theme.dart';
 
@@ -25,6 +27,14 @@ class ProviderState extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => VentasService(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OrdencompraService(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SuppliesService(),
           lazy: false,
         ),
       ],
