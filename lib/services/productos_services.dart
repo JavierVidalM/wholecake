@@ -15,12 +15,12 @@ class ProductService extends ChangeNotifier {
   List<ListElement> listadocategorias = [];
   List<ListSup> listadosuppliers = [];
   List<ListOdc> listaOrdenes = [];
-  List<ListSupplies> listSupplies = [];
+  List<SuppliesList> suppliesList = [];
 
   Listado? selectedProduct;
   ListElement? selectedCategory;
   ListSup? selectedSupplier;
-  ListSupplies? selectedSupplies;
+  SuppliesList? selectedSupplies;
   bool isLoading = true;
   bool isEditCreate = true;
 //constructor
@@ -265,7 +265,7 @@ class ProductService extends ChangeNotifier {
     final response = await http.get(url, headers: {'authorization': basicAuth});
     if (response.statusCode == 200) {
       final suppliesMap = Supplies.fromJson(response.body);
-      listSupplies = suppliesMap.listSupplies;
+      suppliesList = suppliesMap.suppliesList;
     }
     isLoading = false;
     notifyListeners();
@@ -282,7 +282,7 @@ class ProductService extends ChangeNotifier {
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
     final response = await http.get(url, headers: {'authorization': basicAuth});
     final suppliesMap = Supplies.fromJson(response.body);
-    listSupplies = suppliesMap.listSupplies;
+    suppliesList = suppliesMap.suppliesList;
     isLoading = false;
     notifyListeners();
   }
@@ -298,12 +298,12 @@ class ProductService extends ChangeNotifier {
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
     final response = await http.get(url, headers: {'authorization': basicAuth});
     final suppliesMap = Supplies.fromJson(response.body);
-    listSupplies = suppliesMap.listSupplies;
+    suppliesList = suppliesMap.suppliesList;
     isLoading = false;
     notifyListeners();
   }
 
-  Future<String> updateSupplies(ListSupplies supplies) async {
+  Future<String> updateSupplies(SuppliesList supplies) async {
     final url = Uri.http(
       BASEURL,
       'supplies/supplies_update_rest/',

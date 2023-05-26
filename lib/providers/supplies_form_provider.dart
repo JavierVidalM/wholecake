@@ -3,7 +3,7 @@ import 'package:wholecake/models/supplies.dart';
 
 class SuppliesFormProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = new GlobalKey<FormState>();
-  ListSupplies supplies;
+  SuppliesList supplies;
   SuppliesFormProvider(this.supplies);
 
   bool isLoading = false;

@@ -80,9 +80,8 @@ class _ProductFormState extends State<_ProductForm> {
                     children: [
                       const Text('Producto'),
                       TextFormField(
-                        initialValue: supplies.nombreinsumoSupplies.toString(),
-                        onChanged: (value) =>
-                            supplies.nombreinsumoSupplies = value,
+                        initialValue: supplies.nombreInsumo.toString(),
+                        onChanged: (value) => supplies.nombreInsumo = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'El nombre es obligatorio';
@@ -100,9 +99,8 @@ class _ProductFormState extends State<_ProductForm> {
                     children: [
                       const Text('Producto'),
                       TextFormField(
-                        initialValue: supplies.tipoinsumoSupplies,
-                        onChanged: (value) =>
-                            supplies.tipoinsumoSupplies = value,
+                        initialValue: supplies.tipoInsumo,
+                        onChanged: (value) => supplies.tipoInsumo = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'El tipo de insumo es obligatorio';
@@ -122,12 +120,12 @@ class _ProductFormState extends State<_ProductForm> {
                       Theme(
                         data: SweetCakeTheme.calendarTheme,
                         child: DateTimePicker(
-                          initialValue: supplies.fechallegadaSupplies,
+                          initialValue: supplies.fechaLlegada,
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2100),
                           // onChanged: (val) => print(val),
                           validator: (val) {
-                            supplies.fechallegadaSupplies = val!;
+                            supplies.fechaLlegada = val!;
                           },
                         ),
                       ),
@@ -141,12 +139,12 @@ class _ProductFormState extends State<_ProductForm> {
                       Theme(
                         data: SweetCakeTheme.calendarTheme,
                         child: DateTimePicker(
-                          initialValue: supplies.fechavencimientoSupplies,
+                          initialValue: supplies.fechaVencimiento,
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2100),
                           // onChanged: (val) => print(val),
                           validator: (val) {
-                            supplies.fechavencimientoSupplies = val!;
+                            supplies.fechaVencimiento = val!;
                           },
                         ),
                       ),
@@ -158,8 +156,8 @@ class _ProductFormState extends State<_ProductForm> {
                     children: [
                       const Text('Estado'),
                       TextFormField(
-                        initialValue: supplies.estadoSupplies,
-                        onChanged: (value) => supplies.estadoSupplies = value,
+                        initialValue: supplies.estado,
+                        onChanged: (value) => supplies.estado = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'El estado es obligatorio';
@@ -177,9 +175,8 @@ class _ProductFormState extends State<_ProductForm> {
                     children: [
                       const Text('Marca'),
                       TextFormField(
-                        initialValue: supplies.marcaproductoSupplies,
-                        onChanged: (value) =>
-                            supplies.marcaproductoSupplies = value,
+                        initialValue: supplies.marcaProducto,
+                        onChanged: (value) => supplies.marcaProducto = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'La marca es obligatoria';
@@ -197,9 +194,8 @@ class _ProductFormState extends State<_ProductForm> {
                     children: [
                       const Text('Cantidad'),
                       TextFormField(
-                        initialValue: supplies.cantidadSupplies.toString(),
-                        onChanged: (value) =>
-                            supplies.cantidadSupplies = value as int,
+                        initialValue: supplies.cantidad.toString(),
+                        onChanged: (value) => supplies.cantidad = value as int,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'La Cantidad es obligatoria';
