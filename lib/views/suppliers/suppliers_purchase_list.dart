@@ -2,22 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/ordendecompra.dart';
-import 'package:wholecake/models/productos.dart';
-import 'package:wholecake/models/suppliers.dart';
-import 'package:wholecake/models/categoria.dart';
-import 'package:wholecake/models/suppliers.dart';
 import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/theme/theme.dart';
-import 'package:wholecake/views/products/products_filter_view.dart';
 import 'package:wholecake/views/suppliers/suppliers.dart';
 import 'package:wholecake/views/utilities/sidebar.dart';
 import 'package:wholecake/views/utilities/loading_screen.dart';
-import 'package:wholecake/views/suppliers/suppliers_add.dart';
 import 'package:wholecake/views/suppliers/suppliers_edit.dart';
-import 'dart:typed_data';
-import 'package:intl/intl.dart';
-
-import '../../models/categoria.dart';
 
 class PurchaseList extends StatefulWidget {
   const PurchaseList({Key? key}) : super(key: key);
