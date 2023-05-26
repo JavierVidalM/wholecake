@@ -25,6 +25,7 @@ class _SideBarState extends State<SideBar> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<ProductService>(context);
     return Theme(
       data: SweetCakeTheme.sidebarTheme,
       child: Drawer(
@@ -151,14 +152,15 @@ class _SideBarState extends State<SideBar> {
                         builder: (context) => const SuppliersView()),
                   ),
                 ),
-                ListTile(
-                  leading: const Icon(Icons.point_of_sale_sharp),
-                  title: const Text("Módulo de ventas"),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SellsView()),
+                if(user.typeuser=='cajero')
+                  ListTile(
+                    leading: const Icon(Icons.point_of_sale_sharp),
+                    title: const Text("Módulo de ventas"),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SellsView()),
+                    ),
                   ),
-                ),
               ],
             ),
             Column(
