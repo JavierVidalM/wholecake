@@ -188,7 +188,7 @@ class _ProductsViewState extends State<ProductsView> {
   }
 
   Future<void> viewProductPopup(prodImage, prodName, prodCategory, prodElab,
-      prodExpire, prodPrice) async {
+      prodExpire, prodPrice, prodId, listado) async {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -361,11 +361,15 @@ class _ProductsViewState extends State<ProductsView> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+
+                      },
                       icon: const Icon(Icons.edit),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        deletePopup(prodId, listado);
+                      },
                       icon: const Icon(Icons.delete),
                     ),
                   ],
@@ -381,8 +385,6 @@ class _ProductsViewState extends State<ProductsView> {
     // final List<Listado> prod = listadoView.listadoproductos;
     final listacat = Provider.of<ProductService>(context);
 
-
-
     return ChangeNotifierProvider(
         create: (_) => ProductService(),
         child: Scaffold(
@@ -396,9 +398,10 @@ class _ProductsViewState extends State<ProductsView> {
             drawer: const SideBar(),
             body: Consumer<ProductService>(
               builder: (context, listado, child) {
-                final filterProducts = listado.listadoproductos.where((product) {
+                final filterProducts =
+                    listado.listadoproductos.where((product) {
                   return productsSelected.isEmpty ||
-                productsSelected.contains(product.categoria);
+                      productsSelected.contains(product.categoria);
                 }).toList();
                 // final producto = listado.listadoproductos[index];
                 return Column(
@@ -490,7 +493,9 @@ class _ProductsViewState extends State<ProductsView> {
                                     nombrecat,
                                     product.fechaElaboracion,
                                     product.fechaVencimiento,
-                                    product.precio);
+                                    product.precio,
+                                    product.productoId,
+                                    listado.listadoproductos);
                               },
                               child: Card(
                                 child: Padding(
