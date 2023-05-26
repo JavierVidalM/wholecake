@@ -11,6 +11,7 @@ import 'package:wholecake/views/users/users.dart';
 import 'package:wholecake/views/supplies/products_supplies.dart';
 
 import '../../services/users_services.dart';
+
 class SideBar extends StatefulWidget {
   const SideBar({super.key});
 
@@ -27,17 +28,21 @@ class _SideBarState extends State<SideBar> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<UserService>();
+    // final user = context.read<UserService>();
     return Theme(
       data: SweetCakeTheme.sidebarTheme,
       child: Drawer(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,  
+        child:Consumer<UserService>(
+          builder: (context,user,_){
+            print(user.name);
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
               children: [
                 UserAccountsDrawerHeader(
                   accountName: Text(
+
                     user.name,
                     style: TextStyle(),
                   ),
@@ -154,13 +159,14 @@ class _SideBarState extends State<SideBar> {
                         builder: (context) => const SuppliersView()),
                   ),
                 ),
-                if(user.typeuser=='cajero')
+                if (user.typeuser == 'cajero')
                   ListTile(
                     leading: const Icon(Icons.point_of_sale_sharp),
                     title: const Text("Módulo de ventas"),
                     onTap: () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SellsView()),
+                      MaterialPageRoute(
+                          builder: (context) => const SellsView()),
                     ),
                   ),
               ],
@@ -170,18 +176,21 @@ class _SideBarState extends State<SideBar> {
               children: [
                 Divider(height: MediaQuery.of(context).size.height * 0.005),
                 ListTile(
-                  leading: const Icon(Icons.logout),
-                  title: const Text("Cerrar sesión"),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SellsView()),
-                  ),
-                ),
+                    leading: const Icon(Icons.logout),
+                    title: const Text("Cerrar sesión"),
+                    onTap: () {
+                      user.logout();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginUser()),
+                      );
+                    }),
               ],
             ),
           ],
-        ),
+        );},
       ),
-    );
+    ));
   }
 }

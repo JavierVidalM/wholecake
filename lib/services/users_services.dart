@@ -18,10 +18,22 @@ class UserService extends ChangeNotifier {
   bool isEditCreate = true;
   String typeuser = '';
   String authtoken = '';
-  String _name='a';
+  String _name = 'a';
   String get name => _name;
+  bool autenticado = false;
+
+  set name(String value) {
+    _name = value;
+    print('ola${_name}');
+    notifyListeners(); // Notificar a los widgets dependientes
+  }
+
+  bool isLoggedIn() {
+    return autenticado;
+  }
 
   Future<bool> login(String username, String password) async {
+    _name = username;
     isLoading = true;
     notifyListeners();
     var url = Uri.http(
@@ -46,14 +58,27 @@ class UserService extends ChangeNotifier {
       authtoken = responseData['token'];
       _name = responseData['username'];
       typeuser = responseData['tipo'];
-
+      autenticado = true;
       isLoading = false;
       notifyListeners();
       loadUsers();
       return true;
     } else {
+      autenticado = false;
       return false;
     }
+  }
+
+  void logout() {
+    // Restablecer la autenticación
+    autenticado = false;
+    authtoken = '';
+    _name = '';
+    typeuser = '';
+
+    // Resto de la lógica de cierre de sesión
+
+    notifyListeners();
   }
 
   loadUsers() async {
@@ -82,6 +107,7 @@ class UserService extends ChangeNotifier {
 
         isLoading = false;
         notifyListeners();
+        print('nombreu${name}');
       } else {
         // Manejar el error de solicitud según corresponda
       }
