@@ -5,6 +5,7 @@ import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/routes/app_routes.dart';
 import 'package:wholecake/services/suppliers_services.dart';
 import 'package:wholecake/services/supplies_services.dart';
+import 'package:wholecake/services/users_services.dart';
 import 'package:wholecake/services/ventas_services.dart';
 import 'package:wholecake/theme/theme.dart';
 
@@ -17,6 +18,10 @@ class ProviderState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserService(),
+          lazy: false,
+        ),
         ChangeNotifierProvider(
           create: (_) => ProductService(),
           lazy: false,

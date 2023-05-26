@@ -10,7 +10,6 @@ class ProductService extends ChangeNotifier {
   String BASEURL = '3.85.128.77:8000';
   List<Listado> listadoproductos = [];
   List<ListElement> listadocategorias = [];
-  String typeuser='cajero';
 
   Listado? selectedProduct;
   ListElement? selectedCategory;

@@ -9,6 +9,8 @@ import 'package:wholecake/views/sells/sells.dart';
 import 'package:wholecake/views/suppliers/suppliers.dart';
 import 'package:wholecake/views/users/users.dart';
 import 'package:wholecake/views/supplies/products_supplies.dart';
+
+import '../../services/users_services.dart';
 class SideBar extends StatefulWidget {
   const SideBar({super.key});
 
@@ -25,18 +27,18 @@ class _SideBarState extends State<SideBar> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<ProductService>(context);
+    final user = context.read<UserService>();
     return Theme(
       data: SweetCakeTheme.sidebarTheme,
       child: Drawer(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,  
           children: [
             Column(
               children: [
-                const UserAccountsDrawerHeader(
+                UserAccountsDrawerHeader(
                   accountName: Text(
-                    "Monkey D. Luffy",
+                    user.name,
                     style: TextStyle(),
                   ),
                   accountEmail: Text(
@@ -62,7 +64,7 @@ class _SideBarState extends State<SideBar> {
                     onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const UsersAdd()),
+                              builder: (context) => const HomePage()),
                         )),
                 ListTile(
                     leading: const Icon(Icons.inventory_rounded),
@@ -172,7 +174,7 @@ class _SideBarState extends State<SideBar> {
                   title: const Text("Cerrar sesión"),
                   onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginMain()),
+                    MaterialPageRoute(builder: (context) => const SellsView()),
                   ),
                 ),
               ],

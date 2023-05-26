@@ -14,7 +14,7 @@ class AppRoutes {
     //Pantallas del Login
     '/': (BuildContext context) => const LoginMain(),
     '/LoginUser': (BuildContext context) => const LoginUser(),
-    '/SigninUser': (BuildContext context) => const SigninUser(),
+    // '/SigninUser': (BuildContext context) => const SigninUser(),
 
     //Pantalla de inicio
     '/HomePage': (BuildContext context) => const HomePage(),
@@ -40,8 +40,8 @@ class AppRoutes {
     '/SellsDetail': (BuildContext context) => SellsDetail(),
 
     //Pantalla de users
-    '/UsersList': (BuildContext context) => const UsersList(),
-    '/UsersAdd': (BuildContext context) => const UsersAdd(),
+    // '/UsersList': (BuildContext context) => const UsersList(),
+    // '/UsersAdd': (BuildContext context) => const UsersAdd(),
     '/UsersEdit': (BuildContext context) => const UsersEdit(),
     //Pantalla de error
     '/Error': (BuildContext context) => const ErrorPage(),

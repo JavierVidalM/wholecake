@@ -4,6 +4,8 @@ import 'package:wholecake/views/login/login_main.dart';
 import 'package:wholecake/views/home/home_page.dart';
 import 'package:wholecake/views/login/login_recover.dart';
 
+import '../../services/users_services.dart';
+
 class LoginUser extends StatefulWidget {
   const LoginUser({super.key});
   @override
@@ -12,6 +14,14 @@ class LoginUser extends StatefulWidget {
 
 class LoginUserState extends State<LoginUser> {
   bool _rememberMe = false;
+  TextEditingController userController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    userController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +52,8 @@ class LoginUserState extends State<LoginUser> {
                     right: MediaQuery.of(context).size.width * 0.08,
                     left: MediaQuery.of(context).size.width * 0.08,
                   ),
-                  child: const TextField(
+                  child: TextField(
+                    controller: userController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(hintText: "Correo electrónico"),
                   ),
@@ -54,6 +65,7 @@ class LoginUserState extends State<LoginUser> {
                     left: MediaQuery.of(context).size.width * 0.08,
                   ),
                   child: TextFormField(
+                    controller: passwordController,
                     autocorrect: false,
                     obscureText: true,
                     decoration: const InputDecoration(hintText: "Contraseña"),
@@ -68,10 +80,10 @@ class LoginUserState extends State<LoginUser> {
                       style: SweetCakeTheme.loginTheme.textTheme.bodyMedium,
                     ),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const PassRecover()));
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => const PassRecover()));
                     },
                   ),
                 ),
@@ -121,10 +133,24 @@ class LoginUserState extends State<LoginUser> {
                       top: MediaQuery.of(context).size.height * 0.08),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
+                      UserService().login(userController.text, passwordController.text).then((success){
+                        if(success){
+                          Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const HomePage()));
+                        }else{
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Credenciales incorrectas'),
+                              duration: Duration(seconds: 2),)
+                                              );
+                        }
+                      });
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => const HomePage()));
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(
@@ -143,10 +169,10 @@ class LoginUserState extends State<LoginUser> {
                         top: MediaQuery.of(context).size.height * 0.01),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginMain()));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const LoginMain()));
                       },
                       child: Text(
                         "Regresar",
