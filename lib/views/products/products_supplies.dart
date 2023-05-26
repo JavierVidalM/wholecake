@@ -19,7 +19,7 @@ Future<void> _refresh() {
   return Future.delayed(Duration(seconds: 2));
 }
 
-ListSupplies? suppliesSeleccionada;
+SuppliesList? suppliesSeleccionada;
 
 // void filterProducts(String category) {
 //     final listadoView = Provider.of<ProductService>();
@@ -60,7 +60,7 @@ class _SuppliesState extends State<Supplies> {
         ),
       );
 
-  Future<void> deletePopup(int suppliesId, ListSupplies) async {
+  Future<void> deletePopup(int suppliesId, SuppliesList) async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -86,7 +86,7 @@ class _SuppliesState extends State<Supplies> {
               });
               await ProductService().deleteSupplies(msg);
               setState(() {
-                ListSupplies.removeWhere(
+                SuppliesList.removeWhere(
                     (supplies) => supplies.suppliesId == suppliesId);
               });
             },
@@ -124,7 +124,7 @@ class _SuppliesState extends State<Supplies> {
   Widget build(BuildContext context) {
     final listadoView = Provider.of<ProductService>(context);
     if (listadoView.isLoading) return const LoadingScreen();
-    final List<ListSupplies> prod = listadoView.listSupplies;
+    final List<SuppliesList> prod = listadoView.suppliesList;
     final listacat = Provider.of<ProductService>(context);
 
     return ChangeNotifierProvider(
@@ -209,9 +209,9 @@ class _SuppliesState extends State<Supplies> {
                   child: RefreshIndicator(
                     onRefresh: _refresh,
                     child: ListView.builder(
-                      itemCount: listado.listSupplies.length,
+                      itemCount: listado.suppliesList.length,
                       itemBuilder: (context, index) {
-                        final supplies = listado.listSupplies[index];
+                        final supplies = listado.suppliesList[index];
                         String nombrecat = '';
                         return Card(
                           child: Padding(
@@ -246,7 +246,7 @@ class _SuppliesState extends State<Supplies> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              supplies.nombreinsumoSupplies,
+                                              supplies.nombreInsumo,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -257,7 +257,7 @@ class _SuppliesState extends State<Supplies> {
                                                 onPressed: () {
                                                   listadoView.selectedSupplies =
                                                       listado
-                                                          .listSupplies[index]
+                                                          .suppliesList[index]
                                                           .copy();
                                                   Navigator.push(
                                                     context,
@@ -273,7 +273,7 @@ class _SuppliesState extends State<Supplies> {
                                                 onPressed: () async {
                                                   deletePopup(
                                                     supplies.suppliesId,
-                                                    listado.listSupplies,
+                                                    listado.suppliesList,
                                                   );
                                                 },
                                                 icon: Icon(Icons.delete),
@@ -284,15 +284,15 @@ class _SuppliesState extends State<Supplies> {
                                       ),
                                       SizedBox(height: 10),
                                       Text(
-                                        'Insumo: ${supplies.nombreinsumoSupplies.toString().padRight(10)}',
+                                        'Insumo: ${supplies.nombreInsumo.toString().padRight(10)}',
                                       ),
                                       SizedBox(height: 5),
                                       Text(
-                                        'Estado: ${supplies.estadoSupplies.toString().padRight(10)}',
+                                        'Estado: ${supplies.estado.toString().padRight(10)}',
                                       ),
                                       SizedBox(height: 10),
                                       Text(
-                                        'Fecha Llegada: ${supplies.fechallegadaSupplies.toString().padRight(10)}',
+                                        'Fecha Llegada: ${supplies.fechaLlegada.toString().padRight(10)}',
                                       ),
                                     ],
                                   ),
