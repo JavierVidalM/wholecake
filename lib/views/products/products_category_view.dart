@@ -74,12 +74,11 @@ class _CategoryViewState extends State<CategoryView> {
         ),
       );
 
-  Future<String?> editCategoryPopup(id, nombre) => showDialog<String>(
+  Future<String?> editCategoryPopup(categoryid) => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text("Ingrese la categoría"),
           content: TextFormField(
-            initialValue: nombre,
             onChanged: (value) {
               setState(() {
                 nombreController.text = value;
@@ -96,9 +95,20 @@ class _CategoryViewState extends State<CategoryView> {
             ),
             TextButton(
               onPressed: () {
-                _editData(id);
+                _editData(categoryid);
+                final msg = jsonEncode({
+                  'id':categoryid,                
+                  'nombre': nombreController.text,
+    });
                 // Navigator.of(context).pop();
-                ProductService().loadCategorias();
+                ProductService().updateCategoria(msg);
+                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CategoryView(),
+                                    ),
+                                  );
               },
               child: const Text("Editar", style: TextStyle(fontSize: 18)),
             ),
@@ -229,8 +239,7 @@ class _CategoryViewState extends State<CategoryView> {
                                               IconButton(
                                                 onPressed: () {
                                                   editCategoryPopup(
-                                                      category.categoriaId,
-                                                      category.nombre);
+                                                      category.categoriaId);
                                                 },
                                                 icon: const Icon(Icons.edit),
                                               ),

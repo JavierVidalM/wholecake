@@ -138,18 +138,19 @@ class ProductService extends ChangeNotifier {
     isEditCreate = false;
   }
 
-  Future<String> updateCategoria(ListElement categoria) async {
+  Future<String> updateCategoria(String categoria) async {
     final url = Uri.http(
       BASEURL,
       'productos/productos_categoria_update_rest/',
     );
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-    final response = await http.post(url, body: categoria.toJson(), headers: {
+    final response = await http.post(url, body: categoria, headers: {
       'authorization': basicAuth,
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
+    print(response.body);
     //actualizamos el listado
     // final index = listadoproductos
     //     .indexWhere((element) => element.productoId == product.productoId);
