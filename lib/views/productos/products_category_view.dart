@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/views/utilities/sidebar.dart';
-import 'package:wholecake/views/utilities/loading_screen.dart';
+import 'package:wholecake/views/utilidades/sidebar.dart';
+import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:wholecake/models/categoria.dart';
 
 class CategoryView extends StatefulWidget {
@@ -97,18 +97,17 @@ class _CategoryViewState extends State<CategoryView> {
               onPressed: () {
                 _editData(categoryid);
                 final msg = jsonEncode({
-                  'id':categoryid,                
+                  'id': categoryid,
                   'nombre': nombreController.text,
-    });
+                });
                 // Navigator.of(context).pop();
                 ProductService().updateCategoria(msg);
                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const CategoryView(),
-                                    ),
-                                  );
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CategoryView(),
+                  ),
+                );
               },
               child: const Text("Editar", style: TextStyle(fontSize: 18)),
             ),

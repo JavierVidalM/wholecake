@@ -6,11 +6,11 @@ import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/models/categoria.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/theme/theme.dart';
-import 'package:wholecake/views/products/products_filter_view.dart';
-import 'package:wholecake/views/utilities/sidebar.dart';
-import 'package:wholecake/views/utilities/loading_screen.dart';
-import 'package:wholecake/views/products/products_add.dart';
-import 'package:wholecake/views/products/products_edit.dart';
+import 'package:wholecake/views/productos/products_filter_view.dart';
+import 'package:wholecake/views/utilidades/sidebar.dart';
+import 'package:wholecake/views/utilidades/loading_screen.dart';
+import 'package:wholecake/views/productos/products_add.dart';
+import 'package:wholecake/views/productos/products_edit.dart';
 import 'dart:typed_data';
 import 'package:intl/intl.dart';
 
@@ -361,9 +361,7 @@ class _ProductsViewState extends State<ProductsView> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     IconButton(
-                      onPressed: () {
-
-                      },
+                      onPressed: () {},
                       icon: const Icon(Icons.edit),
                     ),
                     IconButton(

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/theme/theme_constant.dart';
-import 'package:wholecake/views/products/products.dart';
+import 'package:wholecake/views/productos/products.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../models/categoria.dart';
@@ -11,7 +11,7 @@ import '../../models/categoria.dart';
 import 'dart:typed_data';
 import 'dart:convert';
 import 'dart:io';
-import 'package:wholecake/views/utilities/sidebar.dart';
+import 'package:wholecake/views/utilidades/sidebar.dart';
 
 class ProductsEdit extends StatefulWidget {
   final int productId;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/login/login_main.dart';
 import 'package:wholecake/views/home/home_page.dart';
-import 'package:wholecake/views/login/login_recover.dart';
+import 'package:wholecake/views/login/login_password_recover.dart';
 
 import '../../services/users_services.dart';
 
@@ -133,18 +133,19 @@ class LoginUserState extends State<LoginUser> {
                       top: MediaQuery.of(context).size.height * 0.08),
                   child: ElevatedButton(
                     onPressed: () {
-                      UserService().login(userController.text, passwordController.text).then((success){
-                        if(success){
+                      UserService()
+                          .login(userController.text, passwordController.text)
+                          .then((success) {
+                        if (success) {
                           Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()));
-                        }else{
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Credenciales incorrectas'),
-                              duration: Duration(seconds: 2),)
-                                              );
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomePage()));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Credenciales incorrectas'),
+                            duration: Duration(seconds: 2),
+                          ));
                         }
                       });
                       // Navigator.push(

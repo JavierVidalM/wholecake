@@ -8,7 +8,7 @@ import 'package:wholecake/services/suppliers_services.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:wholecake/views/suppliers/suppliers_edit.dart';
+import 'package:wholecake/views/proveedores/suppliers_edit.dart';
 
 class SupplierSearch extends SearchDelegate<ListSup> {
   late final List<ListSup> sup;

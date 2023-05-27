@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/views/utilities/sidebar.dart';
+import 'package:wholecake/views/utilidades/sidebar.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});

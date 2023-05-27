@@ -256,6 +256,7 @@ class SweetCakeTheme {
     cardTheme: CardTheme(
       color: const Color(0xFF343434),
       elevation: 10,
+      shadowColor: blue2,
       margin: const EdgeInsets.symmetric(
         vertical: 10,
         horizontal: 10,

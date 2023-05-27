@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/supplies.dart';
 import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/views/suppliers/suppliers.dart';
-import 'package:wholecake/views/utilities/sidebar.dart';
-import 'package:wholecake/views/utilities/loading_screen.dart';
-import 'package:wholecake/views/suppliers/suppliers_edit.dart';
+import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
+import 'package:wholecake/views/utilidades/sidebar.dart';
+import 'package:wholecake/views/utilidades/loading_screen.dart';
+//////////////////////////////////////////////////////////////////agregar nueva ruta del editar
+// import 'package:wholecake/views/suppliers/suppliers_edit.dart';
 import '../../services/supplies_services.dart';
 
-class Supplies extends StatefulWidget {
-  const Supplies({Key? key}) : super(key: key);
+class ListadoInsumos extends StatefulWidget {
+  const ListadoInsumos({Key? key}) : super(key: key);
 
   @override
-  _SuppliesState createState() => _SuppliesState();
+  _ListadoInsumosState createState() => _ListadoInsumosState();
 }
 
 Future<void> _refresh() {
@@ -27,7 +28,7 @@ SuppliesList? suppliesSeleccionada;
 //     listadoView.filterProductsByCategory(category);
 //   }
 
-class _SuppliesState extends State<Supplies> {
+class _ListadoInsumosState extends State<ListadoInsumos> {
   int? _selectedCategory = null;
 
   Future<String?> filterPopup(SuppliesService listacat) => showDialog<String>(
@@ -191,12 +192,12 @@ class _SuppliesState extends State<Supplies> {
                       ),
                       IconButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SuppliersAddPage(),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const SuppliersAddPage(),
+                          //   ),
+                          // );
                         },
                         icon: const Icon(Icons.add),
                       ),
@@ -256,17 +257,17 @@ class _SuppliesState extends State<Supplies> {
                                             children: [
                                               IconButton(
                                                 onPressed: () {
-                                                  listadoView.selectedSupplies =
-                                                      listado
-                                                          .suppliesList[index]
-                                                          .copy();
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SuppliersEdit(),
-                                                    ),
-                                                  );
+                                                  // listadoView.selectedSupplies =
+                                                  //     listado
+                                                  //         .suppliesList[index]
+                                                  //         .copy();
+                                                  // Navigator.push(
+                                                  //   context,
+                                                  //   MaterialPageRoute(
+                                                  //     builder: (context) =>
+                                                  //         SuppliersEdit(),
+                                                  //   ),
+                                                  // );
                                                 },
                                                 icon: Icon(Icons.edit),
                                               ),

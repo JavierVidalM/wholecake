@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:provider/provider.dart';
-import 'package:wholecake/views/utilities/sidebar.dart';
+import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/theme/theme_constant.dart';
-import 'package:wholecake/views/products/products.dart';
+import 'package:wholecake/views/productos/products.dart';
 import 'package:flutter/material.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:intl/intl.dart';
 import '../../models/categoria.dart';
-import '../utilities/loading_screen.dart';
+import '../utilidades/loading_screen.dart';
 
 class ProductsAdd extends StatelessWidget {
   const ProductsAdd({Key? key}) : super(key: key);
@@ -153,7 +153,6 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider(
         create: (_) => ProductService(),
         child: Scaffold(
@@ -218,13 +217,14 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.02),
                         child: Consumer<ProductService>(
-                          
                           builder: (context, listacat, _) {
                             ListElement? categoriaSeleccionada;
                             return DropdownButtonFormField<ListElement>(
-                              validator: (ListElement? value) => validateCategory(value?.nombre),
+                              validator: (ListElement? value) =>
+                                  validateCategory(value?.nombre),
                               hint: const Text('Selecciona una categoría'),
                               value: categoriaSeleccionada,
                               onChanged: (ListElement? nuevaCategoria) {
@@ -233,7 +233,8 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
                                       nuevaCategoria!.categoriaId.toString();
                                 });
                               },
-                              items: listacat.listadocategorias.map((categoria) {
+                              items:
+                                  listacat.listadocategorias.map((categoria) {
                                 return DropdownMenuItem<ListElement>(
                                   value: categoria,
                                   child: Text(categoria.nombre),

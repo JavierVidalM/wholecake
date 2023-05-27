@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/ordendecompra.dart';
 import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/views/suppliers/suppliers.dart';
-import 'package:wholecake/views/utilities/sidebar.dart';
-import 'package:wholecake/views/utilities/loading_screen.dart';
-import 'package:wholecake/views/suppliers/suppliers_edit.dart';
+import 'package:wholecake/views/proveedores/suppliers.dart';
+import 'package:wholecake/views/utilidades/sidebar.dart';
+import 'package:wholecake/views/utilidades/loading_screen.dart';
+import 'package:wholecake/views/proveedores/suppliers_edit.dart';
+import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
 
 import '../../services/ordencompra_services.dart';
 
@@ -19,7 +20,8 @@ class PurchaseList extends StatefulWidget {
 
 class _PurchaseListState extends State<PurchaseList> {
   final int? _selectedCategory = null;
-  Future<String?> filterPopup(OrdencompraService listacat) => showDialog<String>(
+  Future<String?> filterPopup(OrdencompraService listacat) =>
+      showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text("Filtro"),
@@ -182,9 +184,8 @@ class _PurchaseListState extends State<PurchaseList> {
                                           children: [
                                             IconButton(
                                               onPressed: () {
-                                                listadoView.selectedOdc=
-                                                    listado
-                                                        .listaOrdenes[index]
+                                                listadoView.selectedOdc =
+                                                    listado.listaOrdenes[index]
                                                         .copy();
                                                 Navigator.push(
                                                   context,

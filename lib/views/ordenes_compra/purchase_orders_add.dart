@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wholecake/views/suppliers/suppliers.dart';
-import 'package:wholecake/views/utilities/sidebar.dart';
+import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
+import 'package:wholecake/views/utilidades/sidebar.dart';
 import '../../services/suppliers_services.dart';
 import '../../models/suppliers.dart';
 import '../../services/ordencompra_services.dart';
@@ -19,7 +19,7 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
   TextEditingController cantidadController = TextEditingController();
   TextEditingController proveedorController = TextEditingController();
   TextEditingController costotalController = TextEditingController();
-  
+
   get categoriaSeleccionada => null;
 
   @override
@@ -39,14 +39,16 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
     });
     await OrdencompraService().addOrdenCompra(msg);
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SuppliersView()));
+        context, MaterialPageRoute(builder: (context) => const PurchaseList()));
   }
+
   String? validateProveedor(String? value) {
     if (value == null || value.isEmpty) {
       return 'Por favor, seleccione un Proveedor.';
     }
     return null;
   }
+
   @override
   Widget build(BuildContext context) {
     final listaprov = Provider.of<SuppliersService>(context);
@@ -80,28 +82,28 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
                         const InputDecoration(hintText: 'Cantidad del Pedido'),
                   ),
                 ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.02),
-                    child: DropdownButtonFormField<ListSup>(
-                      validator: (ListSup? value) =>
-                          validateProveedor(value?.nombreProveedor),
-                      hint: const Text('Selecciona un Proveedor'),
-                      value: categoriaSeleccionada,
-                      onChanged: (ListSup? nuevoSup) {
-                        setState(() {
-                          proveedorController.text =
-                              nuevoSup!.supplierId.toString();
-                        });
-                      },
-                      items: listaprov.listadosuppliers.map((proveedor) {
-                        return DropdownMenuItem<ListSup>(
-                          value: proveedor,
-                          child: Text(proveedor.nombreProveedor),
-                        );
-                      }).toList(),
-                    ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02),
+                  child: DropdownButtonFormField<ListSup>(
+                    validator: (ListSup? value) =>
+                        validateProveedor(value?.nombreProveedor),
+                    hint: const Text('Selecciona un Proveedor'),
+                    value: categoriaSeleccionada,
+                    onChanged: (ListSup? nuevoSup) {
+                      setState(() {
+                        proveedorController.text =
+                            nuevoSup!.supplierId.toString();
+                      });
+                    },
+                    items: listaprov.listadosuppliers.map((proveedor) {
+                      return DropdownMenuItem<ListSup>(
+                        value: proveedor,
+                        child: Text(proveedor.nombreProveedor),
+                      );
+                    }).toList(),
                   ),
+                ),
                 Padding(
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.02),

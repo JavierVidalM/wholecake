@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/productos.dart';
-import 'package:wholecake/views/products/products_edit.dart';
+import 'package:wholecake/views/productos/products_edit.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -38,8 +38,8 @@ class ProductSearch extends SearchDelegate<Listado> {
                 categoria: 0,
                 imagen: '',
                 estado: '',
-                cantidad:0,
-                lote:''),
+                cantidad: 0,
+                lote: ''),
           );
         },
         icon: const Icon(Icons.arrow_back_ios_new_rounded));

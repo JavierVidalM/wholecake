@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/views/login/login.dart';
 import 'package:wholecake/views/home/home.dart';
-import 'package:wholecake/views/products/products.dart';
-import 'package:wholecake/views/suppliers/suppliers.dart';
-import 'package:wholecake/views/sells/sells.dart';
+import 'package:wholecake/views/productos/products.dart';
+import 'package:wholecake/views/proveedores/suppliers.dart';
+import 'package:wholecake/views/ventas/sells.dart';
 import 'package:wholecake/views/users/users.dart';
-import 'package:wholecake/views/utilities/utilities.dart';
+import 'package:wholecake/views/utilidades/utilidades.dart';
+import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
+import 'package:wholecake/views/insumos/insumos.dart';
 
 class AppRoutes {
   static const initialRoute = '/';
@@ -20,7 +22,7 @@ class AppRoutes {
     '/HomePage': (BuildContext context) => const HomePage(),
 
     '/Inventory': (BuildContext context) => Inventory(),
-    '/Inputs': (BuildContext context) => const Supplies(),
+    '/Inputs': (BuildContext context) => const ListadoInsumos(),
     '/ToExpire': (BuildContext context) => const ToExpire(),
 
     //Pantallas de producto

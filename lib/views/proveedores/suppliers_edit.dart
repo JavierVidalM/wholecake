@@ -1,52 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/views/utilities/sidebar.dart';
+import 'package:wholecake/services/suppliers_services.dart';
+import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:provider/provider.dart';
-import 'package:wholecake/providers/supplies_form_provider.dart';
-import 'package:wholecake/views/suppliers/suppliers.dart';
+import 'package:wholecake/providers/suppliers_form_provider.dart';
+import 'package:wholecake/views/proveedores/suppliers.dart';
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:wholecake/theme/theme_constant.dart';
-export 'package:wholecake/routes/app_routes.dart';
-import '../../services/supplies_services.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:typed_data';
+import 'dart:convert';
+import 'dart:io';
 
-class InputsReciptSupplies extends StatefulWidget {
-  const InputsReciptSupplies({super.key});
-
+class SuppliersEdit extends StatefulWidget {
   @override
-  _InputsReciptSuppliesState createState() => _InputsReciptSuppliesState();
+  _SuppliersEditState createState() => _SuppliersEditState();
 }
 
-class _InputsReciptSuppliesState extends State<InputsReciptSupplies> {
-  late SuppliesService _suppliesService;
+class _SuppliersEditState extends State<SuppliersEdit> {
+  late SuppliersService _productService;
   @override
   void initState() {
     super.initState();
-    _suppliesService = Provider.of<SuppliesService>(context);
+    _productService = Provider.of<SuppliersService>(context, listen: false);
   }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SuppliesFormProvider(_suppliesService.selectedSupplies!),
+      create: (_) => SupplierFormProvider(_productService.selectedSupplier!),
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Editar Insumos',
+            'Editar Proveedor',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
         ),
         drawer: const SideBar(),
-        body: _ProductForm(suppliesService: _suppliesService),
+        body: _ProductForm(productService: _productService),
       ),
     );
   }
 }
 
 class _ProductForm extends StatefulWidget {
-  final SuppliesService suppliesService;
+  final SuppliersService productService;
 
-  const _ProductForm({Key? key, required this.suppliesService})
+  const _ProductForm({Key? key, required this.productService})
       : super(key: key);
 
   @override
@@ -54,10 +53,31 @@ class _ProductForm extends StatefulWidget {
 }
 
 class _ProductFormState extends State<_ProductForm> {
+  File? imageSelected;
+
+  Future<void> seleccionarImagen() async {
+    final result = await FilePicker.platform.pickFiles(type: FileType.image);
+    if (result != null) {
+      setState(() {
+        imageSelected = File(result.files.single.path!);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final suppliesForm = Provider.of<SuppliesFormProvider>(context);
-    final supplies = suppliesForm.supplies;
+    final supplierForm = Provider.of<SupplierFormProvider>(context);
+    final supplier = supplierForm.supplier;
+    ImageProvider image;
+    if (imageSelected != null) {
+      image = FileImage(imageSelected!);
+    } else if (supplier.imagen_insumo.isNotEmpty) {
+      Uint8List bytes =
+          Uint8List.fromList(base64.decode(supplier.imagen_insumo));
+      image = MemoryImage(bytes);
+    } else {
+      image = const AssetImage('assets/images/default.png');
+    }
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -65,7 +85,7 @@ class _ProductFormState extends State<_ProductForm> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             width: double.infinity,
             child: Form(
-              key: suppliesForm.formKey,
+              key: supplierForm.formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
@@ -74,22 +94,64 @@ class _ProductFormState extends State<_ProductForm> {
                     padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).size.height * 0.04,
                     ),
+                    child: InkWell(
+                      onTap: seleccionarImagen,
+                      child: Container(
+                        width: 80.0,
+                        height: 80.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: image,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: ClipOval(
+                          child: imageSelected != null
+                              ? Image.file(
+                                  imageSelected!,
+                                  width: 80.0,
+                                  height: 80.0,
+                                  fit: BoxFit.cover,
+                                )
+                              : const SizedBox(),
+                        ),
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Producto'),
                       TextFormField(
-                        initialValue: supplies.nombreInsumo.toString(),
-                        onChanged: (value) => supplies.nombreInsumo = value,
+                        initialValue: supplier.nombreProveedor,
+                        onChanged: (value) => supplier.nombreProveedor = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'El nombre es obligatorio';
                           }
                         },
                         decoration: const InputDecoration(
-                          hintText: 'Nombre del Insumo',
+                          hintText: 'Nombre del producto',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('RUT'),
+                      TextFormField(
+                        initialValue: supplier.nombreProveedor,
+                        onChanged: (value) => supplier.rut = value,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'El RUT es obligatorio';
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          hintText: 'RUT',
                         ),
                       ),
                     ],
@@ -100,15 +162,15 @@ class _ProductFormState extends State<_ProductForm> {
                     children: [
                       const Text('Producto'),
                       TextFormField(
-                        initialValue: supplies.tipoInsumo,
-                        onChanged: (value) => supplies.tipoInsumo = value,
+                        initialValue: supplier.tipoInsumo,
+                        onChanged: (value) => supplier.tipoInsumo = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'El tipo de insumo es obligatorio';
                           }
                         },
                         decoration: const InputDecoration(
-                          hintText: 'Tipo Insumo',
+                          hintText: 'Insumo',
                         ),
                       ),
                     ],
@@ -117,55 +179,17 @@ class _ProductFormState extends State<_ProductForm> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Fecha Llegada'),
-                      Theme(
-                        data: SweetCakeTheme.calendarTheme,
-                        child: DateTimePicker(
-                          initialValue: supplies.fechaLlegada,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100),
-                          // onChanged: (val) => print(val),
-                          validator: (val) {
-                            supplies.fechaLlegada = val!;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Fecha Vencimiento'),
-                      Theme(
-                        data: SweetCakeTheme.calendarTheme,
-                        child: DateTimePicker(
-                          initialValue: supplies.fechaVencimiento,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100),
-                          // onChanged: (val) => print(val),
-                          validator: (val) {
-                            supplies.fechaVencimiento = val!;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Estado'),
+                      const Text('Producto'),
                       TextFormField(
-                        initialValue: supplies.estado,
-                        onChanged: (value) => supplies.estado = value,
+                        initialValue: supplier.correoProveedor,
+                        onChanged: (value) => supplier.correoProveedor = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'El estado es obligatorio';
+                            return 'El correo es obligatorio';
                           }
                         },
                         decoration: const InputDecoration(
-                          hintText: 'Estado del Insumo',
+                          hintText: 'Correo del proveedor',
                         ),
                       ),
                     ],
@@ -174,36 +198,17 @@ class _ProductFormState extends State<_ProductForm> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Marca'),
+                      const Text('Producto'),
                       TextFormField(
-                        initialValue: supplies.marcaProducto,
-                        onChanged: (value) => supplies.marcaProducto = value,
+                        initialValue: supplier.telefonoProveedor.toString(),
+                        onChanged: (value) => supplier.nombreProveedor = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'La marca es obligatoria';
+                            return 'El nombre es obligatorio';
                           }
                         },
                         decoration: const InputDecoration(
-                          hintText: 'Marca del Insumo',
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Cantidad'),
-                      TextFormField(
-                        initialValue: supplies.cantidad.toString(),
-                        onChanged: (value) => supplies.cantidad = value as int,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'La Cantidad es obligatoria';
-                          }
-                        },
-                        decoration: const InputDecoration(
-                          hintText: 'Cantidad de Insumos',
+                          hintText: 'Nombre del producto',
                         ),
                       ),
                     ],
@@ -214,6 +219,14 @@ class _ProductFormState extends State<_ProductForm> {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
+                          final bytes = imageSelected != null
+                              ? await imageSelected!.readAsBytes()
+                              : null;
+                          final base64 =
+                              bytes != null ? base64Encode(bytes) : "";
+                          supplier.imagen_insumo = base64;
+                          if (!supplierForm.isValidForm()) return;
+                          await widget.productService.updateSupplier(supplier);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
