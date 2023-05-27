@@ -1,17 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wholecake/models/productos.dart';
-import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/theme/theme.dart';
-import 'package:wholecake/views/home/home.dart';
-import 'package:wholecake/views/login/login.dart';
-import 'package:wholecake/views/productos/products.dart';
-import 'package:wholecake/views/ventas/sells.dart';
-import 'package:wholecake/views/proveedores/suppliers.dart';
-import 'package:wholecake/views/users/users.dart';
-import 'package:wholecake/views/insumos/listado_insumos.dart';
-import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
-
+import 'package:wholecake/services/productos_services.dart';
 import '../../services/users_services.dart';
 
 class SideBar extends StatefulWidget {
@@ -42,44 +32,103 @@ class _SideBarState extends State<SideBar> {
                 children: [
                   Column(
                     children: [
-                      UserAccountsDrawerHeader(
-                        accountName: Text(
-                          user.name,
-                          style: TextStyle(),
-                        ),
-                        accountEmail: Text(
-                          "monkey@dluffy.com",
-                          style: TextStyle(),
-                        ),
-                        currentAccountPicture: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              'https://img1.ak.crunchyroll.com/i/spire4/5b954f7af990b40acc4f3f410a3a5f9d1664298859_large.jpg'),
+                      GestureDetector(
+                        onTap: () {
+                          print("Usuario Monkey D. Luffy");
+                          Navigator.pushNamed(context, '/UserProfileView');
+                        },
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.18,
+                          child: DrawerHeader(
+                            padding: EdgeInsets.zero,
+                            child: Stack(
+                              children: [
+                                Row(
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: SizedBox(
+                                            width: 90,
+                                            height: 90,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                              child: Image.network(
+                                                'https://img1.ak.crunchyroll.com/i/spire4/5b954f7af990b40acc4f3f410a3a5f9d1664298859_large.jpg',
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.only(top: 8.0),
+                                            child: Text(
+                                              "Bienvenido",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 8.0,
+                                                bottom: 8.0,
+                                                right: 25.0),
+                                            child: Flexible(
+                                              child: Text(
+                                                user.name,
+                                                style: const TextStyle(
+                                                    fontSize: 20),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Positioned(
+                                    top: 10,
+                                    right: 10,
+                                    child: Icon(
+                                      Icons.keyboard_arrow_right_rounded,
+                                      size: 30,
+                                    )),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                       ListTile(
                           leading: const Icon(Icons.home_outlined),
                           title: const Text("Inicio"),
-                          onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomePage()),
-                              )),
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/HomePage')),
                       ListTile(
                           leading: const Icon(Icons.person_outline_rounded),
                           title: const Text("Usuarios"),
-                          onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomePage()),
-                              )),
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/HomePage')),
                       ListTile(
                           leading: const Icon(Icons.inventory_rounded),
                           title: const Text("Ordenes de compra"),
-                          onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PurchaseList()),
-                              )),
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/PurchaseList')),
                       ExpansionTile(
                         leading: const Icon(Icons.inventory_2_outlined),
                         title: const Text("Inventario"),
@@ -89,12 +138,8 @@ class _SideBarState extends State<SideBar> {
                             child: ListTile(
                                 leading: const Icon(Icons.input_rounded),
                                 title: const Text("Insumos"),
-                                onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ListadoInsumos()), //Cambiar esto
-                                    )),
+                                onTap: () => Navigator.pushNamed(
+                                    context, '/ListadoInsumos')),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 25),
@@ -102,23 +147,16 @@ class _SideBarState extends State<SideBar> {
                                 leading: const Icon(
                                     Icons.report_gmailerrorred_rounded),
                                 title: const Text("Por Expirar"),
-                                onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ToExpire()),
-                                    )),
+                                onTap: () =>
+                                    Navigator.pushNamed(context, '/ToExpire')),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 25),
                             child: ListTile(
                               leading: const Icon(Icons.cake_outlined),
                               title: const Text("Productos"),
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ProductsView()),
-                              ),
+                              onTap: () =>
+                                  Navigator.pushNamed(context, '/ProductsView'),
                               trailing: ClipOval(
                                 child: Container(
                                     color: const Color(0xFFF95959),
@@ -144,34 +182,22 @@ class _SideBarState extends State<SideBar> {
                             child: ListTile(
                                 leading: const Icon(Icons.category_outlined),
                                 title: const Text("Categorías"),
-                                onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const CategoryView()),
-                                    )),
+                                onTap: () => Navigator.pushNamed(
+                                    context, '/CategoryList')),
                           ),
                         ],
                       ),
                       ListTile(
-                        leading: const Icon(Icons.local_shipping_outlined),
-                        title: const Text("Proveedores"),
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SuppliersView()),
-                        ),
-                      ),
-                      if (user.typeuser == 'cajero')
-                        ListTile(
+                          leading: const Icon(Icons.local_shipping_outlined),
+                          title: const Text("Proveedores"),
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/SuppliersView')),
+                      // if (user.typeuser == 'cajero')
+                      ListTile(
                           leading: const Icon(Icons.point_of_sale_sharp),
                           title: const Text("Módulo de ventas"),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SellsView()),
-                          ),
-                        ),
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/SellsView')),
                     ],
                   ),
                   Column(
@@ -184,11 +210,7 @@ class _SideBarState extends State<SideBar> {
                           title: const Text("Cerrar sesión"),
                           onTap: () {
                             user.logout();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginUser()),
-                            );
+                            Navigator.pushNamed(context, '/LoginUser');
                           }),
                     ],
                   ),

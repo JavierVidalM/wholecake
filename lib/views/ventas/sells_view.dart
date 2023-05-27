@@ -223,7 +223,7 @@ class _SellsViewState extends State<SellsView> {
                   children: listadoCategorias.map((categoria) {
                     return FilterChip(
                       selected: listadoCategorias.contains(categoria),
-                      label: Text(categoria),
+                      label: Text(categoria.toString()),
                       onSelected: (selected) {
                         setState(() {
                           if (selected) {

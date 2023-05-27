@@ -3,6 +3,7 @@ import 'package:wholecake/views/login/login.dart';
 import 'package:wholecake/views/home/home.dart';
 import 'package:wholecake/views/productos/products.dart';
 import 'package:wholecake/views/proveedores/suppliers.dart';
+import 'package:wholecake/views/users/user_profile_view.dart';
 import 'package:wholecake/views/ventas/sells.dart';
 import 'package:wholecake/views/users/users.dart';
 import 'package:wholecake/views/utilidades/utilidades.dart';
@@ -21,7 +22,7 @@ class AppRoutes {
     //Pantalla de inicio
     '/HomePage': (BuildContext context) => const HomePage(),
 
-    '/Inputs': (BuildContext context) => const ListadoInsumos(),
+    '/ListadoInsumos': (BuildContext context) => const ListadoInsumos(),
     '/ToExpire': (BuildContext context) => const ToExpire(),
 
     //Pantallas de producto
@@ -43,6 +44,7 @@ class AppRoutes {
     //Pantalla de users
     // '/UsersList': (BuildContext context) => const UsersList(),
     // '/UsersAdd': (BuildContext context) => const UsersAdd(),
+    '/UserProfileView': (BuildContext context) => const UserProfileView(),
     '/UsersEdit': (BuildContext context) => const UsersEdit(),
     //Pantalla de error
     '/Error': (BuildContext context) => const ErrorPage(),
