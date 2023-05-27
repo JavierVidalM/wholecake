@@ -80,10 +80,10 @@ class LoginUserState extends State<LoginUser> {
                       style: SweetCakeTheme.loginTheme.textTheme.bodyMedium,
                     ),
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => const PassRecover()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PassRecover()));
                     },
                   ),
                 ),
@@ -170,10 +170,10 @@ class LoginUserState extends State<LoginUser> {
                         top: MediaQuery.of(context).size.height * 0.01),
                     child: TextButton(
                       onPressed: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const LoginMain()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginMain()));
                       },
                       child: Text(
                         "Regresar",

@@ -21,7 +21,6 @@ class AppRoutes {
     //Pantalla de inicio
     '/HomePage': (BuildContext context) => const HomePage(),
 
-    '/Inventory': (BuildContext context) => Inventory(),
     '/Inputs': (BuildContext context) => const ListadoInsumos(),
     '/ToExpire': (BuildContext context) => const ToExpire(),
 
