@@ -12,6 +12,12 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
+  String getUserinfo(BuildContext context) {
+    final productService = Provider.of<UserService>(context, listen: true);
+    final productCount = productService.name;
+    return productCount;
+  }
+
   String getProductCount(BuildContext context) {
     final productService = Provider.of<ProductService>(context, listen: false);
     final productCount = productService.listadoproductos.length;
@@ -45,7 +51,7 @@ class _SideBarState extends State<SideBar> {
                     ),
                     TextButton(
                       onPressed: () {
-                        user.logout();
+                        // user.logout();
                         Navigator.pushNamed(context, '/LoginUser');
                       },
                       child: const Text(
@@ -68,7 +74,6 @@ class _SideBarState extends State<SideBar> {
         child: Drawer(
           child: Consumer<UserService>(
             builder: (context, user, _) {
-              print(user.name);
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

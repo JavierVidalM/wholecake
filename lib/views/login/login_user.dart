@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/login/login_main.dart';
 import 'package:wholecake/views/home/home_page.dart';
@@ -137,17 +138,20 @@ class LoginUserState extends State<LoginUser> {
                       top: MediaQuery.of(context).size.height * 0.08),
                   child: ElevatedButton(
                     onPressed: () {
-                      UserService()
-                          .login(userController.text, passwordController.text)
-                          .then((success) {
-                        if (success) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePage()));
-                        } else {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
+ // Llamada al método de inicio de sesión en el servicio del usuario
+                Provider.of<UserService>(context, listen: false).login(
+                  userController.text.toString(),
+                  passwordController.text.toString(),
+                ).then((loggedIn) {
+                  if (loggedIn) {
+                    // Si las credenciales son correctas, redirigir al HomePage
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomePage()),
+                    );
+                  } else {
+ScaffoldMessenger.of(context)
+                              .showSnackBar( SnackBar(
                             content: Row(
                               children: [
                                 Icon(
@@ -179,11 +183,8 @@ class LoginUserState extends State<LoginUser> {
                             padding: EdgeInsets.all(20),
                           ));
                         }
-                      });
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => const HomePage()));
+                  }
+                );
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(

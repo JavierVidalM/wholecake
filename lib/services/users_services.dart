@@ -14,7 +14,6 @@ class UserService extends ChangeNotifier {
   String APIPASS = 'test01';
   String BASEURL = '3.85.128.77:8000';
 
-
   List<Listado> listadousers = [];
   List<Listado> userlogeado = [];
   bool isLoading = true;
@@ -22,7 +21,9 @@ class UserService extends ChangeNotifier {
   String typeuser = '';
   String authtoken = '';
   String _name = 'a';
+  String _cargo = '';
   String get name => _name;
+  String get cargo => _cargo;
   bool autenticado = false;
 
   UserService() {
@@ -34,8 +35,6 @@ class UserService extends ChangeNotifier {
   }
 
   Future<bool> login(String username, String password) async {
-    isLoading = true;
-    notifyListeners();
     var url = Uri.http(
       BASEURL,
       'accounts/api/login/',
@@ -45,38 +44,27 @@ class UserService extends ChangeNotifier {
       'username': username,
       'password': password,
     };
-    final response = await http.post(
+
+    return http
+        .post(
       url,
       headers: {
         'Content-Type': 'application/json',
       },
       body: json.encode(body),
-    );
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      authtoken = responseData['token'];
-      _name = responseData['username'];
-     
-      autenticado = true;
-      isLoading = false;
-      notifyListeners();
-      return true;
-    } else {
-      autenticado = false;
-      return false;
-    }
-  }
-
-  void logout() {
-    // Restablecer la autenticación
-    autenticado = false;
-    authtoken = '';
-    _name = 'no ai na';
-    typeuser = '';
-
-    // Resto de la lógica de cierre de sesión
-
-    notifyListeners();
+    )
+        .then((response) {
+      if (response.statusCode == 200) {
+        print(response.body);
+        final responseData = json.decode(response.body);
+        _name = responseData['username'];
+        _cargo = responseData['tipo'];
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
+    });
   }
 
   loadUsers() async {
@@ -89,27 +77,21 @@ class UserService extends ChangeNotifier {
 
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-      final response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
         'authorization': basicAuth,
-        },
-      );
-      if (response.statusCode == 200) {
-        // Obtener los datos de la respuesta en formato JSON
-        final responseData = json.decode(response.body);
+      },
+    );
+    if (response.statusCode == 200) {
+      // Obtener los datos de la respuesta en formato JSON
+      final responseData = json.decode(response.body);
 
-        // Procesar los datos de respuesta según tus necesidades
-        // Por ejemplo, crear objetos Listado y agregarlos a la lista userslist
-
-        isLoading = false;
-        notifyListeners();
-      } else {
-        // Manejar el error de solicitud según corresponda
-      }
-
-      // Manejar el error de conexión o cualquier otra excepción
-    
+      isLoading = false;
+      notifyListeners();
+    } else {
+      print('cago el userlist');
+    }
   }
 }
