@@ -13,11 +13,11 @@ class Users {
 
   factory Users.fromMap(Map<String, dynamic> json) => Users(
         userslist:
-            List<Listado>.from(json["Listado"].map((x) => Listado.fromMap(x))),
+            List<Listado>.from(json["List"].map((x) => Listado.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
-        "Listado": List<dynamic>.from(userslist.map((x) => x.toMap())),
+        "List": List<dynamic>.from(userslist.map((x) => x.toMap())),
       };
 }
 
@@ -25,26 +25,26 @@ class Listado {
   Listado({
     required this.userId,
     required this.userName,
-    required this.userRut,
-    required this.userSede,
+    // required this.userRut,
+    // required this.userSede,
     required this.userCargo,
-    required this.userDireccion,
+    // required this.userDireccion,
     required this.userCorreo,
-    required this.userNumero,
-    required this.userNemergencia,
-    required this.userImagen,
+    // required this.userNumero,
+    // required this.userNemergencia,
+    // required this.userImagen,
   });
 
   int userId;
   String userName;
-  int userRut;
-  String userSede;
+  // int userRut;
+  // String userSede;
   String userCargo;
-  String userDireccion;
+  // String userDireccion;
   String userCorreo;
-  int userNumero;
-  int userNemergencia;
-  String userImagen;
+  // int userNumero;
+  // int userNemergencia;
+  // String userImagen;
 
   factory Listado.fromJson(String str) => Listado.fromMap(json.decode(str));
 
@@ -53,39 +53,39 @@ class Listado {
   factory Listado.fromMap(Map<String, dynamic> json) => Listado(
         userId: json["user_id"],
         userName: json["user_name"],
-        userRut: json["user_rut"],
-        userSede: json["user_sede"],
+        // userRut: json["user_rut"],
+        // userSede: json["user_sede"],
         userCargo: json["user_cargo"],
-        userDireccion: json["user_direccion"],
-        userCorreo: json["user_correo"],
-        userNumero: json["user_numero"],
-        userNemergencia: json["user_nemergencia"],
-        userImagen: json["user_imagen"],
+        // userDireccion: json["user_direccion"],
+        userCorreo: json["correo"],
+        // userNumero: json["user_numero"],
+        // userNemergencia: json["user_nemergencia"],
+        // userImagen: json["user_imagen"],
       );
 
   Map<String, dynamic> toMap() => {
         "user_id": userId,
         "user_name": userName,
-        "user_rut": userRut,
-        "user_sede": userSede,
+        // "user_rut": userRut,
+        // "user_sede": userSede,
         "user_cargo": userCargo,
-        "user_direccion": userDireccion,
+        // "user_direccion": userDireccion,
         "user_correo": userCorreo,
-        "user_numero": userNumero,
-        "user_nemergencia": userNemergencia,
-        "user_imagen": userImagen,
+        // "user_numero": userNumero,
+        // "user_nemergencia": userNemergencia,
+        // "user_imagen": userImagen,
       };
 
   Listado copy() => Listado(
         userId: userId,
         userName: userName,
-        userRut: userRut,
-        userSede: userSede,
+        // userRut: userRut,
+        // userSede: userSede,
         userCargo: userCargo,
-        userDireccion: userDireccion,
+        // userDireccion: userDireccion,
         userCorreo: userCorreo,
-        userNumero: userNumero,
-        userNemergencia: userNemergencia,
-        userImagen: userImagen,
+        // userNumero: userNumero,
+        // userNemergencia: userNemergencia,
+        // userImagen: userImagen,
       );
 }

@@ -14,6 +14,9 @@ class UserService extends ChangeNotifier {
   String APIPASS = 'test01';
   String BASEURL = '3.85.128.77:8000';
 
+
+  List<Listado> listadousers = [];
+  List<Listado> userlogeado = [];
   bool isLoading = true;
   bool isEditCreate = true;
   String typeuser = '';
@@ -22,10 +25,8 @@ class UserService extends ChangeNotifier {
   String get name => _name;
   bool autenticado = false;
 
-  set name(String value) {
-    _name = value;
-    print('ola${_name}');
-    notifyListeners(); // Notificar a los widgets dependientes
+  UserService() {
+    loadUsers();
   }
 
   bool isLoggedIn() {
@@ -33,7 +34,6 @@ class UserService extends ChangeNotifier {
   }
 
   Future<bool> login(String username, String password) async {
-    _name = username;
     isLoading = true;
     notifyListeners();
     var url = Uri.http(
@@ -52,15 +52,13 @@ class UserService extends ChangeNotifier {
       },
       body: json.encode(body),
     );
-    print("respuesta: ${response.body}");
     if (response.statusCode == 200) {
       final responseData = json.decode(response.body);
       authtoken = responseData['token'];
       _name = responseData['username'];
-      typeuser = responseData['tipo'];
+     
       autenticado = true;
       isLoading = false;
-      loadUsers();
       notifyListeners();
       return true;
     } else {
@@ -82,20 +80,20 @@ class UserService extends ChangeNotifier {
   }
 
   loadUsers() async {
+    notifyListeners();
     // Construir la URL del endpoint de listado de usuarios
     var url = Uri.http(
       BASEURL,
       'accounts/user_user_list_rest/',
     );
 
-    try {
-      // Realizar la solicitud GET para obtener el listado de usuarios
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
       final response = await http.get(
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Token $authtoken',
-          // Agrega cualquier encabezado de autenticación requerido, como el token de acceso
+        'authorization': basicAuth,
         },
       );
       if (response.statusCode == 200) {
@@ -107,12 +105,11 @@ class UserService extends ChangeNotifier {
 
         isLoading = false;
         notifyListeners();
-        print('nombre ${name}');
       } else {
         // Manejar el error de solicitud según corresponda
       }
-    } catch (error) {
+
       // Manejar el error de conexión o cualquier otra excepción
-    }
+    
   }
 }
