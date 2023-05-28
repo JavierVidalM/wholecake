@@ -55,7 +55,9 @@ class LoginUserState extends State<LoginUser> {
                   child: TextField(
                     controller: userController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(hintText: "Correo electrónico"),
+                    decoration: InputDecoration(
+                      hintText: "Correo electrónico",
+                    ),
                   ),
                 ),
                 Padding(
@@ -68,7 +70,9 @@ class LoginUserState extends State<LoginUser> {
                     controller: passwordController,
                     autocorrect: false,
                     obscureText: true,
-                    decoration: const InputDecoration(hintText: "Contraseña"),
+                    decoration: InputDecoration(
+                      hintText: "Contraseña",
+                    ),
                   ),
                 ),
                 Padding(
@@ -123,7 +127,7 @@ class LoginUserState extends State<LoginUser> {
                               child: Text(
                                 'Recuérdame',
                                 style: SweetCakeTheme
-                                    .loginTheme.textTheme.bodySmall,
+                                    .loginTheme.textTheme.titleSmall,
                               ),
                             ),
                           ]),
@@ -142,9 +146,37 @@ class LoginUserState extends State<LoginUser> {
                               MaterialPageRoute(
                                   builder: (context) => const HomePage()));
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('Credenciales incorrectas'),
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Row(
+                              children: [
+                                Icon(
+                                  Icons.report_gmailerrorred_rounded,
+                                  color: Colors.white,
+                                  size: 40,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Credenciales incorrectas",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                          "Revisa tu dirección correo electrónico o contraseña"),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                             duration: Duration(seconds: 2),
+                            padding: EdgeInsets.all(20),
                           ));
                         }
                       });

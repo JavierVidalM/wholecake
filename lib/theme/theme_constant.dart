@@ -44,8 +44,11 @@ class SweetCakeTheme {
     ),
     textTheme: const TextTheme(
       titleLarge: TextStyle(color: white, fontSize: 22),
+      titleMedium: TextStyle(color: gray, fontSize: 20),
+      titleSmall: TextStyle(color: hint, fontSize: 18),
+      bodyLarge: TextStyle(color: blue2, fontSize: 22),
       bodyMedium: TextStyle(color: blue2, fontSize: 20),
-      bodySmall: TextStyle(color: hint, fontSize: 18),
+      bodySmall: TextStyle(color: gray, fontSize: 16),
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
@@ -61,6 +64,11 @@ class SweetCakeTheme {
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: blue2, width: 4.0)),
     ),
+    snackBarTheme: const SnackBarThemeData(
+        backgroundColor: blue2,
+        closeIconColor: Colors.white,
+        contentTextStyle: TextStyle(color: white),
+        behavior: SnackBarBehavior.floating),
   );
 
   static ThemeData sidebarTheme = ThemeData(

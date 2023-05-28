@@ -5,7 +5,6 @@ import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:intl/intl.dart';
-// import 'lista_ejemplo.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -18,31 +17,36 @@ class SellsView extends StatefulWidget {
 }
 
 Future<void> _refresh() async {
-  // await ProductService().loadNoSeQueWea();
+  await ProductService().loadProductos();
 }
 
 class _SellsViewState extends State<SellsView> {
   bool isSelected = false;
   List selectedCategories = [];
+  List<Listado> productosCarrito = [];
 
   void sinProductos(BuildContext context) async {
     await showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Aún no hay productos en el carrito"),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Aceptar"))
-            ],
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Aún no hay productos en el carrito"),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Aceptar"))
+          ],
+        );
+      },
+    );
   }
 
-  Future<void> detalleVenta(BuildContext context, productselected) async {
+  Future<void> detalleVenta(
+      BuildContext context, List<Listado> products) async {
+    final productSelected = List.from(products);
+
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -50,7 +54,6 @@ class _SellsViewState extends State<SellsView> {
           scrollable: true,
           contentPadding: const EdgeInsets.only(right: 0, left: 0),
           insetPadding: const EdgeInsets.all(0),
-          // titlePadding: EdgeInsets.all(10),
           title: Column(
             children: [
               SizedBox(
@@ -65,41 +68,73 @@ class _SellsViewState extends State<SellsView> {
             ],
           ),
           content: Column(
-            children: productselected.map((item) {
-              final int quantityInCart = productselected
-                  .where((product) => product.id == item.id)
+            children: productSelected.map((item) {
+              final int quantityInCart = productosCarrito
+                  .where((product) => product.productoId == item.productoId)
                   .length;
+              Uint8List bytes = Uint8List.fromList(base64.decode(item.imagen));
+              Image imagenProducto = Image.memory(bytes);
               return ListTile(
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.asset(item.image),
-                ),
-                title: Text(item.name),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Categoría: ${item.category}'),
-                    Text('Precio: ${NumberFormat.currency(
-                      locale: 'es',
-                      symbol: '\$',
-                      decimalDigits: 0,
-                      customPattern: '\$ #,##0',
-                    ).format(double.parse(item.price.toString()))}'),
-                    // Text('Cantidad: $quantityInCart'),
-                  ],
-                ),
-                trailing: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    color: Colors.white,
-                    child: Center(
-                      child: Text(
-                        quantityInCart.toString(),
-                      ),
+                leading: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(200),
+                    shape: BoxShape.rectangle,
+                    image: DecorationImage(
+                      image: imagenProducto.image,
+                      fit: BoxFit.cover,
                     ),
                   ),
+                ),
+                // leading: Text(item.imagen),
+                title: Text(item.nombre),
+                subtitle: Text(NumberFormat.currency(
+                  locale: 'es',
+                  symbol: '\$',
+                  decimalDigits: 0,
+                  customPattern: '\$ #,##0',
+                ).format(double.parse(item.precio.toString()))),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      NumberFormat.currency(
+                        locale: 'es',
+                        symbol: '\$',
+                        decimalDigits: 0,
+                        customPattern: '\$ #,##0',
+                      ).format(
+                        double.parse(
+                          (quantityInCart * item.precio).toString(),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          if (quantityInCart > 1) {
+                            productosCarrito.removeLast();
+                          } else {
+                            productosCarrito.removeWhere((product) =>
+                                product.productoId == item.productoId);
+                          }
+                        });
+                      },
+                      icon: const Icon(Icons.remove),
+                    ),
+                    Text(quantityInCart.toString()),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          productosCarrito.add(item.copy());
+                        });
+                      },
+                      icon: const Icon(Icons.add),
+                    ),
+                  ],
                 ),
               );
             }).toList(),
@@ -117,43 +152,104 @@ class _SellsViewState extends State<SellsView> {
     );
   }
 
+  // Future<void> detalleVenta(
+  //     BuildContext context, List<Listado> products) async {
+  //   final productSelected = List.from(products);
+
+  //   await showDialog<void>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         scrollable: true,
+  //         contentPadding: const EdgeInsets.only(right: 0, left: 0),
+  //         insetPadding: const EdgeInsets.all(0),
+  //         title: Column(
+  //           children: [
+  //             SizedBox(
+  //               width: MediaQuery.of(context).size.width * 0.8,
+  //               height: 1,
+  //             ),
+  //             const Text('Carrito de compras'),
+  //             SizedBox(
+  //               width: MediaQuery.of(context).size.width * 0.8,
+  //               height: 10,
+  //             ),
+  //           ],
+  //         ),
+  //         content: Column(
+  //           children: productSelected.map((item) {
+  //             final int quantityInCart = productosCarrito
+  //                 .where((product) => product.productoId == item.productoId)
+  //                 .length;
+  //             return ListTile(
+  //               leading: ClipRRect(
+  //                 borderRadius: BorderRadius.circular(100),
+  //                 child: Image.asset(item.image),
+  //               ),
+  //               title: Text(item.name),
+  //               subtitle: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Text('Categoría: ${item.category}'),
+  //                   Text('Precio: ${NumberFormat.currency(
+  //                     locale: 'es',
+  //                     symbol: '\$',
+  //                     decimalDigits: 0,
+  //                     customPattern: '\$ #,##0',
+  //                   ).format(double.parse(item.price.toString()))}'),
+  //                 ],
+  //               ),
+  //               trailing: ClipRRect(
+  //                 borderRadius: BorderRadius.circular(10),
+  //                 child: Container(
+  //                   width: 30,
+  //                   height: 30,
+  //                   color: Colors.white,
+  //                   child: Center(
+  //                     child: Text(
+  //                       quantityInCart.toString(),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             );
+  //           }).toList(),
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.pop(context);
+  //             },
+  //             child: const Text("Aceptar"),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
-    final listado = Provider.of<ProductService>(context);
-    final listadoProductos = listado.listadoproductos;
-    final listacat = Provider.of<ProductService>(context);
+    final productoProvider = Provider.of<ProductService>(context);
+    final listadoProductos = productoProvider.listadoproductos;
 
-    List productselected = [];
-    Map<Listado, int> cartQuantities = {};
-    Map<Listado, int> cartItems = {};
-
-    final filterProducts = listado.listadoproductos.where((product) {
-      return productselected.isEmpty ||
-          productselected.contains(product.categoria);
+    final filterProducts = listadoProductos.where((product) {
+      return selectedCategories.isEmpty ||
+          selectedCategories.contains(product.categoria);
     }).toList();
 
-    if (listado.isLoading) return const LoadingScreen();
+    if (productoProvider.isLoading) return const LoadingScreen();
     bool cartWithProducts = false;
     // bool isInCart = false;
-    if (productselected.isNotEmpty) {
+    if (productosCarrito.isNotEmpty) {
       cartWithProducts = !cartWithProducts;
     }
-    // if (productselected.isNotEmpty) {
-    //   isInCart = !isInCart;
-    // }
     List listadoCategorias = [];
     for (var producto in listadoProductos) {
       if (!listadoCategorias.contains(producto.categoria)) {
         listadoCategorias.add(producto.categoria);
       }
     }
-
-    final filteredProducts = listadoProductos.where(
-      (product) {
-        return selectedCategories.isEmpty ||
-            selectedCategories.contains(product.categoria);
-      },
-    ).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -167,9 +263,9 @@ class _SellsViewState extends State<SellsView> {
                 right: MediaQuery.of(context).size.width * 0.04),
             child: IconButton(
               onPressed: () async {
-                if (productselected.isEmpty == false) {
+                if (productosCarrito.isEmpty == false) {
                   {
-                    detalleVenta(context, productselected);
+                    detalleVenta(context, productosCarrito);
                   }
                 } else {
                   sinProductos(context);
@@ -191,7 +287,7 @@ class _SellsViewState extends State<SellsView> {
                           height: 15,
                           child: Center(
                             child: Text(
-                              productselected.length.toString(),
+                              productosCarrito.length.toString(),
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 12),
                             ),
@@ -208,163 +304,168 @@ class _SellsViewState extends State<SellsView> {
         toolbarHeight: MediaQuery.of(context).size.height * 0.1,
       ),
       drawer: const SideBar(),
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              // SingleChildScrollView(
-              //   scrollDirection: Axis.horizontal,
-              //   child:
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Wrap(
-                  spacing: 10.0, // Espacio horizontal entre los chips
-                  runSpacing: 10.0,
-                  children: listadoCategorias.map((categoria) {
-                    return FilterChip(
-                      selected: listadoCategorias.contains(categoria),
-                      label: Text(categoria.toString()),
-                      onSelected: (selected) {
-                        setState(() {
-                          if (selected) {
-                            selectedCategories.add(categoria);
-                          } else {
-                            selectedCategories.remove(categoria);
-                          }
-                        });
-                      },
-                    );
-                  }).toList(),
+      body: Consumer<ProductService>(builder: (context, listado, child) {
+        final filterProducts = listado.listadoproductos.where((product) {
+          return selectedCategories.isEmpty ||
+              selectedCategories.contains(product.categoria);
+        }).toList();
+
+        return Column(
+          children: [
+            Stack(
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Wrap(
+                      spacing: 10.0, // Espacio horizontal entre los chips
+                      runSpacing: 10.0,
+                      children:
+                          productoProvider.listadocategorias.map((categoria) {
+                        return FilterChip(
+                          selected: selectedCategories
+                              .contains(categoria.categoriaId),
+                          label: Text(categoria.nombre),
+                          onSelected: (selected) {
+                            setState(() {
+                              if (selected) {
+                                selectedCategories.add(categoria.categoriaId);
+                              } else {
+                                selectedCategories
+                                    .remove(categoria.categoriaId);
+                              }
+                            });
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
-              ),
-              // ),
-              Positioned(
-                  top: MediaQuery.of(context).size.height * 0.01,
+                Positioned(
+                  top: 0,
+                  bottom: 0,
                   right: 0,
-                  child: const Icon(Icons.arrow_forward_ios_rounded))
-            ],
-          ),
-          const Divider(
-            height: 1,
-          ),
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, childAspectRatio: 0.66),
-              itemCount: filteredProducts.length,
-              itemBuilder: (context, index) {
-                final product = filteredProducts[index];
+                  child: Container(
+                    width: 30,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerRight,
+                        end: Alignment.centerLeft,
+                        colors: [
+                          Colors.grey.withOpacity(0.5),
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(
+              height: 1,
+            ),
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3, childAspectRatio: 0.66),
+                itemCount: filterProducts.length,
+                itemBuilder: (context, index) {
+                  final product = filterProducts[index];
+                  Uint8List bytes =
+                      Uint8List.fromList(base64.decode(product.imagen));
+                  Image imagenProducto = Image.memory(bytes);
 
-                String nombrecat = '';
-                for (var categoria in listacat.listadocategorias) {
-                  if (categoria.categoriaId == product.categoria) {
-                    nombrecat = categoria.nombre;
-                    break;
-                  }
-                }
-
-                final int? quantityInCart =
-                    cartItems.containsKey(product) ? cartItems[product] : 0;
-                // final int quantityInCart = productselected
-                //     .where((item) => item.id == product.id)
-                //     .length;
-
-                Uint8List bytes =
-                    Uint8List.fromList(base64.decode(product.imagen));
-                Image image = Image.memory(bytes);
-
-                return Card(
-                  color: SweetCakeTheme.blue,
-                  elevation: 8,
-                  margin: const EdgeInsets.all(5),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 90,
-                              height: 90,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(200),
-                                shape: BoxShape.rectangle,
-                                image: DecorationImage(
-                                  image: image.image,
-                                  fit: BoxFit.fill,
+                  return Card(
+                    color: SweetCakeTheme.blue,
+                    elevation: 8,
+                    margin: const EdgeInsets.all(5),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 90,
+                                height: 90,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(200),
+                                  shape: BoxShape.rectangle,
+                                  image: DecorationImage(
+                                    image: imagenProducto.image,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Text(
-                              product.nombre,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              NumberFormat.currency(
-                                locale: 'es',
-                                symbol: '\$',
-                                decimalDigits: 0,
-                                customPattern: '\$ #,##0',
-                              ).format(double.parse(product.precio.toString())),
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w400),
+                              Text(
+                                product.nombre,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                NumberFormat.currency(
+                                  locale: 'es',
+                                  symbol: '\$',
+                                  decimalDigits: 0,
+                                  customPattern: '\$ #,##0',
+                                ).format(
+                                    double.parse(product.precio.toString())),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    productosCarrito.add(product);
+                                  },
+                                );
+                              },
+                              child: const Icon(Icons.add),
                             ),
                           ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(
-                                () {
-                                  productselected.add(product);
-                                },
-                              );
-                            },
-                            child: const Icon(Icons.add),
-                          ),
-                          // Container(
-                          //   color: Colors.green,
-                          //   child:
-                          // )
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: ElevatedButton(
-                onPressed: () {
-                  if (productselected.isEmpty == false) {
-                    {
-                      detalleVenta(context, productselected);
-                    }
-                  } else {
-                    return sinProductos(context);
-                  }
+                        )
+                      ],
+                    ),
+                  );
                 },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(
-                    (MediaQuery.of(context).size.width * 0.6),
-                    (MediaQuery.of(context).size.height * 0.7),
-                  ),
-                ),
-                child: const Text('Pasar por el carrito'),
               ),
             ),
-          )
-        ],
-      ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.1,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (productosCarrito.isEmpty == false) {
+                      {
+                        detalleVenta(context, productosCarrito);
+                      }
+                    } else {
+                      return sinProductos(context);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(
+                      (MediaQuery.of(context).size.width * 0.6),
+                      (MediaQuery.of(context).size.height * 0.7),
+                    ),
+                  ),
+                  child: const Text('Pasar por el carrito'),
+                ),
+              ),
+            )
+          ],
+        );
+      }),
     );
   }
 }

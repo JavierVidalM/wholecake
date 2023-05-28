@@ -52,7 +52,7 @@ class UserService extends ChangeNotifier {
       },
       body: json.encode(body),
     );
-    print(response.body);
+    print("respuesta: ${response.body}");
     if (response.statusCode == 200) {
       final responseData = json.decode(response.body);
       authtoken = responseData['token'];
@@ -60,8 +60,8 @@ class UserService extends ChangeNotifier {
       typeuser = responseData['tipo'];
       autenticado = true;
       isLoading = false;
-      notifyListeners();
       loadUsers();
+      notifyListeners();
       return true;
     } else {
       autenticado = false;
@@ -73,7 +73,7 @@ class UserService extends ChangeNotifier {
     // Restablecer la autenticación
     autenticado = false;
     authtoken = '';
-    _name = '';
+    _name = 'no ai na';
     typeuser = '';
 
     // Resto de la lógica de cierre de sesión
@@ -107,7 +107,7 @@ class UserService extends ChangeNotifier {
 
         isLoading = false;
         notifyListeners();
-        print('nombreu${name}');
+        print('nombre ${name}');
       } else {
         // Manejar el error de solicitud según corresponda
       }

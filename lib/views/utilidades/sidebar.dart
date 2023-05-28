@@ -20,7 +20,6 @@ class _SideBarState extends State<SideBar> {
 
   @override
   Widget build(BuildContext context) {
-    // final user = context.read<UserService>();
     return Theme(
         data: SweetCakeTheme.sidebarTheme,
         child: Drawer(
@@ -34,7 +33,6 @@ class _SideBarState extends State<SideBar> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          print("Usuario Monkey D. Luffy");
                           Navigator.pushNamed(context, '/UserProfileView');
                         },
                         child: SizedBox(
