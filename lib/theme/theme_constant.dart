@@ -9,6 +9,9 @@ class SweetCakeTheme {
   static const Color blue2 = Color(0xFF3681AB);
   static const Color hint = Color(0xFF909090);
   static const Color gray = Color(0xFF454545);
+  static const Color warning = Color(0xFFF95959);
+  static const Color graphBG = Color(0xFF343434);
+
   // static const Color SBicons = Color(0xFFA1A1A1);
 
   static MaterialColor pink_1 = const MaterialColor(
@@ -103,6 +106,10 @@ class SweetCakeTheme {
     colorScheme: const ColorScheme.light(primary: pink2),
     dividerTheme: const DividerThemeData(
       color: gray,
+    ),
+    dialogTheme: DialogTheme(
+      backgroundColor: blue,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
   );
 
@@ -262,7 +269,7 @@ class SweetCakeTheme {
 
   static final ThemeData graphCardTheme = ThemeData(
     cardTheme: CardTheme(
-      color: const Color(0xFF343434),
+      color: graphBG,
       elevation: 10,
       shadowColor: blue2,
       margin: const EdgeInsets.symmetric(

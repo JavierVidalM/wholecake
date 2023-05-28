@@ -18,6 +18,49 @@ class _SideBarState extends State<SideBar> {
     return productCount.toString();
   }
 
+  Future<void> logoutPopup(BuildContext context, user) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Estás a punto de cerrar sesión",
+              style: TextStyle(color: SweetCakeTheme.pink3),
+            ),
+            content: Text("¿Estás seguro de que quieres cerrar la sesión?"),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0, bottom: 5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text(
+                        "Cancelar",
+                        style: TextStyle(color: SweetCakeTheme.warning),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        user.logout();
+                        Navigator.pushNamed(context, '/LoginUser');
+                      },
+                      child: const Text(
+                        "Aceptar",
+                        style: TextStyle(color: SweetCakeTheme.blue2),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -207,8 +250,7 @@ class _SideBarState extends State<SideBar> {
                           leading: const Icon(Icons.logout),
                           title: const Text("Cerrar sesión"),
                           onTap: () {
-                            user.logout();
-                            Navigator.pushNamed(context, '/LoginUser');
+                            logoutPopup(context, user);
                           }),
                     ],
                   ),
