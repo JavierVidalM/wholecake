@@ -12,11 +12,13 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
-  String getUserinfo(BuildContext context) {
-    final productService = Provider.of<UserService>(context, listen: true);
-    final productCount = productService.name;
-    return productCount;
-  }
+  // final name = 'ola';
+  // String getUserinfo(BuildContext context) {
+  //   final userService = Provider.of<UserService>(context, listen: true);
+  //   final name = userService.name;
+  //   final cargo = userService.cargo;
+  //   return name;
+  // }
 
   String getProductCount(BuildContext context) {
     final productService = Provider.of<ProductService>(context, listen: false);
@@ -74,6 +76,7 @@ class _SideBarState extends State<SideBar> {
         child: Drawer(
           child: Consumer<UserService>(
             builder: (context, user, _) {
+              
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -238,7 +241,7 @@ class _SideBarState extends State<SideBar> {
                           title: const Text("Proveedores"),
                           onTap: () =>
                               Navigator.pushNamed(context, '/SuppliersView')),
-                      // if (user.typeuser == 'cajero')
+                      if (user.cargo == 'cajero')
                       ListTile(
                           leading: const Icon(Icons.point_of_sale_sharp),
                           title: const Text("Módulo de ventas"),
