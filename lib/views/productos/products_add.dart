@@ -68,6 +68,7 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
       'estado': 'true',
     });
     await ProductService().addProducto(msg);
+    // Navigator.pushNamed(context, "/ProductsView");
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const ProductsView()));
   }

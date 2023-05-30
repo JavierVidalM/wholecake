@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wholecake/models/categoria.dart';
 import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/services/productos_services.dart';
+import 'package:wholecake/views/home/home.dart';
+import 'package:wholecake/views/insumos/insumos.dart';
+import 'package:wholecake/views/login/login.dart';
+import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
+import 'package:wholecake/views/productos/products.dart';
+import 'package:wholecake/views/proveedores/suppliers.dart';
+import 'package:wholecake/views/users/user_profile_view.dart';
+import 'package:wholecake/views/ventas/sells.dart';
 import '../../services/users_services.dart';
 
 class SideBar extends StatefulWidget {
@@ -54,7 +63,11 @@ class _SideBarState extends State<SideBar> {
                     TextButton(
                       onPressed: () {
                         // user.logout();
-                        Navigator.pushNamed(context, '/LoginUser');
+                        // Navigator.pushNamed(context, '/LoginUser');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginUser()));
                       },
                       child: const Text(
                         "Aceptar",
@@ -76,7 +89,6 @@ class _SideBarState extends State<SideBar> {
         child: Drawer(
           child: Consumer<UserService>(
             builder: (context, user, _) {
-              
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -84,7 +96,13 @@ class _SideBarState extends State<SideBar> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/UserProfileView');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const UserProfileView(),
+                            ),
+                          );
+                          // Navigator.pushNamed(context, '/UserProfileView');
                         },
                         child: SizedBox(
                           height: MediaQuery.of(context).size.height * 0.18,
@@ -167,17 +185,30 @@ class _SideBarState extends State<SideBar> {
                           leading: const Icon(Icons.home_outlined),
                           title: const Text("Inicio"),
                           onTap: () =>
-                              Navigator.pushNamed(context, '/HomePage')),
+                              // Navigator.pushNamed(context, '/HomePage'),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()))),
                       ListTile(
                           leading: const Icon(Icons.person_outline_rounded),
                           title: const Text("Usuarios"),
                           onTap: () =>
-                              Navigator.pushNamed(context, '/HomePage')),
+                              // Navigator.pushNamed(context, '/HomePage'),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()))),
                       ListTile(
                           leading: const Icon(Icons.inventory_rounded),
                           title: const Text("Ordenes de compra"),
                           onTap: () =>
-                              Navigator.pushNamed(context, '/PurchaseList')),
+                              // Navigator.pushNamed(context, '/PurchaseList'),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PurchaseList()))),
                       ExpansionTile(
                         leading: const Icon(Icons.inventory_2_outlined),
                         title: const Text("Inventario"),
@@ -187,8 +218,13 @@ class _SideBarState extends State<SideBar> {
                             child: ListTile(
                                 leading: const Icon(Icons.input_rounded),
                                 title: const Text("Insumos"),
-                                onTap: () => Navigator.pushNamed(
-                                    context, '/ListadoInsumos')),
+                                onTap: () =>
+                                    // Navigator.pushNamed(context, '/ListadoInsumos'),
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ListadoInsumos()))),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 25),
@@ -197,7 +233,12 @@ class _SideBarState extends State<SideBar> {
                                     Icons.report_gmailerrorred_rounded),
                                 title: const Text("Por Expirar"),
                                 onTap: () =>
-                                    Navigator.pushNamed(context, '/ToExpire')),
+                                    // Navigator.pushNamed(context, '/ToExpire'),
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ToExpire()))),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 25),
@@ -205,7 +246,12 @@ class _SideBarState extends State<SideBar> {
                               leading: const Icon(Icons.cake_outlined),
                               title: const Text("Productos"),
                               onTap: () =>
-                                  Navigator.pushNamed(context, '/ProductsView'),
+                                  // Navigator.pushNamed(context, '/ProductsView'),
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ProductsView())),
                               trailing: ClipOval(
                                 child: Container(
                                     color: const Color(0xFFF95959),
@@ -231,8 +277,13 @@ class _SideBarState extends State<SideBar> {
                             child: ListTile(
                                 leading: const Icon(Icons.category_outlined),
                                 title: const Text("Categorías"),
-                                onTap: () => Navigator.pushNamed(
-                                    context, '/CategoryList')),
+                                onTap: () =>
+                                    // Navigator.pushNamed(context, '/CategoryList'),
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CategoryView()))),
                           ),
                         ],
                       ),
@@ -240,13 +291,23 @@ class _SideBarState extends State<SideBar> {
                           leading: const Icon(Icons.local_shipping_outlined),
                           title: const Text("Proveedores"),
                           onTap: () =>
-                              Navigator.pushNamed(context, '/SuppliersView')),
+                              // Navigator.pushNamed(context, '/SuppliersView'),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SuppliersView()))),
                       if (user.cargo == 'cajero')
-                      ListTile(
-                          leading: const Icon(Icons.point_of_sale_sharp),
-                          title: const Text("Módulo de ventas"),
-                          onTap: () =>
-                              Navigator.pushNamed(context, '/SellsView')),
+                        ListTile(
+                            leading: const Icon(Icons.point_of_sale_sharp),
+                            title: const Text("Módulo de ventas"),
+                            onTap: () =>
+                                // Navigator.pushNamed(context, '/SellsView'),
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SellsView()))),
                     ],
                   ),
                   Column(

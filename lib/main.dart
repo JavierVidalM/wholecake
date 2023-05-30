@@ -56,10 +56,12 @@ class MyfirstWidget extends StatelessWidget {
     //     debugShowCheckedModeBanner: false, home: ProductsView());
 
     return MaterialApp(
-        theme: SweetCakeTheme.mainTheme,
-        debugShowCheckedModeBanner: false,
-        initialRoute: AppRoutes.initialRoute,
-        routes: AppRoutes.routes,
-        onGenerateRoute: AppRoutes.onGenerateRoute);
+      theme: SweetCakeTheme.mainTheme,
+      debugShowCheckedModeBanner: false,
+      initialRoute: AppRoutes.initialRoute,
+      routes: AppRoutes.routes,
+      onGenerateRoute: AppRoutes.onGenerateRoute,
+      onUnknownRoute: AppRoutes.onGenerateRoute,
+    );
   }
 }
