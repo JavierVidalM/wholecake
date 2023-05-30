@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
@@ -6,26 +7,26 @@ import 'package:wholecake/services/ordencompra_services.dart';
 import 'package:wholecake/providers/ordenes_form_provider.dart';
 
 class PurchaseEdit extends StatefulWidget {
-  final int ordenId;
+  // final int ordenId;
 
-  const PurchaseEdit({Key? key, required this.ordenId}) : super(key: key);
+  const PurchaseEdit({Key? key}) : super(key: key);
 
   @override
   _PurchaseEditState createState() => _PurchaseEditState();
 }
 
 class _PurchaseEditState extends State<PurchaseEdit> {
-  late OrdencompraService _productService;
+  late OrdencompraService _ordenService;
   @override
   void initState() {
     super.initState();
-    _productService = Provider.of<OrdencompraService>(context, listen: false);
+    _ordenService = Provider.of<OrdencompraService>(context, listen: false);
   }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => OrdenesFormProvider(_productService.selectedOdc!),
+      create: (_) => OrdenesFormProvider(_ordenService.selectedOdc!),
       child: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -35,16 +36,16 @@ class _PurchaseEditState extends State<PurchaseEdit> {
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
         ),
         drawer: const SideBar(),
-        body: _ProductForm(productService: _productService),
+        body: _ProductForm(ordenService: _ordenService),
       ),
     );
   }
 }
 
 class _ProductForm extends StatefulWidget {
-  final OrdencompraService productService;
+  final OrdencompraService ordenService;
 
-  const _ProductForm({Key? key, required this.productService})
+  const _ProductForm({Key? key, required this.ordenService})
       : super(key: key);
 
   @override
@@ -121,7 +122,7 @@ class _ProductFormState extends State<_ProductForm> {
                     ElevatedButton(
                       onPressed: () async {
                         if (!ordenForm.isValidForm()) return;
-                        await widget.productService.updateOrdenCompra(orden);
+                        await widget.ordenService.updateOrdenCompra(orden);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

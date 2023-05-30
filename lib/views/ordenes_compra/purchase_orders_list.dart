@@ -2,12 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/ordendecompra.dart';
-import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/views/proveedores/suppliers.dart';
+import 'package:wholecake/views/ordenes_compra/suppliers_purchase_edit.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
-import 'package:wholecake/views/proveedores/suppliers_edit.dart';
 import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
+
 
 import '../../services/ordencompra_services.dart';
 
@@ -191,7 +190,7 @@ class _PurchaseListState extends State<PurchaseList> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        SuppliersEdit(),
+                                                        PurchaseEdit(),
                                                   ),
                                                 );
                                               },
