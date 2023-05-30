@@ -1,14 +1,16 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/ordendecompra.dart';
+import 'package:wholecake/models/suppliers.dart';
 import 'package:wholecake/views/ordenes_compra/suppliers_purchase_edit.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
-
-
+import 'package:intl/intl.dart';
 import '../../services/ordencompra_services.dart';
+import '../../services/suppliers_services.dart';
 
 class PurchaseList extends StatefulWidget {
   const PurchaseList({Key? key}) : super(key: key);
@@ -141,7 +143,30 @@ class _PurchaseListState extends State<PurchaseList> {
                     itemCount: listado.listaOrdenes.length,
                     itemBuilder: (context, index) {
                       final listaOdc = listado.listaOrdenes[index];
-                      String ordenOdc = '';
+                      print(listaOdc.fecha);
+                      final listaprov = Provider.of<SuppliersService>(context);
+                      ListSup nombrecat = ListSup(
+                          supplierId: 0,
+                          nombreProveedor: '',
+                          rut: '',
+                          tipoInsumo: '',
+                          correoProveedor: '',
+                          telefonoProveedor: '',
+                          imagen_insumo: '');
+                      for (var categoria in listaprov.listadosuppliers) {
+                        if (categoria.supplierId == listaOdc.proveedor) {
+                          nombrecat = categoria;
+                          break;
+                        }
+                      }
+                      // Convertir la fecha original a un objeto DateTime
+                      DateTime fecha = DateTime.parse(listaOdc.fecha);
+
+                      // Formatear la fecha en el formato deseado
+                      String fechaFormateada = DateFormat('dd/MM/yyyy-HH:mm:ss').format(fecha);
+                      Uint8List bytes = Uint8List.fromList(
+                          base64.decode(nombrecat.imagen_insumo));
+                      Image image = Image.memory(bytes);
                       return Card(
                         child: Padding(
                           padding: const EdgeInsets.all(12),
@@ -160,8 +185,12 @@ class _PurchaseListState extends State<PurchaseList> {
                                       MediaQuery.of(context).size.height * 0.01,
                                 ),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
+                                  borderRadius: BorderRadius.circular(10),
                                   shape: BoxShape.rectangle,
+                                  image: DecorationImage(
+                                    image: image.image,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                               Expanded(
@@ -174,7 +203,7 @@ class _PurchaseListState extends State<PurchaseList> {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            listaOdc.proveedor.toString(),
+                                            'Proveedor a cargo:${nombrecat.nombreProveedor}',
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -209,18 +238,23 @@ class _PurchaseListState extends State<PurchaseList> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 10),
+                                    SizedBox(height: 5),
                                     Text(
-                                      'Orden ID: ${listaOdc.ordenId.toString().padRight(10)}',
+                                      'Insumo: ${nombrecat.tipoInsumo.toString().padRight(10)}',
+                                    ),
+                                    SizedBox(height: 5),
+                                                                        Text(
+                                      'Cantidad: ${listaOdc.cantidad}',
+                                    ),
+                                    SizedBox(height: 5),
+                                                                        Text(
+                                      'Costo Total: ${listaOdc.costotal.toString().padRight(10)}',
                                     ),
                                     SizedBox(height: 5),
                                     Text(
-                                      'Fecha: ${listaOdc.fecha.toString().padRight(10)}',
+                                      'Fecha: ${fechaFormateada.padRight(10)}',
                                     ),
                                     SizedBox(height: 10),
-                                    Text(
-                                      'Proveedor: ${listaOdc.proveedor.toString().padRight(10)}',
-                                    ),
                                   ],
                                 ),
                               ),
