@@ -23,6 +23,64 @@ class _SuppliersEditState extends State<SuppliersEdit> {
     _productService = Provider.of<SuppliersService>(context, listen: false);
   }
 
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el nombre del producto.';
+    }
+    final nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
+    if (!nameRegExp.hasMatch(value)) {
+      return 'El nombre no debe contener números ni símbolos.';
+    }
+    return null;
+  }
+
+  String? validateProducto(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el producto.';
+    }
+    final nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
+    if (!nameRegExp.hasMatch(value)) {
+      return 'El producto no debe contener números ni símbolos.';
+    }
+    return null;
+  }
+
+  String? validateRut(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el RUT del proveedor.';
+    }
+    final rutRegExp = RegExp(
+        r'^(\d{1,2}\.?\d{3}\.?\d{3}[-][0-9kK]{1}|[0-9]{1,2}[0-9]{3}[0-9]{3}[0-9kK]{1})$');
+    if (!rutRegExp.hasMatch(value)) {
+      return 'El RUT no es válido.';
+    }
+    return null;
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese una dirección de correo electrónico';
+    }
+
+    final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+    if (!emailRegExp.hasMatch(value)) {
+      return 'Por favor ingrese un correo válido';
+    }
+
+    return null;
+  }
+
+  String? validatePhoneNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el número de teléfono.';
+    }
+    final phoneRegExp = RegExp(r'^[+]?[0-9]{10,13}$');
+    if (!phoneRegExp.hasMatch(value)) {
+      return 'El número de teléfono no es válido.';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -128,8 +186,13 @@ class _ProductFormState extends State<_ProductForm> {
                         onChanged: (value) => supplier.nombreProveedor = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'El nombre es obligatorio';
+                            return 'Por favor, ingrese el nombre del producto.';
                           }
+                          final nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
+                          if (!nameRegExp.hasMatch(value)) {
+                            return 'El nombre no debe contener números ni símbolos.';
+                          }
+                          return null;
                         },
                         decoration: const InputDecoration(
                           hintText: 'Nombre del producto',
@@ -147,8 +210,14 @@ class _ProductFormState extends State<_ProductForm> {
                         onChanged: (value) => supplier.rut = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'El RUT es obligatorio';
+                            return 'Por favor, ingrese el RUT del proveedor.';
                           }
+                          final rutRegExp = RegExp(
+                              r'^(\d{1,2}\.?\d{3}\.?\d{3}[-][0-9kK]{1}|[0-9]{1,2}[0-9]{3}[0-9]{3}[0-9kK]{1})$');
+                          if (!rutRegExp.hasMatch(value)) {
+                            return 'El RUT no es válido.';
+                          }
+                          return null;
                         },
                         decoration: const InputDecoration(
                           hintText: 'RUT',
@@ -166,8 +235,13 @@ class _ProductFormState extends State<_ProductForm> {
                         onChanged: (value) => supplier.tipoInsumo = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'El tipo de insumo es obligatorio';
+                            return 'Por favor, ingrese el insumo.';
                           }
+                          final nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
+                          if (!nameRegExp.hasMatch(value)) {
+                            return 'El insumo no debe contener números ni símbolos.';
+                          }
+                          return null;
                         },
                         decoration: const InputDecoration(
                           hintText: 'Insumo',
@@ -179,14 +253,21 @@ class _ProductFormState extends State<_ProductForm> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Producto'),
+                      const Text('Correo del proveedor'),
                       TextFormField(
                         initialValue: supplier.correoProveedor,
                         onChanged: (value) => supplier.correoProveedor = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'El correo es obligatorio';
+                            return 'Por favor ingrese una dirección de correo electrónico';
                           }
+
+                          final emailRegExp = RegExp(
+                              r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+                          if (!emailRegExp.hasMatch(value)) {
+                            return 'Por favor ingrese un correo válido';
+                          }
+                          return null;
                         },
                         decoration: const InputDecoration(
                           hintText: 'Correo del proveedor',
@@ -204,8 +285,13 @@ class _ProductFormState extends State<_ProductForm> {
                         onChanged: (value) => supplier.nombreProveedor = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'El nombre es obligatorio';
+                            return 'Por favor, ingrese el número de teléfono.';
                           }
+                          final phoneRegExp = RegExp(r'^[+]?[0-9]{10,13}$');
+                          if (!phoneRegExp.hasMatch(value)) {
+                            return 'El número de teléfono no es válido.';
+                          }
+                          return null;
                         },
                         decoration: const InputDecoration(
                           hintText: 'Nombre del producto',
