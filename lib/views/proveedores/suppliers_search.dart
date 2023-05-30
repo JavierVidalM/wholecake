@@ -39,7 +39,7 @@ class SupplierSearch extends SearchDelegate<ListSup> {
                 rut: '',
                 tipoInsumo: '',
                 correoProveedor: '',
-                telefonoProveedor: 0,
+                telefonoProveedor: '',
                 imagen_insumo: ''),
           );
         },

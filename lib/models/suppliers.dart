@@ -30,7 +30,7 @@ class ListSup {
   String rut;
   String tipoInsumo;
   String correoProveedor;
-  int telefonoProveedor;
+  String telefonoProveedor;
   String imagen_insumo;
 
   ListSup({
