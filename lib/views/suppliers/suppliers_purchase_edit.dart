@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wholecake/models/ordendecompra.dart';
-import 'package:wholecake/models/productos.dart';
-import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/theme/theme_constant.dart';
-import 'package:wholecake/views/products/products.dart';
-import 'package:date_time_picker/date_time_picker.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:wholecake/views/suppliers/suppliers.dart';
-import 'dart:typed_data';
-import 'dart:convert';
-import 'dart:io';
-import 'package:wholecake/views/utilities/sidebar.dart';
+import 'package:wholecake/views/utilidades/sidebar.dart';
+import 'package:wholecake/views/ordenes_compra/purchase_orders_list.dart';
+import 'package:wholecake/services/ordencompra_services.dart';
+import 'package:wholecake/providers/ordenes_form_provider.dart';
 
 class PurchaseEdit extends StatefulWidget {
   final int ordenId;
@@ -23,215 +15,154 @@ class PurchaseEdit extends StatefulWidget {
 }
 
 class _PurchaseEditState extends State<PurchaseEdit> {
-  TextEditingController ordenIdController = TextEditingController();
-  TextEditingController fechaController = TextEditingController();
-  TextEditingController cantidadController = TextEditingController();
-  TextEditingController proveedorController = TextEditingController();
-  TextEditingController costotalController = TextEditingController();
-
+  late OrdencompraService _productService;
   @override
   void initState() {
     super.initState();
-    loadOrdenCompra();
-  }
-
-  void loadOrdenCompra() {
-    final productService = Provider.of<ProductService>(context, listen: false);
-    final odc = productService.listaOrdenes.firstWhere(
-      (odc) => odc.ordenId == widget.ordenId,
-      orElse: () => ListOdc(
-        ordenId: 0,
-        fecha: '',
-        cantidad: '',
-        costotal: '',
-        proveedor: 0,
-      ),
-    );
-    _ordenIdController.text = odc.ordenId;
-    _fechaController.text = odc.fecha.toString();
-    _cantidadController.text = odc.cantidad.toString();
-    _proveedorController.text = odc.proveedor;
-    _costotalController.text = odc.costotal;
+    _productService = Provider.of<OrdencompraService>(context, listen: false);
   }
 
   @override
   Widget build(BuildContext context) {
-    final productService = Provider.of<ProductService>(context);
-    final product = productService.listaOrdenes.firstWhere(
-      (odc) => odc.ordenId == widget.ordenId,
-      orElse: () => ListOdc(
-        ordenId: 0,
-        fecha: '',
-        cantidad: '',
-        costotal: '',
-        proveedor: 0,
+    return ChangeNotifierProvider(
+      create: (_) => OrdenesFormProvider(_productService.selectedOdc!),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Editar Orden de Compra',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+        ),
+        drawer: const SideBar(),
+        body: _ProductForm(productService: _productService),
       ),
     );
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Editar Orden',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        toolbarHeight: MediaQuery.of(context).size.height * 0.1,
-      ),
-      drawer: const SideBar(),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).size.height * 0.04,
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('OrdenId'),
-                TextFormField(
-                  initialValue: odc.ordenId,
-                  onChanged: (value) => odc.ordenId = value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'El ID es obligatorio';
-                    }
-                  },
-                  decoration: const InputDecoration(
-                    hintText: 'ID de la Orden',
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Fecha'),
-                Theme(
-                  data: SweetCakeTheme.calendarTheme,
-                  child: DateTimePicker(
-                    initialValue: product.fecha,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                    // onChanged: (val) => print(val),
-                    validator: (val) {
-                      product.fecha = val!;
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Cantidad'),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  initialValue: product.cantidad.toString(),
-                  onChanged: (value) {
-                    if (int.tryParse(value) == null) {
-                      product.cantidad = 0;
-                    } else {
-                      product.cantidad = int.parse(value);
-                    }
-                  },
-                  decoration: const InputDecoration(
-                    hintText: 'Cantidad Total',
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Costo'),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  initialValue: product.costotal.toString(),
-                  onChanged: (value) {
-                    if (int.tryParse(value) == null) {
-                      product.costotal = 0;
-                    } else {
-                      product.costotal = int.parse(value);
-                    }
-                  },
-                  decoration: const InputDecoration(
-                    hintText: 'Costo Total',
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Proveedor'),
-                TextFormField(
-                  initialValue: odc.proveedor,
-                  onChanged: (value) => odc.proveedor = value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'El Proveedor es Obligatorio';
-                    }
-                  },
-                  decoration: const InputDecoration(
-                    hintText: 'Proveedor de la Orden',
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                // Actualizar el producto
-                odc.ordenId = _ordenIdController.text;
-                odc.fecha = _fechaController.text;
-                odc.cantidad = int.parse(_cantidadController.text);
-                odc.costo = int.parse(_costotalController);
-                odc.proveedor = _fechaController.text;
+  }
+}
 
-                productService.updateOrdenCompra(odc).then((value) {
-                  // Lógica después de actualizar el producto
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const PurchaseList()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(
-                  (MediaQuery.of(context).size.width * 0.6),
-                  (MediaQuery.of(context).size.height * 0.07),
-                ),
-              ),
-              child: const Text('Guardar'),
-            ),
-            const SizedBox(height: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+class _ProductForm extends StatefulWidget {
+  final OrdencompraService productService;
+
+  const _ProductForm({Key? key, required this.productService})
+      : super(key: key);
+
+  @override
+  State<_ProductForm> createState() => _ProductFormState();
+}
+
+class _ProductFormState extends State<_ProductForm> {
+  @override
+  Widget build(BuildContext context) {
+    final ordenForm = Provider.of<OrdenesFormProvider>(context);
+    final orden = ordenForm.orden;
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          width: double.infinity,
+          child: Form(
+            key: ordenForm.formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PurchaseList()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(
-                      (MediaQuery.of(context).size.width * 0.6),
-                      (MediaQuery.of(context).size.height * 0.07),
-                    ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height * 0.04,
                   ),
-                  child: const Text('Volver'),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Cantidad'),
+                      TextFormField(
+                        initialValue: orden.cantidad.toString(),
+                        onChanged: (value) =>
+                            orden.cantidad = int.tryParse(value) ?? 0,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'La cantidad es obligatoria';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          hintText: 'Cantidad',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Costo'),
+                    TextFormField(
+                      initialValue: orden.costotal.toString(),
+                      onChanged: (value) =>
+                          orden.costotal = int.tryParse(value) ?? 0,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'El costo es obligatorio';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Costo',
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (!ordenForm.isValidForm()) return;
+                        await widget.productService.updateOrdenCompra(orden);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PurchaseList()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(
+                          (MediaQuery.of(context).size.width * 0.6),
+                          (MediaQuery.of(context).size.height * 0.07),
+                        ),
+                      ),
+                      child: const Text('Guardar'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PurchaseList()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(
+                          (MediaQuery.of(context).size.width * 0.6),
+                          (MediaQuery.of(context).size.height * 0.07),
+                        ),
+                      ),
+                      child: const Text('Volver'),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
