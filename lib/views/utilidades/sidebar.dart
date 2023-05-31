@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/categoria.dart';
@@ -89,6 +92,9 @@ class _SideBarState extends State<SideBar> {
         child: Drawer(
           child: Consumer<UserService>(
             builder: (context, user, _) {
+                      Uint8List bytes = Uint8List.fromList(
+                          base64.decode(user.img));
+                      Image image = Image.memory(bytes);
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -118,18 +124,32 @@ class _SideBarState extends State<SideBar> {
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(10.0),
-                                          child: SizedBox(
+                                          child: Container(
                                             width: 90,
                                             height: 90,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              child: Image.network(
-                                                'https://img1.ak.crunchyroll.com/i/spire4/5b954f7af990b40acc4f3f410a3a5f9d1664298859_large.jpg',
+                                            margin: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(100),
+                                              shape: BoxShape.rectangle,
+                                              image: DecorationImage(
+                                                image: image.image,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                           ),
-                                        )
+                                          // child: SizedBox(
+                                          //   width: 90,
+                                          //   height: 90,
+                                          //   child: ClipRRect(
+                                          //     borderRadius:
+                                          //         BorderRadius.circular(100),
+                                          //       child: Image(image: image),
+                                          //     // child: Image.network(
+                                          //     //   'https://img1.ak.crunchyroll.com/i/spire4/5b954f7af990b40acc4f3f410a3a5f9d1664298859_large.jpg',
+                                          //     ),
+                                          //   ),
+                                          ),
+                                        
                                       ],
                                     ),
                                     Expanded(

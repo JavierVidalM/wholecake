@@ -22,8 +22,10 @@ class UserService extends ChangeNotifier {
   String authtoken = '';
   String _name = 'a';
   String _cargo = '';
+  String _img = '';
   String get name => _name;
   String get cargo => _cargo;
+  String get img => _img;
   bool autenticado = false;
 
   UserService() {
@@ -55,10 +57,10 @@ class UserService extends ChangeNotifier {
     )
         .then((response) {
       if (response.statusCode == 200) {
-        print(response.body);
         final responseData = json.decode(response.body);
         _name = responseData['username'];
         _cargo = responseData['tipo'];
+        _img = responseData['imagen'];
         notifyListeners();
         return true;
       } else {
@@ -93,5 +95,25 @@ class UserService extends ChangeNotifier {
     } else {
       print('cago el userlist denuevo');
     }
+  }
+
+  resetPassword(String email) async {
+    notifyListeners();
+    // Construir la URL del endpoint de listado de usuarios
+    var url = Uri.http(
+      BASEURL,
+      'accounts/reset_password/',
+    );
+
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(
+      url,
+      body: email,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': basicAuth,
+      },
+    );
   }
 }

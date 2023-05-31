@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wholecake/services/users_services.dart';
 import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/login/login.dart';
 
@@ -177,6 +181,11 @@ class PassRecoverState extends State<PassRecover> {
                         _formKey.currentState!.save();
 
                         if (_formKey.currentState!.validate()) {
+                          final msg = jsonEncode({
+                          'email': correoController.text,
+
+                          });
+                          Provider.of<UserService>(context,listen: false).resetPassword(msg);
                           Navigator.pushNamed(context, '/LoginUser');
                         }
                       },
