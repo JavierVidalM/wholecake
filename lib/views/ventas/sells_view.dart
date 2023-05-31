@@ -1,7 +1,7 @@
-// import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/services/ventas_services.dart';
+import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:intl/intl.dart';
 
@@ -11,15 +11,22 @@ class SellsView extends StatefulWidget {
 }
 
 class _SellsViewState extends State<SellsView> {
-  List rangoFechasVentas = [];
+  List<String> rangoFechasVentas = [];
 
   void _filtroFecha() {
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
-      lastDate: DateTime.now(),
-    );
+      lastDate: DateTime(2024),
+    ).then((selectedDate) {
+      if (selectedDate != null) {
+        final formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+        setState(() {
+          rangoFechasVentas.add(formattedDate);
+        });
+      }
+    });
   }
 
   @override
@@ -33,78 +40,119 @@ class _SellsViewState extends State<SellsView> {
         toolbarHeight: MediaQuery.of(context).size.height * 0.1,
       ),
       drawer: const SideBar(),
-      body: Consumer<VentasService>(builder: (context, listadoVentas, child) {
-        final filterSells = listadoVentas.listadoventas.where((venta) {
-          return rangoFechasVentas.isEmpty ||
-              rangoFechasVentas.contains(venta.fecha);
-        }).toList();
-
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
+      body: ChangeNotifierProvider(
+        create: (_) => VentasService(),
+        child: Consumer<VentasService>(
+          builder: (context, listadoVentas, child) {
+            final filterSells = listadoVentas.listadoventas.where((venta) {
+              final formattedFecha =
+                  DateFormat('yyyy-MM-dd').format(venta.fecha);
+              return rangoFechasVentas.isEmpty ||
+                  rangoFechasVentas.contains(formattedFecha);
+            }).toList();
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                  onPressed: () {
-                    _filtroFecha();
-                  },
-                  icon: const Icon(Icons.calendar_month_rounded),
-                ),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ListTile(
-                            title: const Text('Buscar'),
-                            onTap: () {},
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            // Lógica para buscar
-                          },
-                          icon: const Icon(Icons.search),
-                        ),
-                      ],
+                Container(
+                  color: SweetCakeTheme.blue,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.03,
+                    vertical: MediaQuery.of(context).size.height * 0.01,
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      _filtroFecha();
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.calendar_month_rounded),
+                          Text("   Filtrar por fecha"),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ],
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: filterSells.length,
-                  itemBuilder: (context, index) {
-                    final venta = rangoFechasVentas[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        height: 100,
-                        child: ListTile(
-                          leading: Text(venta.idVenta),
-                          title: Text(venta.fecha),
-                          trailing: Text(
-                            NumberFormat.currency(
-                              locale: 'es',
-                              symbol: '\$',
-                              decimalDigits: 0,
-                              customPattern: '\$ #,##0',
-                            ).format(double.parse(venta.total.toString())),
-                            style: const TextStyle(fontWeight: FontWeight.w400),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: filterSells.length,
+                    itemBuilder: (context, index) {
+                      final venta = filterSells[index];
+                      return SizedBox(
+                        // height: 100,
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.3,
+                                  child: const Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text('Vendedor asignado',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600)),
+                                      Text("Nico Robin")
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15.0, right: 15.0),
+                                  child: Container(
+                                    height: 80,
+                                    width: 1.0,
+                                    color: SweetCakeTheme.blue2,
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Número de boleta: ${DateFormat('ddMMyy').format(venta.fecha)}${venta.idVenta}',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      'Fecha: ${DateFormat('dd/MM/yyyy').format(venta.fecha)}',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      'Hora: ${DateFormat('HH:mm').format(venta.fecha)}',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                        'Total de esta venta: ${NumberFormat.currency(
+                                      locale: 'es',
+                                      symbol: '\$',
+                                      decimalDigits: 0,
+                                      customPattern: '\$ #,##0',
+                                    ).format(
+                                      double.parse(
+                                        venta.total.toString(),
+                                      ),
+                                    )}'),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
-            )
-          ],
-        );
-      }),
+                      );
+                    },
+                  ),
+                )
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }

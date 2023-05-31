@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wholecake/services/users_services.dart';
 import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 
@@ -13,217 +18,196 @@ class _UserProfileViewState extends State<UserProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.3,
-            child: AppBar(
-              // title: Text(
-              //   "Perfil del usuario",
-              //   style: Theme.of(context).textTheme.titleLarge,
-              // ),
-              elevation: 2,
-              // toolbarHeight: MediaQuery.of(context).size.height * 0.15,
-            ),
-          ),
-          Container(
-            // color: Colors.green,
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: MediaQuery.of(context).size.width * 1,
-            child: Center(
-              child: Text(
-                "Perfil del usuario",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ),
-          ),
-          Center(
-            heightFactor: 1,
-            child: Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.15),
-              child: SizedBox(
+      drawer: const SideBar(),
+      body: Consumer<UserService>(
+        builder: (context, user, _) {
+          Uint8List bytes = Uint8List.fromList(base64.decode(user.img));
+          Image image = Image.memory(bytes);
+          return Stack(
+            children: [
+              SizedBox(
                 height: MediaQuery.of(context).size.height * 0.3,
-                width: MediaQuery.of(context).size.width * 0.95,
-                child: Card(
-                  elevation: 5,
-                  borderOnForeground: true,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                child: AppBar(
+                  elevation: 0,
+                ),
+              ),
+              SizedBox(
+                // color: Colors.green,
+                height: MediaQuery.of(context).size.height * 0.15,
+                width: MediaQuery.of(context).size.width * 1,
+                child: Center(
+                  child: Text(
+                    "Perfil del usuario",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+              ),
+              Center(
+                heightFactor: 1,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.15),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    width: MediaQuery.of(context).size.width * 0.95,
+                    child: Card(
+                      elevation: 5,
+                      borderOnForeground: true,
+                      child: Column(
                         children: [
                           Padding(
-                            padding:
-                                const EdgeInsets.only(top: 5.0, right: 10.0),
-                            child: IconButton(
-                                onPressed: () {
-                                  print("Aqui va la pantalla pa editar");
-                                },
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: SweetCakeTheme.blue,
-                                )),
-                          )
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Container(
+                              width: 150,
+                              height: 150,
+                              margin: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  image: image.image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: Text(
+                              user.name,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 22),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
+                            child: Divider(
+                              color: SweetCakeTheme.blue2,
+                              height: 2,
+                              indent: 50,
+                              endIndent: 50,
+                              thickness: 2,
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 25.0),
+                            child: Text(
+                              "monkeydluffy@kaisokuo.com",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 16),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25.0),
+                            child: Text(
+                              "Cargo: ${user.cargo}",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 16),
+                            ),
+                          ),
+                          const Padding(
+                            padding: const EdgeInsets.only(top: 25.0),
+                            child: Text(
+                              "Local: Thousand Sunny",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 16),
+                            ),
+                          ),
+                          const Padding(
+                            padding: const EdgeInsets.only(top: 25.0),
+                            child: Text(
+                              "Dirección: Dawn Island, Goa, East Blue",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 16),
+                            ),
+                          ),
+                          const Padding(
+                            padding: const EdgeInsets.only(top: 25.0),
+                            child: Text(
+                              "Número de teléfono: 9 10542023",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 16),
+                            ),
+                          ),
                         ],
                       ),
-                      SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(500),
-                          child: Image.network(
-                            'https://img1.ak.crunchyroll.com/i/spire4/5b954f7af990b40acc4f3f410a3a5f9d1664298859_large.jpg',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: Text(
-                          "Monkey D. Luffy",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 22),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: Text(
-                          "monkeydluffy@kaisokuo.com",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 16),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.5,
-                left: MediaQuery.of(context).size.width * 0.05),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * 0.05),
-                  child: GestureDetector(
-                    onTap: () {
-                      print("No sé alguna wea hará esto");
-                    },
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05),
-                          child: const Icon(
-                            Icons.edit,
-                          ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.8,
+                    left: MediaQuery.of(context).size.width * 0.05),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height * 0.05),
+                      child: GestureDetector(
+                        onTap: () {
+                          print("No sé alguna wea hará esto");
+                        },
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left:
+                                      MediaQuery.of(context).size.width * 0.05),
+                              child: const Icon(
+                                Icons.edit,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left:
+                                      MediaQuery.of(context).size.width * 0.05),
+                              child: const Text(
+                                "Editar perfil",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            )
+                          ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05),
-                          child: const Text(
-                            "Editar perfil",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        )
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * 0.05),
-                  child: GestureDetector(
-                    onTap: () {
-                      print("No sé alguna wea hará esto");
-                    },
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05),
-                          child: const Icon(
-                            Icons.edit,
-                          ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height * 0.05),
+                      child: GestureDetector(
+                        onTap: () {
+                          print("No sé alguna wea hará esto");
+                        },
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left:
+                                      MediaQuery.of(context).size.width * 0.05),
+                              child: const Icon(
+                                Icons.logout,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left:
+                                      MediaQuery.of(context).size.width * 0.05),
+                              child: const Text(
+                                "Cerrar sesión",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            )
+                          ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05),
-                          child: const Text(
-                            "Editar perfil",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        )
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * 0.05),
-                  child: GestureDetector(
-                    onTap: () {
-                      print("No sé alguna wea hará esto");
-                    },
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05),
-                          child: const Icon(
-                            Icons.edit,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05),
-                          child: const Text(
-                            "Editar perfil",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * 0.05),
-                  child: GestureDetector(
-                    onTap: () {
-                      print("No sé alguna wea hará esto");
-                    },
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05),
-                          child: const Icon(
-                            Icons.logout,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05),
-                          child: const Text(
-                            "Cerrar sesión",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
-      drawer: const SideBar(),
     );
   }
 }

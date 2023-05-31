@@ -29,6 +29,7 @@ class VentasService extends ChangeNotifier {
     final response = await http.get(url, headers: {'authorization': basicAuth});
     final suppliersMap = Ventas.fromJson(response.body);
     listadoventas = suppliersMap.listventas;
+    print(response.body);
     isLoading = false;
     notifyListeners();
   }

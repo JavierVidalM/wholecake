@@ -44,10 +44,20 @@ class MyBarGraph extends StatelessWidget {
       titlesData: FlTitlesData(
         show: true,
         topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
+          sideTitles: SideTitles(
+            //-----------------------------------TO DO-----------------------------------
+            ////implementar los titulos superiores con los valores totales
+
+            // showTitles: true,
+            // reservedSize: 35,
+            showTitles: false,
+          ),
         ),
         leftTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 65,
+          ),
         ),
         rightTitles: AxisTitles(
           sideTitles: SideTitles(showTitles: false),
@@ -72,10 +82,10 @@ class MyBarGraph extends StatelessWidget {
                   colors: [
                     SweetCakeTheme.pink1,
                     SweetCakeTheme.pink2,
-                    Colors.pink.shade300
+                    Colors.pink.shade300,
                   ],
                 ),
-                width: 15,
+                width: 35,
                 borderRadius: BorderRadius.circular(10),
                 backDrawRodData: BackgroundBarChartRodData(
                   show: true,
@@ -83,7 +93,11 @@ class MyBarGraph extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.black, Colors.grey.shade800],
+                    colors: [
+                      Colors.grey.shade900,
+                      Colors.black45,
+                      Colors.black,
+                    ],
                   ),
                 ),
               ),
@@ -93,6 +107,69 @@ class MyBarGraph extends StatelessWidget {
     ));
   }
 }
+
+// Widget getTopTitles(double value, TitleMeta meta, totalLunes, totalMartes,
+//     totalMiercoles, totalJueves, totalViernes, totalSabado, totalDomingo) {
+//   Widget text;
+//   switch (value.toInt()) {
+//     case 0:
+//       text = Text(
+//         totalLunes,
+//         style: const TextStyle(
+//           fontWeight: FontWeight.normal,
+//         ),
+//       );
+//       break;
+//     case 1:
+//       text = Text(
+//         totalMartes,
+//         style: const TextStyle(
+//           fontWeight: FontWeight.normal,
+//         ),
+//       );
+//       break;
+//     case 2:
+//       text = Text(
+//         totalMiercoles,
+//         style: const TextStyle(
+//           fontWeight: FontWeight.normal,
+//         ),
+//       );
+//       break;
+//     case 3:
+//       text = Text(
+//         totalJueves,
+//         style: const TextStyle(
+//           fontWeight: FontWeight.normal,
+//         ),
+//       );
+//       break;
+//     case 4:
+//       text = Text(
+//         totalViernes,
+//         style: const TextStyle(
+//           fontWeight: FontWeight.normal,
+//         ),
+//       );
+//       break;
+//     case 5:
+//       text = Text(
+//         totalSabado,
+//         style: const TextStyle(
+//           fontWeight: FontWeight.normal,
+//         ),
+//       );
+//       break;
+//     case 6:
+//       text = Text(
+//         totalDomingo,
+//         style: const TextStyle(
+//           fontWeight: FontWeight.normal,
+//         ),
+//       );
+//       break;
+//   }
+// }
 
 Widget getBottomTitles(double value, TitleMeta meta) {
   Widget text;

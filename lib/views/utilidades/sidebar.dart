@@ -13,6 +13,7 @@ import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
 import 'package:wholecake/views/productos/products.dart';
 import 'package:wholecake/views/proveedores/suppliers.dart';
 import 'package:wholecake/views/users/user_profile_view.dart';
+import 'package:wholecake/views/utilidades/utilidades.dart';
 import 'package:wholecake/views/ventas/sells.dart';
 import '../../services/users_services.dart';
 
@@ -210,14 +211,17 @@ class _SideBarState extends State<SideBar> {
                                   MaterialPageRoute(
                                       builder: (context) => const HomePage()))),
                       ListTile(
-                          leading: const Icon(Icons.person_outline_rounded),
-                          title: const Text("Usuarios"),
-                          onTap: () =>
-                              // Navigator.pushNamed(context, '/HomePage'),
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomePage()))),
+                        leading: const Icon(Icons.person_outline_rounded),
+                        title: const Text("Usuarios"),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ErrorPage(),
+                            ),
+                          );
+                        },
+                      ),
                       ListTile(
                           leading: const Icon(Icons.inventory_rounded),
                           title: const Text("Ordenes de compra"),

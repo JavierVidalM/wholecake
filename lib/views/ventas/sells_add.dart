@@ -27,8 +27,13 @@ class _SellsAddState extends State<SellsAdd> {
   List<Listado> productosCarrito = [];
 
   Future<void> _guardarVenta(List<Map<String, dynamic>> listadoVenta) async {
-    final msg = jsonEncode(listadoVenta);
+    Map<String, dynamic> jsonData = {
+      'productos': listadoVenta,
+    };
+    final msg = jsonEncode(jsonData);
     await VentasService().addVentas(msg);
+    Navigator.pushNamed(context, '/SellsAdd');
+    productosCarrito = [];
   }
 
   void sinProductos(BuildContext context) async {
@@ -51,7 +56,7 @@ class _SellsAddState extends State<SellsAdd> {
 
   Future<void> detalleVenta(
       BuildContext context, List<Listado> products) async {
-    final productSelected = List.from(products);
+    List productSelected = List.from(products);
 
     await showDialog<void>(
       context: context,
@@ -151,19 +156,17 @@ class _SellsAddState extends State<SellsAdd> {
           actions: [
             TextButton(
               onPressed: () {
-                List<Map<String, dynamic>> listadoVenta = [];
+                List<Map<String, dynamic>> listaProductos = [];
                 for (var product in productosCarrito) {
-                  listadoVenta.add(
-                    {
-                      'id': product.productoId,
-                      'cantidad': productosCarrito
-                          .where((p) => p.productoId == product.productoId)
-                          .length,
-                    },
-                  );
+                  listaProductos.add({
+                    'id': product.productoId,
+                    'cantidad': productosCarrito
+                        .where((p) => p.productoId == product.productoId)
+                        .length,
+                  });
                 }
-                print(listadoVenta);
-                _guardarVenta(listadoVenta);
+
+                _guardarVenta(listaProductos);
                 Navigator.pop(context);
               },
               child: const Text("Generar venta"),
