@@ -85,8 +85,8 @@ class UserService extends ChangeNotifier {
       },
     );
     if (response.statusCode == 200) {
-      // Obtener los datos de la respuesta en formato JSON
-      final responseData = json.decode(response.body);
+      final usersMap = Users.fromJson(response.body);
+      listadousers = usersMap.userslist;
 
       isLoading = false;
       notifyListeners();

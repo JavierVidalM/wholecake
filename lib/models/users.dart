@@ -55,11 +55,11 @@ class Listado {
   String toJson() => json.encode(toMap());
 
   factory Listado.fromMap(Map<String, dynamic> json) => Listado(
-        userId: json["user_id"],
-        userName: json["user_name"],
+        userId: json["id"],
+        userName: json["username"],
         userFirstName: json["first_name"],
         userLastName: json["last_name"],
-        userEmail: json["user_email"],
+        userEmail: json["email"],
         tipo: json["tipo"],
         rut: json["rut"],
         direccion: json["direccion"],
