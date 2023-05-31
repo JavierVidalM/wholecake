@@ -195,10 +195,20 @@ class SweetCakeTheme {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
     chipTheme: const ChipThemeData(
-        backgroundColor: SweetCakeTheme.pink2,
-        selectedColor: pink1,
-        checkmarkColor: pink3,
-        labelStyle: TextStyle(color: pink3, fontWeight: FontWeight.w600)),
+      backgroundColor: SweetCakeTheme.pink2,
+      selectedColor: pink1,
+      checkmarkColor: pink3,
+      labelStyle: TextStyle(color: pink3, fontWeight: FontWeight.w600),
+    ),
+    datePickerTheme: DatePickerThemeData(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      backgroundColor: blue,
+      dayForegroundColor: MaterialStateProperty.all<Color>(gray),
+      dayOverlayColor: MaterialStateProperty.all<Color>(pink2),
+      headerBackgroundColor: pink2,
+      headerForegroundColor: pink3,
+      shadowColor: blue2,
+    ),
   );
 
   static final ThemeData searchBarTheme = ThemeData(

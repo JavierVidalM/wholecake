@@ -38,7 +38,8 @@ class AppRoutes {
     '/PurchaseList': (BuildContext context) => const PurchaseList(),
 
     //Pantallas de ventas
-    '/SellsView': (BuildContext context) => const SellsView(),
+    '/SellsAdd': (BuildContext context) => const SellsAdd(),
+    '/SellsView': (BuildContext context) => SellsView(),
     '/SellsDetail': (BuildContext context) => SellsDetail(),
 
     //Pantalla de users

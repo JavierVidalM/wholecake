@@ -96,7 +96,7 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
     if (value == null || value.isEmpty) {
       return 'Por favor, ingrese el nombre del producto.';
     }
-    final nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
+    final nameRegExp = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$');
     if (!nameRegExp.hasMatch(value)) {
       return 'El nombre no debe contener números ni símbolos.';
     }
@@ -248,13 +248,16 @@ class _ProductsAddPageState extends State<ProductsAddPage> {
                       Padding(
                         padding: EdgeInsets.only(
                             top: MediaQuery.of(context).size.height * 0.02),
-                        child: DateTimePicker(
-                          type: DateTimePickerType.date,
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2100),
-                          dateLabelText: 'Fecha de vencimiento',
-                          controller: fechaVencimientoController,
-                          validator: validateExpirationDate,
+                        child: Theme(
+                          data: SweetCakeTheme.calendarTheme,
+                          child: DateTimePicker(
+                            type: DateTimePickerType.date,
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2100),
+                            dateLabelText: 'Fecha de vencimiento',
+                            controller: fechaVencimientoController,
+                            validator: validateExpirationDate,
+                          ),
                         ),
                       ),
                       Padding(
