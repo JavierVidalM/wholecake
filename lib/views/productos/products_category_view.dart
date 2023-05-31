@@ -136,6 +136,12 @@ class _CategoryViewState extends State<CategoryView> {
               onPressed: () {
                 _saveData();
                 Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => const CategoryView(),
+                  ),
+                );
               },
               child: const Text("Agregar", style: TextStyle(fontSize: 18)),
             ),
