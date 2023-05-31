@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/theme/theme.dart';
+import 'package:wholecake/views/login/login.dart';
 import 'package:wholecake/views/login/login_main.dart';
 import 'package:wholecake/views/home/home_page.dart';
 import 'package:wholecake/services/users_services.dart';
@@ -19,6 +20,27 @@ class PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
   TextEditingController codeController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+
+  bool isEmailValid = true;
+  bool isCodeValid = true;
+  bool isPasswordMatch = true;
+  bool areFieldsFilled = true;
+
+  void validateFields() {
+    setState(() {
+      isEmailValid = emailController.text.isNotEmpty &&
+          RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+              .hasMatch(emailController.text);
+      isCodeValid = codeController.text.isNotEmpty &&
+          RegExp(r'^\d+$').hasMatch(codeController.text);
+      isPasswordMatch =
+          newPasswordController.text == confirmPasswordController.text;
+      areFieldsFilled = emailController.text.isNotEmpty &&
+          codeController.text.isNotEmpty &&
+          newPasswordController.text.isNotEmpty &&
+          confirmPasswordController.text.isNotEmpty;
+    });
+  }
 
   @override
   void dispose() {
@@ -64,6 +86,7 @@ class PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       hintText: "Correo electrónico",
+                      errorText: isEmailValid ? null : 'Correo inválido',
                     ),
                   ),
                 ),
@@ -75,8 +98,10 @@ class PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                   ),
                   child: TextField(
                     controller: codeController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       hintText: "Código",
+                      errorText: isCodeValid ? null : 'Código inválido',
                     ),
                   ),
                 ),
@@ -105,6 +130,9 @@ class PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                     obscureText: true,
                     decoration: InputDecoration(
                       hintText: "Confirmar contraseña",
+                      errorText: isPasswordMatch
+                          ? null
+                          : 'Las contraseñas no coinciden',
                     ),
                   ),
                 ),
@@ -114,14 +142,27 @@ class PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      final msg = jsonEncode({
-                        'email': emailController.text,
-                        'reset_code': codeController.text,
-                        'new_password': newPasswordController.text,
-                      });
-                      Provider.of<UserService>(context, listen: false)
-                          .resetPasswordConfirm(msg);
-                      Navigator.pushNamed(context, '/LoginMain');
+                      validateFields(); // Validar los campos antes de enviar la solicitud
+                      if (isEmailValid &&
+                          isCodeValid &&
+                          isPasswordMatch &&
+                          areFieldsFilled) {
+                        final msg = jsonEncode({
+                          'email': emailController.text,
+                          'reset_code': codeController.text,
+                          'new_password': newPasswordController.text,
+                        });
+                        Provider.of<UserService>(context, listen: false)
+                            .resetPasswordConfirm(msg);
+                        // Navigator.pushNamed(context, '/LoginMain');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                const LoginUser(),
+                          ),
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(
@@ -143,7 +184,9 @@ class PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginMain()),
+                        MaterialPageRoute(
+                          builder: (context) => LoginMain(),
+                        ),
                       );
                     },
                     child: Text(

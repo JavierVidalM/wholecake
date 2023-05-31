@@ -116,8 +116,9 @@ class UserService extends ChangeNotifier {
       },
     );
   }
-  resetPasswordConfirm(String datos) async{
-        notifyListeners();
+
+  resetPasswordConfirm(String datos) async {
+    notifyListeners();
     // Construir la URL del endpoint de listado de usuarios
     var url = Uri.http(
       BASEURL,
