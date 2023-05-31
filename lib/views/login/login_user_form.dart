@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/theme/theme.dart';
@@ -112,12 +114,14 @@ class PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      // Aquí debes implementar la lógica para enviar los datos al backend de Django
-                      // Puedes utilizar los valores de los controladores de texto:
-                      // - emailController.text
-                      // - codeController.text
-                      // - newPasswordController.text
-                      // - confirmPasswordController.text
+                      final msg = jsonEncode({
+                        'email': emailController.text,
+                        'reset_code': codeController.text,
+                        'new_password': newPasswordController.text,
+                      });
+                      Provider.of<UserService>(context, listen: false)
+                          .resetPasswordConfirm(msg);
+                      Navigator.pushNamed(context, '/LoginMain');
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(

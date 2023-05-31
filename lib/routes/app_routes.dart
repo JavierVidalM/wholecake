@@ -10,6 +10,8 @@ import 'package:wholecake/views/utilidades/utilidades.dart';
 import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
 import 'package:wholecake/views/insumos/insumos.dart';
 
+import '../views/login/login_user_form.dart';
+
 class AppRoutes {
   static const initialRoute = '/';
 
@@ -18,6 +20,8 @@ class AppRoutes {
     '/': (BuildContext context) => const LoginMain(),
     '/LoginUser': (BuildContext context) => const LoginUser(),
     // '/SigninUser': (BuildContext context) => const SigninUser(),
+    '/PasswordRecoveryScreen': (BuildContext context) =>
+        const PasswordRecoveryScreen(),
 
     //Pantalla de inicio
     '/HomePage': (BuildContext context) => const HomePage(),
@@ -38,7 +42,6 @@ class AppRoutes {
     '/PurchaseList': (BuildContext context) => const PurchaseList(),
 
     //Pantallas de ventas
-    '/SellsAdd': (BuildContext context) => const SellsAdd(),
     '/SellsView': (BuildContext context) => SellsView(),
     '/SellsDetail': (BuildContext context) => SellsDetail(),
 
