@@ -25,26 +25,30 @@ class Listado {
   Listado({
     required this.userId,
     required this.userName,
-    // required this.userRut,
-    // required this.userSede,
-    required this.userCargo,
-    // required this.userDireccion,
-    required this.userCorreo,
-    // required this.userNumero,
-    // required this.userNemergencia,
-    // required this.userImagen,
+    required this.userFirstName,
+    required this.userLastName,
+    required this.userEmail,
+    required this.tipo,
+    required this.rut,
+    required this.local,
+    required this.direccion,
+    required this.ntelefono,
+    required this.nemergencia,
+    required this.imagen_user,
   });
 
   int userId;
   String userName;
-  // int userRut;
-  // String userSede;
-  String userCargo;
-  // String userDireccion;
-  String userCorreo;
-  // int userNumero;
-  // int userNemergencia;
-  // String userImagen;
+  String userFirstName;
+  String userLastName;
+  String userEmail;
+  String tipo;
+  String rut;
+  String local;
+  String direccion;
+  String ntelefono;
+  String nemergencia;
+  String imagen_user;
 
   factory Listado.fromJson(String str) => Listado.fromMap(json.decode(str));
 
@@ -53,39 +57,44 @@ class Listado {
   factory Listado.fromMap(Map<String, dynamic> json) => Listado(
         userId: json["user_id"],
         userName: json["user_name"],
-        // userRut: json["user_rut"],
-        // userSede: json["user_sede"],
-        userCargo: json["user_cargo"],
-        // userDireccion: json["user_direccion"],
-        userCorreo: json["correo"],
-        // userNumero: json["user_numero"],
-        // userNemergencia: json["user_nemergencia"],
-        // userImagen: json["user_imagen"],
+        userFirstName: json["first_name"],
+        userLastName: json["last_name"],
+        userEmail: json["user_email"],
+        tipo: json["tipo"],
+        rut: json["rut"],
+        direccion: json["direccion"],
+        ntelefono: json["ntelefono"],
+        nemergencia: json["nemergencia"],
+        local: json["local"],
+        imagen_user: json["imagen_user"],
       );
 
   Map<String, dynamic> toMap() => {
         "user_id": userId,
         "user_name": userName,
-        // "user_rut": userRut,
-        // "user_sede": userSede,
-        "user_cargo": userCargo,
-        // "user_direccion": userDireccion,
-        "user_correo": userCorreo,
-        // "user_numero": userNumero,
-        // "user_nemergencia": userNemergencia,
-        // "user_imagen": userImagen,
+        "first_name": userFirstName,
+        "last_name": userLastName,
+        "user_email": userEmail,
+        "tipo": tipo,
+        "rut": rut,
+        "direccion": direccion,
+        "ntelefono": ntelefono,
+        "nemergencia": nemergencia,
+        "local": local,
+        "imagen_user": imagen_user,
       };
 
   Listado copy() => Listado(
-        userId: userId,
-        userName: userName,
-        // userRut: userRut,
-        // userSede: userSede,
-        userCargo: userCargo,
-        // userDireccion: userDireccion,
-        userCorreo: userCorreo,
-        // userNumero: userNumero,
-        // userNemergencia: userNemergencia,
-        // userImagen: userImagen,
-      );
+      userId: userId,
+      userName: userName,
+      userFirstName: userFirstName,
+      userLastName: userLastName,
+      userEmail: userEmail,
+      tipo: tipo,
+      rut: rut,
+      direccion: direccion,
+      ntelefono: ntelefono,
+      nemergencia: nemergencia,
+      local: local,
+      imagen_user: imagen_user);
 }
