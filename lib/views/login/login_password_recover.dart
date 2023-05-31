@@ -103,10 +103,21 @@ class PassRecoverState extends State<PassRecover> {
       showSnackbarError('Por favor ingrese un correo válido');
       return '';
     }
-    if (emailRegExp.hasMatch(value) && value.isNotEmpty) {
+      final userprov =
+        Provider.of<UserService>(context, listen: false);
+    final listadouser = userprov.listadousers;
+    if (listadouser.any((user) => user.userEmail == value)) {
       showSnackbarSuccess('Por favor revisa tu bandeja de correo electrónico');
+      final msg = jsonEncode({
+        'email': value,
+      });
+      userprov.resetPassword(msg);
+      Navigator.pushNamed(context, '/LoginUser');
+    } else {
+      showSnackbarError('El correo electrónico no existe');
     }
-    return null;
+
+  return null;
   }
 
   @override
@@ -181,12 +192,6 @@ class PassRecoverState extends State<PassRecover> {
                         _formKey.currentState!.save();
 
                         if (_formKey.currentState!.validate()) {
-                          final msg = jsonEncode({
-                          'email': correoController.text,
-
-                          });
-                          Provider.of<UserService>(context,listen: false).resetPassword(msg);
-                          Navigator.pushNamed(context, '/LoginUser');
                         }
                       },
                       style: ElevatedButton.styleFrom(
