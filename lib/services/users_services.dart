@@ -116,4 +116,23 @@ class UserService extends ChangeNotifier {
       },
     );
   }
+  resetPasswordConfirm(String datos) async{
+        notifyListeners();
+    // Construir la URL del endpoint de listado de usuarios
+    var url = Uri.http(
+      BASEURL,
+      'accounts/reset_password_confirm/',
+    );
+
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(
+      url,
+      body: datos,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': basicAuth,
+      },
+    );
+  }
 }
