@@ -92,9 +92,8 @@ class _SideBarState extends State<SideBar> {
         child: Drawer(
           child: Consumer<UserService>(
             builder: (context, user, _) {
-                      Uint8List bytes = Uint8List.fromList(
-                          base64.decode(user.img));
-                      Image image = Image.memory(bytes);
+              Uint8List bytes = Uint8List.fromList(base64.decode(user.img));
+              Image image = Image.memory(bytes);
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -129,7 +128,8 @@ class _SideBarState extends State<SideBar> {
                                             height: 90,
                                             margin: EdgeInsets.all(10),
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(100),
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
                                               shape: BoxShape.rectangle,
                                               image: DecorationImage(
                                                 image: image.image,
@@ -148,8 +148,7 @@ class _SideBarState extends State<SideBar> {
                                           //     //   'https://img1.ak.crunchyroll.com/i/spire4/5b954f7af990b40acc4f3f410a3a5f9d1664298859_large.jpg',
                                           //     ),
                                           //   ),
-                                          ),
-                                        
+                                        ),
                                       ],
                                     ),
                                     Expanded(
@@ -318,16 +317,41 @@ class _SideBarState extends State<SideBar> {
                                       builder: (context) =>
                                           const SuppliersView()))),
                       if (user.cargo == 'cajero')
-                        ListTile(
-                            leading: const Icon(Icons.point_of_sale_sharp),
-                            title: const Text("Módulo de ventas"),
-                            onTap: () =>
-                                // Navigator.pushNamed(context, '/SellsView'),
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SellsView()))),
+                        ExpansionTile(
+                          leading: const Icon(Icons.point_of_sale),
+                          title: const Text("Módulo de ventas"),
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 25),
+                              child: ListTile(
+                                  leading: const Icon(
+                                      Icons.add_shopping_cart_rounded),
+                                  title: const Text("Generar Ventas"),
+                                  onTap: () =>
+                                      // Navigator.pushNamed(context, '/ListadoInsumos'),
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const SellsAdd()))),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 25),
+                              child: ListTile(
+                                leading: const Icon(Icons.checklist_rounded),
+                                title: const Text("Listado de ventas"),
+                                onTap: () =>
+                                    // Navigator.pushNamed(context, '/ToExpire'),
+                                    Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SellsView(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                     ],
                   ),
                   Column(
