@@ -10,6 +10,7 @@ import 'package:wholecake/views/home/home.dart';
 import 'package:wholecake/views/insumos/insumos.dart';
 import 'package:wholecake/views/login/login.dart';
 import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
+import 'package:wholecake/views/ordenes_trabajo/ordenes_trabajo.dart';
 import 'package:wholecake/views/productos/products.dart';
 import 'package:wholecake/views/proveedores/suppliers.dart';
 import 'package:wholecake/views/users/user_profile_view.dart';
@@ -206,7 +207,7 @@ class _SideBarState extends State<SideBar> {
                                       builder: (context) => const HomePage()))),
                       ListTile(
                           leading: const Icon(Icons.inventory_rounded),
-                          title: const Text("Ordenes de compra"),
+                          title: const Text("Órdenes de compra"),
                           onTap: () =>
                               // Navigator.pushNamed(context, '/PurchaseList'),
                               Navigator.push(
@@ -214,6 +215,15 @@ class _SideBarState extends State<SideBar> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const PurchaseList()))),
+                      ListTile(
+                          leading: const Icon(Icons.inventory_rounded),
+                          title: const Text("Órdenes de trabajo"),
+                          onTap: () =>
+                              // Navigator.pushNamed(context, '/OrdenAdd'),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const OrdenAdd()))),
                       ExpansionTile(
                         leading: const Icon(Icons.inventory_2_outlined),
                         title: const Text("Inventario"),
@@ -302,42 +312,41 @@ class _SideBarState extends State<SideBar> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const SuppliersView()))),
-                      if (user.cargo == 'cajero')
-                        ExpansionTile(
-                          leading: const Icon(Icons.point_of_sale),
-                          title: const Text("Módulo de ventas"),
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 25),
-                              child: ListTile(
-                                  leading: const Icon(
-                                      Icons.add_shopping_cart_rounded),
-                                  title: const Text("Generar Ventas"),
-                                  onTap: () =>
-                                      // Navigator.pushNamed(context, '/ListadoInsumos'),
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const SellsAdd()))),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 25),
-                              child: ListTile(
-                                leading: const Icon(Icons.checklist_rounded),
-                                title: const Text("Listado de ventas"),
+                      ExpansionTile(
+                        leading: const Icon(Icons.point_of_sale),
+                        title: const Text("Módulo de ventas"),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 25),
+                            child: ListTile(
+                                leading:
+                                    const Icon(Icons.add_shopping_cart_rounded),
+                                title: const Text("Generar Ventas"),
                                 onTap: () =>
-                                    // Navigator.pushNamed(context, '/ToExpire'),
+                                    // Navigator.pushNamed(context, '/ListadoInsumos'),
                                     Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SellsView(),
-                                  ),
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SellsAdd()))),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 25),
+                            child: ListTile(
+                              leading: const Icon(Icons.checklist_rounded),
+                              title: const Text("Listado de ventas"),
+                              onTap: () =>
+                                  // Navigator.pushNamed(context, '/ToExpire'),
+                                  Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SellsView(),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                   Column(
