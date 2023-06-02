@@ -13,7 +13,6 @@ import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
 import 'package:wholecake/views/productos/products.dart';
 import 'package:wholecake/views/proveedores/suppliers.dart';
 import 'package:wholecake/views/users/user_profile_view.dart';
-import 'package:wholecake/views/utilidades/utilidades.dart';
 import 'package:wholecake/views/ventas/sells.dart';
 import '../../services/users_services.dart';
 
@@ -122,33 +121,19 @@ class _SideBarState extends State<SideBar> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Container(
-                                            width: 90,
-                                            height: 90,
-                                            margin: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              shape: BoxShape.rectangle,
-                                              image: DecorationImage(
-                                                image: image.image,
-                                                fit: BoxFit.cover,
-                                              ),
+                                        Container(
+                                          width: 90,
+                                          height: 90,
+                                          margin: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            shape: BoxShape.rectangle,
+                                            image: DecorationImage(
+                                              image: image.image,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
-                                          // child: SizedBox(
-                                          //   width: 90,
-                                          //   height: 90,
-                                          //   child: ClipRRect(
-                                          //     borderRadius:
-                                          //         BorderRadius.circular(100),
-                                          //       child: Image(image: image),
-                                          //     // child: Image.network(
-                                          //     //   'https://img1.ak.crunchyroll.com/i/spire4/5b954f7af990b40acc4f3f410a3a5f9d1664298859_large.jpg',
-                                          //     ),
-                                          //   ),
                                         ),
                                       ],
                                     ),
@@ -211,17 +196,14 @@ class _SideBarState extends State<SideBar> {
                                   MaterialPageRoute(
                                       builder: (context) => const HomePage()))),
                       ListTile(
-                        leading: const Icon(Icons.person_outline_rounded),
-                        title: const Text("Usuarios"),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ErrorPage(),
-                            ),
-                          );
-                        },
-                      ),
+                          leading: const Icon(Icons.person_outline_rounded),
+                          title: const Text("Usuarios"),
+                          onTap: () =>
+                              // Navigator.pushNamed(context, '/HomePage'),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()))),
                       ListTile(
                           leading: const Icon(Icons.inventory_rounded),
                           title: const Text("Ordenes de compra"),

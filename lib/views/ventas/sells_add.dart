@@ -180,6 +180,7 @@ class _SellsAddState extends State<SellsAdd> {
   @override
   Widget build(BuildContext context) {
     final productoProvider = Provider.of<ProductService>(context);
+    // while (ProductService().isLoading != false) return const LoadingScreen();
     final listadoProductos = productoProvider.listadoproductos;
 
     if (productoProvider.isLoading) return const LoadingScreen();
