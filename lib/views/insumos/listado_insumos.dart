@@ -6,6 +6,8 @@ import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 //////////////////////////////////////////////////////////////////agregar nueva ruta del editar
 // import 'package:wholecake/views/suppliers/suppliers_edit.dart';
 import '../../services/supplies_services.dart';
@@ -214,7 +216,9 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
                       itemCount: listado.suppliesList.length,
                       itemBuilder: (context, index) {
                         final supplies = listado.suppliesList[index];
-                        String nombrecat = '';
+                          Uint8List bytes = Uint8List.fromList(
+                          base64.decode(supplies.imagen_supplies));
+                      Image image = Image.memory(bytes);
                         return Card(
                           child: Padding(
                             padding: const EdgeInsets.all(12),
@@ -235,6 +239,10 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(100),
                                     shape: BoxShape.rectangle,
+                                    image: DecorationImage(
+                                          image: image.image,
+                                          fit: BoxFit.fill,
+                                        ),
                                   ),
                                 ),
                                 Expanded(
