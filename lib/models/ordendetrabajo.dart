@@ -35,7 +35,7 @@ class ListTrabajo {
     DateTime? fechaVencimiento;
     int categoria;
     String imagen;
-    List<InsumosUtilizado> insumosUtilizados;
+    List<OrdenesTrabajo> ordenesTrabajo;
 
     ListTrabajo({
         required this.id,
@@ -48,7 +48,7 @@ class ListTrabajo {
         this.fechaVencimiento,
         required this.categoria,
         required this.imagen,
-        required this.insumosUtilizados,
+        required this.ordenesTrabajo,
     });
 
     factory ListTrabajo.fromJson(String str) => ListTrabajo.fromMap(json.decode(str));
@@ -66,7 +66,7 @@ class ListTrabajo {
         fechaVencimiento: json["fecha_vencimiento"] == null ? null : DateTime.parse(json["fecha_vencimiento"]),
         categoria: json["categoria"],
         imagen: json["imagen"],
-        insumosUtilizados: List<InsumosUtilizado>.from(json["insumos_utilizados"].map((x) => InsumosUtilizado.fromMap(x))),
+        ordenesTrabajo: List<OrdenesTrabajo>.from(json["ordenes_trabajo"].map((x) => OrdenesTrabajo.fromMap(x))),
     );
 
     Map<String, dynamic> toMap() => {
@@ -80,6 +80,38 @@ class ListTrabajo {
         "fecha_vencimiento": "${fechaVencimiento!.year.toString().padLeft(4, '0')}-${fechaVencimiento!.month.toString().padLeft(2, '0')}-${fechaVencimiento!.day.toString().padLeft(2, '0')}",
         "categoria": categoria,
         "imagen": imagen,
+        "ordenes_trabajo": List<dynamic>.from(ordenesTrabajo.map((x) => x.toMap())),
+    };
+}
+
+class OrdenesTrabajo {
+    int id;
+    int admin;
+    int? trabajador;
+    List<InsumosUtilizado> insumosUtilizados;
+
+    OrdenesTrabajo({
+        required this.id,
+        required this.admin,
+        this.trabajador,
+        required this.insumosUtilizados,
+    });
+
+    factory OrdenesTrabajo.fromJson(String str) => OrdenesTrabajo.fromMap(json.decode(str));
+
+    String toJson() => json.encode(toMap());
+
+    factory OrdenesTrabajo.fromMap(Map<String, dynamic> json) => OrdenesTrabajo(
+        id: json["id"],
+        admin: json["admin"],
+        trabajador: json["trabajador"],
+        insumosUtilizados: List<InsumosUtilizado>.from(json["insumos_utilizados"].map((x) => InsumosUtilizado.fromMap(x))),
+    );
+
+    Map<String, dynamic> toMap() => {
+        "id": id,
+        "admin": admin,
+        "trabajador": trabajador,
         "insumos_utilizados": List<dynamic>.from(insumosUtilizados.map((x) => x.toMap())),
     };
 }
