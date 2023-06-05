@@ -19,7 +19,7 @@ class AppRoutes {
     //Pantallas del Login
     '/': (BuildContext context) => const LoginMain(),
     '/LoginUser': (BuildContext context) => const LoginUser(),
-    // '/SigninUser': (BuildContext context) => const SigninUser(),
+    '/SigninUser': (BuildContext context) => const SigninUser(),
     '/PasswordRecoveryScreen': (BuildContext context) =>
         const PasswordRecoveryScreen(),
 
@@ -46,10 +46,10 @@ class AppRoutes {
     '/SellsDetail': (BuildContext context) => SellsDetail(),
 
     //Pantalla de users
-    // '/UsersList': (BuildContext context) => const UsersList(),
-    // '/UsersAdd': (BuildContext context) => const UsersAdd(),
+    '/UsersList': (BuildContext context) => const UsersViewList(),
+    '/UsersAdd': (BuildContext context) => const UsersAddPage(),
     '/UserProfileView': (BuildContext context) => const UserProfileView(),
-    '/UsersEdit': (BuildContext context) => const UsersEdit(),
+    //'/UsersEdit': (BuildContext context) =>  UsersEdit (),
     //Pantalla de error
     '/Error': (BuildContext context) => const ErrorPage(),
     //Pantalla de carga

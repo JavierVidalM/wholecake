@@ -93,65 +93,26 @@ class LoginUserState extends State<LoginUser> {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.02,
-                        left: MediaQuery.of(context).size.width * 0.08),
-                    child: Container(
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Theme(
-                              data: ThemeData(
-                                unselectedWidgetColor: const Color(0xFF909090),
-                                disabledColor: const Color(0xFF909090),
-                              ),
-                              child: Checkbox(
-                                value: _rememberMe,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _rememberMe = value!;
-                                  });
-                                },
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                checkColor: const Color(0xFFBDE0FE),
-                                activeColor: const Color(0xFF3681AB),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _rememberMe = !_rememberMe;
-                                });
-                              },
-                              child: Text(
-                                'Recuérdame',
-                                style: SweetCakeTheme
-                                    .loginTheme.textTheme.titleSmall,
-                              ),
-                            ),
-                          ]),
-                    )),
-                Padding(
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.08),
                   child: ElevatedButton(
                     onPressed: () {
- // Llamada al método de inicio de sesión en el servicio del usuario
-                Provider.of<UserService>(context, listen: false).login(
-                  userController.text.toString(),
-                  passwordController.text.toString(),
-                ).then((loggedIn) {
-                  if (loggedIn) {
-                    // Si las credenciales son correctas, redirigir al HomePage
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
-                  } else {
-ScaffoldMessenger.of(context)
-                              .showSnackBar( SnackBar(
+                      // Llamada al método de inicio de sesión en el servicio del usuario
+                      Provider.of<UserService>(context, listen: false)
+                          .login(
+                        userController.text.toString(),
+                        passwordController.text.toString(),
+                      )
+                          .then((loggedIn) {
+                        if (loggedIn) {
+                          // Si las credenciales son correctas, redirigir al HomePage
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Row(
                               children: [
                                 Icon(
@@ -183,8 +144,7 @@ ScaffoldMessenger.of(context)
                             padding: EdgeInsets.all(20),
                           ));
                         }
-                  }
-                );
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(

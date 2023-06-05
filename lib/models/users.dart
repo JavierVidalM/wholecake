@@ -70,11 +70,11 @@ class Listado {
       );
 
   Map<String, dynamic> toMap() => {
-        "user_id": userId,
-        "user_name": userName,
+        "id": userId,
+        "username": userName,
         "first_name": userFirstName,
         "last_name": userLastName,
-        "user_email": userEmail,
+        "email": userEmail,
         "tipo": tipo,
         "rut": rut,
         "direccion": direccion,

@@ -1,211 +1,361 @@
-// import 'package:flutter/material.dart';
-// import 'package:wholecake/services/users_services.dart';
-// import 'package:file_picker/file_picker.dart';
-// import 'package:wholecake/views/utilities/sidebar.dart';
-// import 'package:wholecake/theme/theme.dart';
-// import 'package:wholecake/views/home/home.dart';
-// import 'dart:convert';
-// import 'dart:io';
-// import 'package:wholecake/views/users/users_list.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
-// class UsersAdd extends StatelessWidget {
-//   const UsersAdd({Key? key}) : super(key: key);
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       theme: SweetCakeTheme.mainTheme,
-//       title: 'Información del usuario',
-//       home: const UsersAddPagePage(),
-//     );
-//   }
-// }
+import 'package:wholecake/models/users.dart';
+import 'package:wholecake/providers/user_form_provider.dart';
+import 'package:wholecake/services/users_services.dart';
+import 'package:wholecake/theme/theme.dart';
+import 'package:wholecake/views/utilidades/loading_screen.dart';
+import 'package:wholecake/views/users/users.dart';
+import '../utilidades/sidebar.dart';
 
-// class UsersAddPagePage extends StatefulWidget {
-//   const UsersAddPagePage({Key? key}) : super(key: key);
-//   @override
-//   State<UsersAddPagePage> createState() => UsersAddPagePageState();
-// }
+class UsersAddPage extends StatefulWidget {
+  const UsersAddPage({Key? key}) : super(key: key);
 
-// class UsersAddPagePageState extends State<UsersAddPagePage> {
-//   TextEditingController rutusersController = TextEditingController();
-//   TextEditingController nombreusersController = TextEditingController();
-//   TextEditingController localusersController = TextEditingController();
-//   TextEditingController cargousersController = TextEditingController();
-//   TextEditingController correousersController = TextEditingController();
-//   TextEditingController numerotelefonousersController = TextEditingController();
-//   TextEditingController contactoemergenciausersController =
-//       TextEditingController();
-//   File? imagen;
+  @override
+  _UsersAddPageState createState() => _UsersAddPageState();
+}
 
-//   @override
-//   void dispose() {
-//     rutusersController.dispose();
-//     nombreusersController.dispose();
-//     localusersController.dispose();
-//     cargousersController.dispose();
-//     correousersController.dispose();
-//     numerotelefonousersController.dispose();
-//     contactoemergenciausersController.dispose();
-//     super.dispose();
-//   }
+class _UsersAddPageState extends State<UsersAddPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-//   Future<void> _saveData() async {
-//     final bytes = imagen != null ? await imagen!.readAsBytes() : null;
-//     final base64 = bytes != null ? base64Encode(bytes) : "";
-//     final msg = jsonEncode({
-//       // Aquí es donde guardarías la información en la base de datos
-//       'nombre': nombreusersController.text,
-//       'rut': rutusersController.text,
-//       'local': localusersController.text,
-//       'cargo': cargousersController.text,
-//       'correo': correousersController.text,
-//       'numero': numerotelefonousersController.text,
-//       'contacto emergencia': contactoemergenciausersController.text,
-//       'imagen': base64
-//     });
-//     await UserService().UsersAdd(msg);
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => UsersList()));
-//   }
+  TextEditingController userFirstNameController = TextEditingController();
+  TextEditingController userLastNameController = TextEditingController();
+  TextEditingController userEmailController = TextEditingController();
+  TextEditingController tipoController = TextEditingController(text: 'Cajero');
+  TextEditingController rutController = TextEditingController();
+  TextEditingController direccionController = TextEditingController();
+  TextEditingController ntelefonoController = TextEditingController();
+  TextEditingController nemergenciaController = TextEditingController();
+  TextEditingController localController = TextEditingController();
+  File? imagenUser;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text('Añadir Usuario',
-//               style: Theme.of(context).textTheme.titleLarge),
-//           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
-//         ),
-//         drawer: const SideBar(),
-//         body: SingleChildScrollView(
-//             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-//             child: Column(
-//               children: [
-//                 Padding(
-//                   padding: EdgeInsets.only(
-//                     bottom: MediaQuery.of(context).size.height * 0.02,
-//                   ),
-//                   child: InkWell(
-//                     onTap: () async {
-//                       final result = await FilePicker.platform.pickFiles(
-//                         type: FileType.image,
-//                       );
-//                       if (result != null) {
-//                         setState(() {
-//                           imagen = File(result.files.single.path!);
-//                         });
-//                       }
-//                     },
-//                     child: Container(
-//                       width: 80.0,
-//                       height: 80.0,
-//                       decoration: const BoxDecoration(
-//                         shape: BoxShape.circle,
-//                         color: Color(0xFF909090),
-//                       ),
-//                       child: ClipOval(
-//                         child: imagen != null
-//                             ? Image.file(
-//                                 imagen!,
-//                                 width: 80.0,
-//                                 height: 80.0,
-//                                 fit: BoxFit.cover,
-//                               )
-//                             : const Icon(
-//                                 Icons.add,
-//                                 size: 40.0,
-//                                 color: Color(0xFFC0C0C0),
-//                               ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 TextFormField(
-//                   controller: rutusersController,
-//                   decoration: const InputDecoration(hintText: 'RUT'),
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 TextFormField(
-//                   controller: nombreusersController,
-//                   decoration:
-//                       const InputDecoration(hintText: 'Nombre Completo'),
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 TextFormField(
-//                   controller: localusersController,
-//                   decoration: const InputDecoration(hintText: 'Local'),
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 TextFormField(
-//                   controller: cargousersController,
-//                   decoration: const InputDecoration(hintText: 'Cargo'),
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 TextFormField(
-//                   controller: correousersController,
-//                   decoration:
-//                       const InputDecoration(hintText: 'Correo Electronico'),
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 TextFormField(
-//                   controller: numerotelefonousersController,
-//                   decoration:
-//                       const InputDecoration(hintText: 'Numero de Telefono'),
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 TextFormField(
-//                   controller: contactoemergenciausersController,
-//                   decoration:
-//                       const InputDecoration(hintText: 'Contacto de Emergencia'),
-//                 ),
-//                 const SizedBox(height: 16.0),
-//                 ElevatedButton(
-//                   onPressed: () {
-//                     _saveData();
-//                     Navigator.push(
-//                         context,
-//                         MaterialPageRoute(
-//                             builder: (context) => const HomePage()));
-//                   },
-//                   style: ElevatedButton.styleFrom(
-//                     minimumSize: Size(
-//                       (MediaQuery.of(context).size.width * 0.6),
-//                       (MediaQuery.of(context).size.height * 0.07),
-//                     ),
-//                   ),
-//                   child: const Text('Guardar'),
-//                 ),
-//                 const SizedBox(height: 16.0),
-//                 ElevatedButton(
-//                   onPressed: () {
-//                     Navigator.push(
-//                       context,
-//                       MaterialPageRoute(builder: (context) => const HomePage()),
-//                     );
-//                   },
-//                   style: ElevatedButton.styleFrom(
-//                     minimumSize: Size(
-//                       (MediaQuery.of(context).size.width * 0.6),
-//                       (MediaQuery.of(context).size.height * 0.07),
-//                     ),
-//                   ),
-//                   child: const Text('Volver'),
-//                 ),
-//               ],
-//             )));
-//   }
-// }
+  @override
+  void dispose() {
+    userFirstNameController.dispose();
+    userLastNameController.dispose();
+    userEmailController.dispose();
+    tipoController.dispose();
+    rutController.dispose();
+    direccionController.dispose();
+    ntelefonoController.dispose();
+    nemergenciaController.dispose();
+    localController.dispose();
+    super.dispose();
+  }
+
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el nombre(s) del empleado.';
+    }
+    final nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
+    if (!nameRegExp.hasMatch(value)) {
+      return 'El nombre(s) no debe contener números ni símbolos.';
+    }
+    return null;
+  }
+
+  String? validateLastName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el apellido(s).';
+    }
+    final nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
+    if (!nameRegExp.hasMatch(value)) {
+      return 'El Apellido(s) no debe contener números ni símbolos.';
+    }
+    return null;
+  }
+
+  String? validateRut(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el RUT del empleado.';
+    }
+    if (value.length > 12) {
+      return 'El RUT no puede superar los 12 caracteres.';
+    }
+
+    final rutRegExp = RegExp(
+        r'^(\d{1,2}\.?\d{3}\.?\d{3}[-][0-9kK]{1}|[0-9]{1,2}[0-9]{3}[0-9]{3}[0-9kK]{1})$');
+    if (!rutRegExp.hasMatch(value)) {
+      return 'El RUT no es válido.';
+    }
+    return null;
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese una dirección de correo electrónico';
+    }
+
+    final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+    if (!emailRegExp.hasMatch(value)) {
+      return 'Por favor ingrese un correo válido';
+    }
+
+    return null;
+  }
+
+  String? validatePhoneNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el número de teléfono.';
+    }
+    final phoneRegExp = RegExp(r'^[+]?[0-9]{10,13}$');
+    if (!phoneRegExp.hasMatch(value)) {
+      return 'El número de teléfono no es válido.';
+    }
+    return null;
+  }
+
+  String? validateEmpty(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese los datos correspondientes.';
+    }
+  }
+
+  Future<void> _saveData() async {
+    if (_formKey.currentState!.validate()) {
+      final bytes = imagenUser != null ? await imagenUser!.readAsBytes() : null;
+      final base64 = bytes != null ? base64Encode(bytes) : "";
+      final msg = jsonEncode({
+        'first_name': userFirstNameController.text,
+        'last_name': userLastNameController.text,
+        'email': userEmailController.text,
+        'tipo': tipoController.text,
+        'rut': rutController.text,
+        'direccion': direccionController.text,
+        'ntelefono': ntelefonoController.text,
+        'nemergencia': nemergenciaController.text,
+        'local': localController.text,
+        'imagen_user': base64,
+      });
+      await UserService().addUsers(msg);
+      print('saved');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => UsersViewList()),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Añadir empleado',
+          style: TextStyle(
+            color: Color(0xFF5D2A42),
+            fontSize: 24,
+          ),
+        ),
+        backgroundColor: const Color(0xFFFFB5D7),
+        centerTitle: true,
+        titleSpacing: 0,
+      ),
+      drawer: const SideBar(),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      final result = await FilePicker.platform.pickFiles(
+                        type: FileType.image,
+                      );
+                      if (result != null) {
+                        setState(() {
+                          imagenUser = File(result.files.single.path!);
+                        });
+                      }
+                    },
+                    child: Container(
+                      width: 80.0,
+                      height: 80.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFF909090),
+                      ),
+                      child: ClipOval(
+                        child: imagenUser != null
+                            ? Image.file(
+                                imagenUser!,
+                                width: 80.0,
+                                height: 80.0,
+                                fit: BoxFit.cover,
+                              )
+                            : const Icon(
+                                Icons.add,
+                                size: 40.0,
+                                color: Color(0xFFC0C0C0),
+                              ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    child: TextFormField(
+                      controller: userFirstNameController,
+                      decoration: const InputDecoration(hintText: 'Nombre(s)'),
+                      validator: validateName,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    child: TextFormField(
+                      controller: userLastNameController,
+                      decoration:
+                          const InputDecoration(hintText: 'Apellido(s)'),
+                      validator: validateLastName,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    child: TextFormField(
+                      controller: userEmailController,
+                      validator: validateEmail,
+                      decoration: const InputDecoration(
+                        hintText: 'Correo electrónico',
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    child: DropdownButtonFormField<String>(
+                      value: tipoController.text,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          tipoController.text = newValue ?? '';
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Cargo del empleado',
+                      ),
+                      items: <String>['Cajero', 'Pastelero']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    child: TextFormField(
+                      controller: rutController,
+                      decoration: const InputDecoration(hintText: 'RUT'),
+                      validator: validateRut,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    child: TextFormField(
+                      controller: direccionController,
+                      decoration: const InputDecoration(
+                        hintText: 'Dirección particular',
+                      ),
+                      validator: validateEmpty,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    child: TextFormField(
+                        controller: ntelefonoController,
+                        decoration: const InputDecoration(
+                          hintText: 'Número de teléfono',
+                        ),
+                        validator: validatePhoneNumber),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    child: TextFormField(
+                        controller: nemergenciaController,
+                        decoration: const InputDecoration(
+                          hintText: 'Número de teléfono de emergencia',
+                        ),
+                        validator: validatePhoneNumber),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    child: TextFormField(
+                        controller: localController,
+                        decoration: const InputDecoration(
+                          hintText: 'Local de trabajo',
+                        ),
+                        validator: validateEmpty),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.05,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ElevatedButton(
+                          onPressed: _saveData,
+                          child: const Text('Guardar'),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(
+                              (MediaQuery.of(context).size.width * 0.6),
+                              (MediaQuery.of(context).size.height * 0.07),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const UsersViewList(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(
+                              (MediaQuery.of(context).size.width * 0.6),
+                              (MediaQuery.of(context).size.height * 0.07),
+                            ),
+                          ),
+                          child: const Text('Volver'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

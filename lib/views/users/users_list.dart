@@ -1,175 +1,294 @@
-// import 'dart:convert';
-// import 'dart:typed_data';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:wholecake/models/users.dart';
-// import 'package:wholecake/views/users/users.dart';
-// import 'package:wholecake/services/users_services.dart';
-// import 'package:wholecake/providers/user_form_provider.dart';
-// import '../utilities/sidebar.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
+import 'package:wholecake/models/users.dart';
+import 'package:wholecake/views/users/users.dart';
+import 'package:wholecake/services/users_services.dart';
+import 'package:wholecake/providers/user_form_provider.dart';
+import 'package:wholecake/views/utilidades/loading_screen.dart';
+import '../utilidades/sidebar.dart';
+import 'dart:io';
+import 'package:wholecake/theme/theme.dart';
+import 'package:provider/provider.dart';
+import 'package:wholecake/views/users/users.dart';
 
-// class UsersList extends StatefulWidget {
-//   const UsersList({Key? key}) : super(key: key);
+class UsersViewList extends StatefulWidget {
+  const UsersViewList({Key? key}) : super(key: key);
 
-//   @override
-//   _UsersListState createState() => _UsersListState();
-// }
+  @override
+  _UsersViewListState createState() => _UsersViewListState();
+}
 
-// class _UsersListState extends State<UsersList> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         backgroundColor: const Color(0xFFBDE0FE),
-//         appBar: AppBar(
-//           title: const Text(
-//             'Listado de usuarios',
-//             style: TextStyle(
-//               color: Color(0xFF5D2A42),
-//               fontSize: 24,
-//             ),
-//           ),
-//           backgroundColor: const Color(0xFFFFB5D7),
-//           centerTitle: true,
-//           titleSpacing: 0,
-//         ),
-//         drawer: const SideBar(),
-//         body: Consumer<UserService>(builder: (context, listado, child) {
-//           return Column(children: [
-//             Container(
-//               alignment: Alignment.centerRight,
-//               padding: const EdgeInsets.only(right: 20.0, top: 5),
-//               child: ElevatedButton.icon(
-//                 onPressed: () {
-//                   Navigator.push(
-//                       context,
-//                       MaterialPageRoute(
-//                           builder: (context) => const UsersAdd()));
-//                 },
-//                 label: const Text(
-//                   'Agregar',
-//                   style: TextStyle(color: Color(0xFF5D2A42)),
-//                 ),
-//                 icon: const Icon(
-//                   Icons.add,
-//                   color: Color(0xFF5D2A42),
-//                 ),
-//                 style: ElevatedButton.styleFrom(
-//                     backgroundColor: const Color(0xFFFFB5D7),
-//                     shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(10))),
-//               ),
-//             ),
-//             Expanded(
-//               child: ListView.builder(
-//                 itemCount: listado.userslist.length,
-//                 itemBuilder: (context, index) {
-//                   final user = listado.userslist[index];
-//                   Uint8List bytes =
-//                       Uint8List.fromList(base64.decode(user.userImagen));
-//                   Image image = Image.memory(bytes);
-//                   return Card(
-//                     color: const Color(0xFFBDE0FE),
-//                     elevation: 10,
-//                     margin: EdgeInsets.symmetric(
-//                         vertical: MediaQuery.of(context).size.height * 0.01,
-//                         horizontal: MediaQuery.of(context).size.width * 0.04),
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(20),
-//                     ),
-//                     child: Padding(
-//                       padding: const EdgeInsets.all(10),
-//                       child: Row(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Container(
-//                             width: 100,
-//                             height: 100,
-//                             margin: const EdgeInsets.only(right: 10, top: 10),
-//                             decoration: BoxDecoration(
-//                               borderRadius: BorderRadius.circular(100),
-//                               shape: BoxShape.rectangle,
-//                               image: DecorationImage(
-//                                 image: image.image,
-//                                 fit: BoxFit.fill,
-//                               ),
-//                             ),
-//                           ),
-//                           Expanded(
-//                             child: Column(
-//                               crossAxisAlignment: CrossAxisAlignment.start,
-//                               children: [
-//                                 const SizedBox(width: 10),
-//                                 Row(
-//                                   mainAxisAlignment:
-//                                       MainAxisAlignment.spaceBetween,
-//                                   children: [
-//                                     Text(
-//                                       user.userName,
-//                                       style: const TextStyle(
-//                                         fontSize: 20,
-//                                         fontWeight: FontWeight.bold,
-//                                       ),
-//                                     ),
-//                                     Row(
-//                                       children: [
-//                                         IconButton(
-//                                           onPressed: () {
-//                                             listado.selectedUser =
-//                                                 listado.userslist[index].copy();
-//                                             print(
-//                                                 'este es el listado de usuarios');
-//                                             print(listado.selectedUser);
-//                                             Navigator.push(
-//                                               context,
-//                                               MaterialPageRoute(
-//                                                   builder: (context) =>
-//                                                       const UsersEdit()),
-//                                             );
-//                                           },
-//                                           icon: const Icon(Icons.edit),
-//                                         ),
-//                                         IconButton(
-//                                           onPressed: () async {
-//                                             final msg =
-//                                                 jsonEncode({'id': user.userId});
-//                                             await UserService()
-//                                                 .UsersDelete(msg);
-//                                             setState(() {
-//                                               listado.userslist.removeAt(index);
-//                                             });
-//                                           },
-//                                           icon: const Icon(Icons.delete),
-//                                         ),
-//                                       ],
-//                                     ),
-//                                   ],
-//                                 ),
-//                                 const SizedBox(height: 10),
-//                                 Text(
-//                                   'Cargo: ${user.userCargo.toString().substring(0, 10)}',
-//                                   style: const TextStyle(fontSize: 16),
-//                                 ),
-//                                 const SizedBox(height: 5),
-//                                 Text(
-//                                   'Sede: ${user.userSede.toString().substring(0, 10)}',
-//                                   style: const TextStyle(fontSize: 16),
-//                                 ),
-//                                 const SizedBox(height: 10),
-//                                 Text(
-//                                   user.userId.toString(),
-//                                   style: const TextStyle(fontSize: 16),
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   );
-//                 },
-//               ),
-//             )
-//           ]);
-//         }));
-//   }
-// }
+Future<void> _refresh() {
+  return Future.delayed(Duration(seconds: 2));
+}
+
+Listado? selectedUser;
+
+class _UsersViewListState extends State<UsersViewList> {
+  Future<String?> filterPopop(UserService listacat) => showDialog<String>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Filtro"),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.02,
+                    bottom: MediaQuery.of(context).size.height * 0.01,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text(
+                  "Filtrar",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Future<void> deletePopup(int userId, List<Listado> list) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title:
+            const Text("¿Estás seguro de que deseas eliminar a este usuario?"),
+        content:
+            const Text("Esta acción no se puede deshacer una vez completada"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              "Cancelar",
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              final msg = jsonEncode({'id': userId});
+
+              await UserService().deleteUser(msg);
+              setState(() {
+                list.removeWhere((users) => users.userId == userId);
+              });
+            },
+            child: const Text(
+              "Eliminar",
+              style: TextStyle(color: Colors.red, fontSize: 18),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> cargandoPantalla() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text("Diálogo sin cierre por el usuario"),
+        content: const Text("Este diálogo no se puede cerrar por el usuario."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // Acción del botón
+              Navigator.of(context).pop();
+            },
+            child: const Text("Cerrar"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final listadoView = Provider.of<UserService>(context);
+    if (listadoView.isLoading) return const LoadingScreen();
+    final List<Listado> prod = listadoView.listadousers;
+    final listacat = Provider.of<UserService>(context);
+
+    return ChangeNotifierProvider(
+      create: (_) => UserService(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Listado de usuarios',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+        ),
+        drawer: const SideBar(),
+        body: Consumer<UserService>(
+          builder: (context, listado, child) {
+            return Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.03,
+                    vertical: MediaQuery.of(context).size.height * 0.01,
+                  ),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          filterPopop(listacat);
+                        },
+                        icon: const Icon(Icons.filter_alt_outlined),
+                      ),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.search),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const UsersAddPage(),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.add),
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(height: MediaQuery.of(context).size.height * 0.005),
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: _refresh,
+                    child: ListView.builder(
+                      itemCount: listado.listadousers.length,
+                      itemBuilder: (context, index) {
+                        final users = listado.listadousers[index];
+                        Uint8List bytes =
+                            Uint8List.fromList(base64Decode(users.imagen_user));
+                        Image image = Image.memory(bytes);
+                        return Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 100,
+                                  height: 100,
+                                  margin: EdgeInsets.only(
+                                    right: MediaQuery.of(context).size.width *
+                                        0.03,
+                                    top: MediaQuery.of(context).size.height *
+                                        0.01,
+                                    bottom: MediaQuery.of(context).size.height *
+                                        0.01,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    shape: BoxShape.rectangle,
+                                    image: DecorationImage(
+                                      image: image.image,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              users.userName,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              IconButton(
+                                                onPressed: () {
+                                                  listadoView.selectedUser =
+                                                      listado
+                                                          .listadousers[index]
+                                                          .copy();
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          UsersEdit(),
+                                                    ),
+                                                  );
+                                                },
+                                                icon: Icon(Icons.edit),
+                                              ),
+                                              IconButton(
+                                                onPressed: () {
+                                                  deletePopup(users.userId,
+                                                      listado.listadousers);
+                                                },
+                                                icon: Icon(Icons.delete),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                          'Nombre ${users.userName.toString().padRight(10)}'),
+                                      SizedBox(height: 10),
+                                      Text(
+                                          'Correo ${users.userEmail.toString().padRight(10)}'),
+                                      SizedBox(height: 10),
+                                      Text(
+                                          'Cargo ${users.tipo.toString().padRight(10)}'),
+                                      SizedBox(height: 10),
+                                      Text(
+                                          'Número telefono ${users.ntelefono.toString().padRight(10)}'),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}

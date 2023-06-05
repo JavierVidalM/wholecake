@@ -3,27 +3,25 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:wholecake/models/users.dart';
 
-// 'accounts/user_user_add_rest/'
-// 'accounts/user_user_list_rest/'
-// 'accounts/user_user_update_rest/'
-// 'accounts/user_user_delete_rest/'
-// 'accounts/user_user_add_rest/'
-
+//test@gmail.com
 class UserService extends ChangeNotifier {
-  String APIUSER = 'test';
+  String APIUSER = 'test@gmail.com';
   String APIPASS = 'test01';
   String BASEURL = '3.85.128.77:8000';
 
   List<Listado> listadousers = [];
   List<Listado> userlogeado = [];
+  Listado? selectedUser;
   bool isLoading = true;
   bool isEditCreate = true;
   String typeuser = '';
   String authtoken = '';
   String _name = 'a';
+  String _email = 'a';
   String _cargo = '';
   String _img = '';
   String get name => _name;
+  String get email => _email;
   String get cargo => _cargo;
   String get img => _img;
   bool autenticado = false;
@@ -36,14 +34,14 @@ class UserService extends ChangeNotifier {
     return autenticado;
   }
 
-  Future<bool> login(String username, String password) async {
+  Future<bool> login(String email, String password) async {
     var url = Uri.http(
       BASEURL,
       'accounts/api/login/',
     );
 
     Map<String, String> body = {
-      'username': username,
+      'email': email,
       'password': password,
     };
 
@@ -60,7 +58,7 @@ class UserService extends ChangeNotifier {
         final responseData = json.decode(response.body);
         _name = responseData['username'];
         _cargo = responseData['tipo'];
-        _img = responseData['imagen'];
+        _img = responseData['imagen_user'];
         notifyListeners();
         return true;
       } else {
@@ -135,5 +133,70 @@ class UserService extends ChangeNotifier {
         'authorization': basicAuth,
       },
     );
+  }
+
+  Future<String> updateUsers(Listado user) async {
+    notifyListeners();
+    final url = Uri.http(
+      BASEURL,
+      'accounts/user_user_update_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(url, body: user.toJson(), headers: {
+      'authorization': basicAuth,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final decodeResp = response.body;
+    print(response.body);
+    return '';
+  }
+
+  Future addUsers(String msg) async {
+    notifyListeners();
+    final url = Uri.http(
+      BASEURL,
+      'accounts/user_user_add_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(url, body: msg, headers: {
+      'authorization': basicAuth,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final decodeResp = response.body;
+    // notifyListeners();
+    isEditCreate = false;
+  }
+
+  deleteUser(String msg) async {
+    final url = Uri.http(
+      BASEURL,
+      'accounts/user_user_delete_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(url, body: msg, headers: {
+      'authorization': basicAuth,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final decodeResp = response.body;
+  }
+
+  Future addUsersadmin(String msg) async {
+    notifyListeners();
+    final url = Uri.http(
+      BASEURL,
+      'accounts/user_admin_add_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(url, body: msg, headers: {
+      'authorization': basicAuth,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final decodeResp = response.body;
+    // notifyListeners();
+    isEditCreate = false;
   }
 }
