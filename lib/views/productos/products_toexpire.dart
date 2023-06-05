@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'dart:convert';
-import 'package:date_time_picker/date_time_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/models/categoria.dart';
 import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/productos/products.dart';
-import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
-import 'package:wholecake/views/productos/products_edit.dart';
 import 'dart:typed_data';
 import 'package:intl/intl.dart';
 
@@ -30,6 +25,21 @@ ListElement? catSelect;
 
 class _ToExpireState extends State<ToExpire> {
   int? _selectedCategory;
+  List<Listado> productosPorCaducar =
+      []; // Lista para almacenar los productos filtrados
+
+  @override
+  void initState() {
+    super.initState();
+    // Realizar el filtrado de productos en el método initState
+    final listadoView = Provider.of<ProductService>(context, listen: false);
+    final now = DateTime.now();
+    productosPorCaducar = listadoView.listadoproductos.where((product) {
+      final fechaVencimiento = DateTime.parse(product.fechaVencimiento);
+      final diasRestantes = fechaVencimiento.difference(now).inDays;
+      return diasRestantes <= 2;
+    }).toList();
+  }
 
   Future<String?> filterPopup(ProductService listacat) => showDialog<String>(
         context: context,
@@ -84,9 +94,8 @@ class _ToExpireState extends State<ToExpire> {
   Widget build(BuildContext context) {
     final listadoView = Provider.of<ProductService>(context);
     if (listadoView.isLoading) return const LoadingScreen();
-    final List<Listado> prod = listadoView.listadoproductos;
     final listacat = Provider.of<ProductService>(context);
-    final now = DateTime.now();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -98,11 +107,6 @@ class _ToExpireState extends State<ToExpire> {
       drawer: const SideBar(),
       body: Consumer<ProductService>(
         builder: (context, listado, child) {
-          final productosPorCaducar = listado.listadoproductos.where((product) {
-            final fechaVencimiento = DateTime.parse(product.fechaVencimiento);
-            final diasRestantes = fechaVencimiento.difference(now).inDays;
-            return diasRestantes <= 2;
-          }).toList();
           return Column(
             children: [
               Container(

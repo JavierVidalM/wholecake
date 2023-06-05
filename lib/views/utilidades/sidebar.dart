@@ -312,6 +312,7 @@ class _SideBarState extends State<SideBar> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const SuppliersView()))),
+                      // if (user.cargo == 'cajero')
                       ExpansionTile(
                         leading: const Icon(Icons.point_of_sale),
                         title: const Text("Módulo de ventas"),
@@ -347,6 +348,18 @@ class _SideBarState extends State<SideBar> {
                           ),
                         ],
                       ),
+                      ListTile(
+                          leading:
+                              const Icon(Icons.format_list_bulleted_rounded),
+                          title: const Text("Ordenes de trabajo"),
+                          onTap: () =>
+                              // Navigator.pushNamed(context, '/SuppliersView'),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+//////////////////////////////////////////////////////////////////////CAMBIAR AQUÍ LA RUTA//////////////////////////////////////////////////////////////////////
+                                          const SuppliersView()))),
                     ],
                   ),
                   Column(

@@ -75,8 +75,8 @@ class Listado {
         "categoria": categoria,
         "imagen": imagen,
         'estado': estado,
-        "cantidad":cantidad,
-        "lote":lote
+        "cantidad": cantidad,
+        "lote": lote
       };
   Listado copy() => Listado(
         productoId: productoId,
@@ -88,6 +88,6 @@ class Listado {
         imagen: imagen,
         estado: estado,
         cantidad: cantidad,
-        lote:lote,
+        lote: lote,
       );
 }
