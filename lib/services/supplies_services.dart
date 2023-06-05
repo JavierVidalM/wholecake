@@ -27,10 +27,8 @@ class SuppliesService extends ChangeNotifier {
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
 
     final response = await http.get(url, headers: {'authorization': basicAuth});
-    if (response.statusCode == 200) {
-      final suppliesMap = Supplies.fromJson(response.body);
-      suppliesList = suppliesMap.suppliesList;
-    }
+    final suppliesMap = Supplies.fromJson(response.body);
+    suppliesList = suppliesMap.suppliesList;
     isLoading = false;
     notifyListeners();
   }

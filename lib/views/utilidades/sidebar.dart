@@ -10,10 +10,10 @@ import 'package:wholecake/views/home/home.dart';
 import 'package:wholecake/views/insumos/insumos.dart';
 import 'package:wholecake/views/login/login.dart';
 import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
+import 'package:wholecake/views/ordenes_trabajo/ordenes_trabajo.dart';
 import 'package:wholecake/views/productos/products.dart';
 import 'package:wholecake/views/proveedores/suppliers.dart';
 import 'package:wholecake/views/users/user_profile_view.dart';
-import 'package:wholecake/views/utilidades/utilidades.dart';
 import 'package:wholecake/views/ventas/sells.dart';
 import '../../services/users_services.dart';
 
@@ -122,33 +122,19 @@ class _SideBarState extends State<SideBar> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Container(
-                                            width: 90,
-                                            height: 90,
-                                            margin: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              shape: BoxShape.rectangle,
-                                              image: DecorationImage(
-                                                image: image.image,
-                                                fit: BoxFit.cover,
-                                              ),
+                                        Container(
+                                          width: 90,
+                                          height: 90,
+                                          margin: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            shape: BoxShape.rectangle,
+                                            image: DecorationImage(
+                                              image: image.image,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
-                                          // child: SizedBox(
-                                          //   width: 90,
-                                          //   height: 90,
-                                          //   child: ClipRRect(
-                                          //     borderRadius:
-                                          //         BorderRadius.circular(100),
-                                          //       child: Image(image: image),
-                                          //     // child: Image.network(
-                                          //     //   'https://img1.ak.crunchyroll.com/i/spire4/5b954f7af990b40acc4f3f410a3a5f9d1664298859_large.jpg',
-                                          //     ),
-                                          //   ),
                                         ),
                                       ],
                                     ),
@@ -211,20 +197,17 @@ class _SideBarState extends State<SideBar> {
                                   MaterialPageRoute(
                                       builder: (context) => const HomePage()))),
                       ListTile(
-                        leading: const Icon(Icons.person_outline_rounded),
-                        title: const Text("Usuarios"),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ErrorPage(),
-                            ),
-                          );
-                        },
-                      ),
+                          leading: const Icon(Icons.person_outline_rounded),
+                          title: const Text("Usuarios"),
+                          onTap: () =>
+                              // Navigator.pushNamed(context, '/HomePage'),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()))),
                       ListTile(
                           leading: const Icon(Icons.inventory_rounded),
-                          title: const Text("Ordenes de compra"),
+                          title: const Text("Órdenes de compra"),
                           onTap: () =>
                               // Navigator.pushNamed(context, '/PurchaseList'),
                               Navigator.push(
@@ -232,6 +215,15 @@ class _SideBarState extends State<SideBar> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const PurchaseList()))),
+                      ListTile(
+                          leading: const Icon(Icons.inventory_rounded),
+                          title: const Text("Órdenes de trabajo"),
+                          onTap: () =>
+                              // Navigator.pushNamed(context, '/OrdenAdd'),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const OrdenAdd()))),
                       ExpansionTile(
                         leading: const Icon(Icons.inventory_2_outlined),
                         title: const Text("Inventario"),
@@ -320,42 +312,54 @@ class _SideBarState extends State<SideBar> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const SuppliersView()))),
-                      if (user.cargo == 'cajero')
-                        ExpansionTile(
-                          leading: const Icon(Icons.point_of_sale),
-                          title: const Text("Módulo de ventas"),
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 25),
-                              child: ListTile(
-                                  leading: const Icon(
-                                      Icons.add_shopping_cart_rounded),
-                                  title: const Text("Generar Ventas"),
-                                  onTap: () =>
-                                      // Navigator.pushNamed(context, '/ListadoInsumos'),
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const SellsAdd()))),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 25),
-                              child: ListTile(
-                                leading: const Icon(Icons.checklist_rounded),
-                                title: const Text("Listado de ventas"),
+                      // if (user.cargo == 'cajero')
+                      ExpansionTile(
+                        leading: const Icon(Icons.point_of_sale),
+                        title: const Text("Módulo de ventas"),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 25),
+                            child: ListTile(
+                                leading:
+                                    const Icon(Icons.add_shopping_cart_rounded),
+                                title: const Text("Generar Ventas"),
                                 onTap: () =>
-                                    // Navigator.pushNamed(context, '/ToExpire'),
+                                    // Navigator.pushNamed(context, '/ListadoInsumos'),
                                     Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SellsView(),
-                                  ),
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SellsAdd()))),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 25),
+                            child: ListTile(
+                              leading: const Icon(Icons.checklist_rounded),
+                              title: const Text("Listado de ventas"),
+                              onTap: () =>
+                                  // Navigator.pushNamed(context, '/ToExpire'),
+                                  Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SellsView(),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
+                      ListTile(
+                          leading:
+                              const Icon(Icons.format_list_bulleted_rounded),
+                          title: const Text("Ordenes de trabajo"),
+                          onTap: () =>
+                              // Navigator.pushNamed(context, '/SuppliersView'),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+//////////////////////////////////////////////////////////////////////CAMBIAR AQUÍ LA RUTA//////////////////////////////////////////////////////////////////////
+                                          const SuppliersView()))),
                     ],
                   ),
                   Column(

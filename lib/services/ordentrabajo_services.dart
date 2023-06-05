@@ -1,43 +1,41 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:wholecake/models/ventas.dart';
+import 'package:wholecake/models/ordendetrabajo.dart';
 
-class VentasService extends ChangeNotifier {
+class OrdenTrabajoService extends ChangeNotifier {
   String APIUSER = 'test';
   String APIPASS = 'test01';
   String BASEURL = '3.85.128.77:8000';
-  List<Listventa> listadoventas = [];
+  List<ListTrabajo> listaTrabajos = [];
+  ListTrabajo? selectedTrabajo;
 
-  Listventa? selectedVenta;
   bool isLoading = true;
   bool isEditCreate = true;
-//constructor
-  VentasService() {
-    loadVentas();
+  OrdenTrabajoService() {
+    loadOrdenTrabajo();
   }
-
-  loadVentas() async {
+  loadOrdenTrabajo() async {
     isLoading = true;
     notifyListeners();
     var url = Uri.http(
       BASEURL,
-      'ventas/ventas_ventas_list_rest/',
+      'ordentrabajo/ordentrabajo_list_rest',
     );
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
     final response = await http.get(url, headers: {'authorization': basicAuth});
-    final suppliersMap = Ventas.fromJson(response.body);
-    listadoventas = suppliersMap.listventas;
+    final ordenMap = OrdenTrabajo.fromJson(response.body);
+    listaTrabajos = ordenMap.listTrabajos;
     isLoading = false;
     notifyListeners();
   }
 
-  Future addVentas(String msg) async {
+  Future addOrdenTrabajo(String msg) async {
     notifyListeners();
     final url = Uri.http(
       BASEURL,
-      'ventas/ventas_ventas_add_rest/',
+      'ordentrabajo/ordentrabajo_add_rest',
     );
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
@@ -46,18 +44,19 @@ class VentasService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
-    // notifyListeners();
+    final ListTrabajo odt = ListTrabajo.fromJson(decodeResp);
+    listaTrabajos.add(odt);
     isEditCreate = false;
   }
 
-  // Future<String> updateSupplier(ListSup supplier) async {
+  // Future<String> updateOrdenCompra(ListOdc odc) async {
   //   final url = Uri.http(
   //     BASEURL,
-  //     'suppliers/suppliers_suppliers_update_rest/',
+  //     'ordendc/ordendc_ordendc_update_rest/',
   //   );
   //   String basicAuth =
   //       'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-  //   final response = await http.post(url, body: supplier.toJson(), headers: {
+  //   final response = await http.post(url, body: odc.toJson(), headers: {
   //     'authorization': basicAuth,
   //     'Content-Type': 'application/json; charset=UTF-8',
   //   });
@@ -69,10 +68,10 @@ class VentasService extends ChangeNotifier {
   //   return '';
   // }
 
-  // deleteSupplier(String msg) async {
+  // deleteOrdenCompra(String msg) async {
   //   final url = Uri.http(
   //     BASEURL,
-  //     'suppliers/suppliers_suppliers_delete_rest/',
+  //     'ordendc/ordendc_ordendc_delete_rest/',
   //   );
   //   String basicAuth =
   //       'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));

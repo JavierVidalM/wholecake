@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/productos.dart';
+import 'package:wholecake/models/supplies.dart';
 import 'package:wholecake/services/ventas_services.dart';
 import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:intl/intl.dart';
-import 'package:wholecake/services/productos_services.dart';
+import 'package:wholecake/services/supplies_services.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
-class SellsAdd extends StatefulWidget {
-  const SellsAdd({super.key});
+class OrdenAdd extends StatefulWidget {
+  const OrdenAdd({super.key});
 
   @override
-  _SellsAddState createState() => _SellsAddState();
+  _OrdenAddState createState() => _OrdenAddState();
 }
 
 Future<void> _refresh() async {
-  await ProductService().loadProductos();
+  await SuppliesService().loadSupplies();
 }
 
-class _SellsAddState extends State<SellsAdd> {
+class _OrdenAddState extends State<OrdenAdd> {
   bool isSelected = false;
   List selectedCategories = [];
-  List<Listado> productosCarrito = [];
+  List<SuppliesList> productosCarrito = [];
 
   Future<void> _guardarVenta(List<Map<String, dynamic>> listadoVenta) async {
     Map<String, dynamic> jsonData = {
@@ -55,8 +56,8 @@ class _SellsAddState extends State<SellsAdd> {
   }
 
   Future<void> detalleVenta(
-      BuildContext context, List<Listado> products) async {
-    List productSelected = List.from(products);
+      BuildContext context, List<SuppliesList> insumos) async {
+    List productSelected = List.from(insumos);
 
     await showDialog<void>(
       context: context,
@@ -81,7 +82,7 @@ class _SellsAddState extends State<SellsAdd> {
           content: Column(
             children: productSelected.map((item) {
               final int quantityInCart = productosCarrito
-                  .where((product) => product.productoId == item.productoId)
+                  .where((insumo) => insumo.suppliesId == item.suppliesId)
                   .length;
               Uint8List bytes = Uint8List.fromList(base64.decode(item.imagen));
               Image imagenProducto = Image.memory(bytes);
@@ -132,8 +133,8 @@ class _SellsAddState extends State<SellsAdd> {
                           if (quantityInCart > 1) {
                             productosCarrito.removeLast();
                           } else {
-                            productosCarrito.removeWhere((product) =>
-                                product.productoId == item.productoId);
+                            productosCarrito.removeWhere((insumo) =>
+                                insumo.suppliesId == item.suppliesId);
                           }
                         });
                       },
@@ -157,11 +158,11 @@ class _SellsAddState extends State<SellsAdd> {
             TextButton(
               onPressed: () {
                 List<Map<String, dynamic>> listaProductos = [];
-                for (var product in productosCarrito) {
+                for (var insumo in productosCarrito) {
                   listaProductos.add({
-                    'id': product.productoId,
+                    'id': insumo.suppliesId,
                     'cantidad': productosCarrito
-                        .where((p) => p.productoId == product.productoId)
+                        .where((p) => p.suppliesId == insumo.suppliesId)
                         .length,
                   });
                 }
@@ -179,27 +180,21 @@ class _SellsAddState extends State<SellsAdd> {
 
   @override
   Widget build(BuildContext context) {
-    final productoProvider = Provider.of<ProductService>(context);
+    final insumoProvider = Provider.of<SuppliesService>(context);
     // while (ProductService().isLoading != false) return const LoadingScreen();
-    final listadoProductos = productoProvider.listadoproductos;
+    final listaInsumos = insumoProvider.suppliesList;
 
-    if (productoProvider.isLoading) return const LoadingScreen();
+    if (insumoProvider.isLoading) return const LoadingScreen();
     bool cartWithProducts = false;
     // bool isInCart = false;
     if (productosCarrito.isNotEmpty) {
       cartWithProducts = !cartWithProducts;
     }
-    List listadoCategorias = [];
-    for (var producto in listadoProductos) {
-      if (!listadoCategorias.contains(producto.categoria)) {
-        listadoCategorias.add(producto.categoria);
-      }
-    }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Módulo de ventas',
+          'Asignar insumos',
           style: Theme.of(context).textTheme.titleLarge,
         ),
         actions: [
@@ -249,78 +244,19 @@ class _SellsAddState extends State<SellsAdd> {
         toolbarHeight: MediaQuery.of(context).size.height * 0.1,
       ),
       drawer: const SideBar(),
-      body: Consumer<ProductService>(builder: (context, listado, child) {
-        final filterProducts = listado.listadoproductos.where((product) {
-          return selectedCategories.isEmpty ||
-              selectedCategories.contains(product.categoria);
-        }).toList();
-
+      body: Consumer<SuppliesService>(builder: (context, listado, child) {
         return Column(
           children: [
-            Stack(
-              children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Wrap(
-                      spacing: 10.0, // Espacio horizontal entre los chips
-                      runSpacing: 10.0,
-                      children:
-                          productoProvider.listadocategorias.map((categoria) {
-                        return FilterChip(
-                          selected: selectedCategories
-                              .contains(categoria.categoriaId),
-                          label: Text(categoria.nombre),
-                          onSelected: (selected) {
-                            setState(() {
-                              if (selected) {
-                                selectedCategories.add(categoria.categoriaId);
-                              } else {
-                                selectedCategories
-                                    .remove(categoria.categoriaId);
-                              }
-                            });
-                          },
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    width: 30,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.centerRight,
-                        end: Alignment.centerLeft,
-                        colors: [
-                          Colors.grey.withOpacity(0.5),
-                          Colors.transparent,
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const Divider(
-              height: 1,
-            ),
             Expanded(
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3, childAspectRatio: 0.66),
-                itemCount: filterProducts.length,
+                    crossAxisCount: 3, childAspectRatio: 0.99),
+                itemCount: listaInsumos.length,
                 itemBuilder: (context, index) {
-                  final product = filterProducts[index];
+                  final insumo = listaInsumos[index];
                   Uint8List bytes =
-                      Uint8List.fromList(base64.decode(product.imagen));
+                      Uint8List.fromList(base64.decode(insumo.imagen_supplies));
                   Image imagenProducto = Image.memory(bytes);
-
                   return Card(
                     color: SweetCakeTheme.blue,
                     elevation: 8,
@@ -344,21 +280,16 @@ class _SellsAddState extends State<SellsAdd> {
                                 ),
                               ),
                               Text(
-                                product.nombre,
+                                insumo.nombreInsumo,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
                               ),
                               Text(
-                                NumberFormat.currency(
-                                  locale: 'es',
-                                  symbol: '\$',
-                                  decimalDigits: 0,
-                                  customPattern: '\$ #,##0',
-                                ).format(
-                                    double.parse(product.precio.toString())),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400),
+                                insumo.cantidad.toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
                               ),
                             ],
                           ),
@@ -367,7 +298,7 @@ class _SellsAddState extends State<SellsAdd> {
                           onPressed: () {
                             setState(
                               () {
-                                productosCarrito.add(product);
+                                productosCarrito.add(insumo);
                               },
                             );
                           },
