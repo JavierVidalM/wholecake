@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
+import 'package:wholecake/views/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/services/users_services.dart';
@@ -12,6 +12,53 @@ class UserProfileView extends StatefulWidget {
 
   @override
   State<UserProfileView> createState() => _UserProfileViewState();
+}
+
+Future<void> logoutPopup(BuildContext context, user) async {
+  await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Estás a punto de cerrar sesión",
+            style: TextStyle(color: SweetCakeTheme.pink3),
+          ),
+          content: Text("¿Estás seguro de que quieres cerrar la sesión?"),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0, bottom: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      "Cancelar",
+                      style: TextStyle(color: SweetCakeTheme.warning),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // user.logout();
+                      // Navigator.pushNamed(context, '/LoginUser');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginUser()));
+                    },
+                    child: const Text(
+                      "Aceptar",
+                      style: TextStyle(color: SweetCakeTheme.blue2),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      });
 }
 
 class _UserProfileViewState extends State<UserProfileView> {
@@ -89,11 +136,11 @@ class _UserProfileViewState extends State<UserProfileView> {
                               thickness: 2,
                             ),
                           ),
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.only(top: 25.0),
                             child: Text(
-                              "monkeydluffy@kaisokuo.com",
-                              style: TextStyle(
+                              "Email : ${user.email}",
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 16),
                             ),
                           ),
@@ -105,27 +152,27 @@ class _UserProfileViewState extends State<UserProfileView> {
                                   fontWeight: FontWeight.w700, fontSize: 16),
                             ),
                           ),
-                          const Padding(
+                          Padding(
                             padding: const EdgeInsets.only(top: 25.0),
                             child: Text(
-                              "Local: Thousand Sunny",
-                              style: TextStyle(
+                              "Local:  ${user.local}",
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 16),
                             ),
                           ),
-                          const Padding(
+                          Padding(
                             padding: const EdgeInsets.only(top: 25.0),
                             child: Text(
-                              "Dirección: Dawn Island, Goa, East Blue",
-                              style: TextStyle(
+                              "Dirección:  ${user.direccion}",
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 16),
                             ),
                           ),
-                          const Padding(
+                          Padding(
                             padding: const EdgeInsets.only(top: 25.0),
                             child: Text(
-                              "Número de teléfono: 9 10542023",
-                              style: TextStyle(
+                              "Número de teléfono:  ${user.ntelefono}",
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 16),
                             ),
                           ),
@@ -192,9 +239,14 @@ class _UserProfileViewState extends State<UserProfileView> {
                               padding: EdgeInsets.only(
                                   left:
                                       MediaQuery.of(context).size.width * 0.05),
-                              child: const Text(
-                                "Cerrar sesión",
-                                style: TextStyle(fontSize: 20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  logoutPopup(context, user);
+                                },
+                                child: Text(
+                                  "Cerrar sesión",
+                                  style: TextStyle(fontSize: 20),
+                                ),
                               ),
                             )
                           ],

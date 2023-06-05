@@ -17,13 +17,20 @@ class UserService extends ChangeNotifier {
   String typeuser = '';
   String authtoken = '';
   String _name = 'a';
-  String _email = 'a';
+  String _email = '';
   String _cargo = '';
   String _img = '';
+  String _direccion = '';
+  String _local = '';
+  String _ntelefono = '';
   String get name => _name;
   String get email => _email;
   String get cargo => _cargo;
   String get img => _img;
+  String get direccion => _direccion;
+  String get local => _local;
+  String get ntelefono => _ntelefono;
+
   bool autenticado = false;
 
   UserService() {
@@ -35,6 +42,7 @@ class UserService extends ChangeNotifier {
   }
 
   Future<bool> login(String email, String password) async {
+    if (email == null || password == null) return false;
     var url = Uri.http(
       BASEURL,
       'accounts/api/login/',
@@ -56,9 +64,16 @@ class UserService extends ChangeNotifier {
         .then((response) {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
+
         _name = responseData['username'];
+        _email = responseData['email'];
         _cargo = responseData['tipo'];
         _img = responseData['imagen_user'];
+        _direccion = responseData['direccion'];
+        _local = responseData['local'];
+        _ntelefono = responseData['ntelefono'];
+        print(response.body);
+
         notifyListeners();
         return true;
       } else {
