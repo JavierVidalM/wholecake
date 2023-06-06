@@ -20,7 +20,7 @@ class OrdenTrabajoService extends ChangeNotifier {
     notifyListeners();
     var url = Uri.http(
       BASEURL,
-      'ordentrabajo/ordentrabajo_list_rest',
+      'ordentrabajo/ordentrabajo_list_rest/',
     );
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
@@ -44,8 +44,9 @@ class OrdenTrabajoService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
-    final ListTrabajo odt = ListTrabajo.fromJson(decodeResp);
-    listaTrabajos.add(odt);
+    // final ListTrabajo odt = ListTrabajo.fromJson(decodeResp);
+    // listaTrabajos.add(odt);
+    notifyListeners();
     isEditCreate = false;
   }
 
