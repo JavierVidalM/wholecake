@@ -6,7 +6,9 @@ import 'package:wholecake/views/home/home.dart';
 import 'package:wholecake/views/ordenes_trabajo/orden_view.dart';
 import 'dart:convert';
 import 'dart:io';
-import '../../services/ordentrabajo_services.dart';
+import 'package:wholecake/services/ordentrabajo_services.dart';
+import 'package:wholecake/models/categoria.dart';
+import 'package:provider/provider.dart';
 
 class CrearOrdenAddPage extends StatefulWidget {
   const CrearOrdenAddPage({Key? key}) : super(key: key);
@@ -56,6 +58,13 @@ class _CrearOrdenAddPageState extends State<CrearOrdenAddPage> {
         MaterialPageRoute(builder: (context) => OrdenesView()),
       );
     }
+  }
+
+  String? validateCategory(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, seleccione una categoría.';
+    }
+    return null;
   }
 
   @override
@@ -137,11 +146,28 @@ class _CrearOrdenAddPageState extends State<CrearOrdenAddPage> {
                   Padding(
                     padding: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height * 0.02),
-                    child: TextFormField(
-                      //validator: validateProducto,
-                      controller: categoriaController,
-                      decoration: const InputDecoration(
-                          hintText: 'Categoria del producto'),
+                    child: Consumer<OrdenTrabajoService>(
+                      builder: (context, listacat, _) {
+                        ListElement? categoriaSeleccionada;
+                        return DropdownButtonFormField<ListElement>(
+                          validator: (ListElement? value) =>
+                              validateCategory(value?.nombre),
+                          hint: const Text('Selecciona una categoría'),
+                          value: categoriaSeleccionada,
+                          onChanged: (ListElement? nuevaCategoria) {
+                            setState(() {
+                              categoriaController.text =
+                                  nuevaCategoria!.categoriaId.toString();
+                            });
+                          },
+                          items: listacat.listadocategoria.map((categoria) {
+                            return DropdownMenuItem<ListElement>(
+                              value: categoria,
+                              child: Text(categoria.nombre),
+                            );
+                          }).toList(),
+                        );
+                      },
                     ),
                   ),
                   Padding(
@@ -170,26 +196,25 @@ class _CrearOrdenAddPageState extends State<CrearOrdenAddPage> {
                             top: MediaQuery.of(context).size.height * 0.02),
                         child: Row(
                           children: [
-                            // Expanded(
-                            //   child: ElevatedButton(
-                            //     onPressed: () {
-                            //       Navigator.push(
-                            //         context,
-                            //         MaterialPageRoute(
-                            //           builder: (context) =>
-                            //               const ProductsView(),
-                            //         ),
-                            //       );
-                            //     },
-                            //     style: ElevatedButton.styleFrom(
-                            //       minimumSize: Size(
-                            //         (MediaQuery.of(context).size.width * 0.6),
-                            //         (MediaQuery.of(context).size.height * 0.07),
-                            //       ),
-                            //     ),
-                            //     child: const Text('Volver'),
-                            //   ),
-                            // ),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const OrdenesView(),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(
+                                    (MediaQuery.of(context).size.width * 0.6),
+                                    (MediaQuery.of(context).size.height * 0.07),
+                                  ),
+                                ),
+                                child: const Text('Volver'),
+                              ),
+                            ),
                             const SizedBox(width: 20),
                             Expanded(
                               child: ElevatedButton(
