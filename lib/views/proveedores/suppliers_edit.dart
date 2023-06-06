@@ -112,12 +112,14 @@ class _ProductForm extends StatefulWidget {
 
 class _ProductFormState extends State<_ProductForm> {
   File? imageSelected;
+  bool shouldUpdateImage = false;
 
   Future<void> seleccionarImagen() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
     if (result != null) {
       setState(() {
         imageSelected = File(result.files.single.path!);
+        shouldUpdateImage = true;
       });
     }
   }
@@ -126,16 +128,19 @@ class _ProductFormState extends State<_ProductForm> {
   Widget build(BuildContext context) {
     final supplierForm = Provider.of<SupplierFormProvider>(context);
     final supplier = supplierForm.supplier;
-    ImageProvider image;
-    if (imageSelected != null) {
+
+    ImageProvider? image;
+
+    if (shouldUpdateImage && imageSelected != null) {
       image = FileImage(imageSelected!);
-    } else if (supplier.imagen_insumo.isNotEmpty) {
-      Uint8List bytes =
-          Uint8List.fromList(base64.decode(supplier.imagen_insumo));
+    } else if (supplier.imagen_insumo != null &&
+        supplier.imagen_insumo.isNotEmpty) {
+      Uint8List bytes = base64.decode(supplier.imagen_insumo);
       image = MemoryImage(bytes);
     } else {
       image = const AssetImage('assets/images/default.png');
     }
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -160,7 +165,7 @@ class _ProductFormState extends State<_ProductForm> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: image,
+                            image: image!,
                             fit: BoxFit.cover,
                           ),
                         ),

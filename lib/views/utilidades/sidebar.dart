@@ -10,6 +10,7 @@ import 'package:wholecake/views/insumos/insumos.dart';
 import 'package:wholecake/views/login/login.dart';
 import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
 import 'package:wholecake/views/ordenes_trabajo/crearorden.dart';
+import 'package:wholecake/views/ordenes_trabajo/orden_view.dart';
 import 'package:wholecake/views/productos/products.dart';
 import 'package:wholecake/views/proveedores/suppliers.dart';
 import 'package:wholecake/views/users/user_profile_view.dart';
@@ -223,7 +224,7 @@ class _SideBarState extends State<SideBar> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const CrearOrdenAddPage()))),
+                                          const OrdenesView()))),
                       ExpansionTile(
                         leading: const Icon(Icons.inventory_2_outlined),
                         title: const Text("Inventario"),
@@ -348,18 +349,6 @@ class _SideBarState extends State<SideBar> {
                           ),
                         ],
                       ),
-                      ListTile(
-                          leading:
-                              const Icon(Icons.format_list_bulleted_rounded),
-                          title: const Text("Ordenes de trabajo"),
-                          onTap: () =>
-                              // Navigator.pushNamed(context, '/SuppliersView'),
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-//////////////////////////////////////////////////////////////////////CAMBIAR AQUÍ LA RUTA//////////////////////////////////////////////////////////////////////
-                                          const SuppliersView()))),
                     ],
                   ),
                   Column(
