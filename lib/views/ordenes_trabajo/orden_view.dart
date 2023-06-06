@@ -275,7 +275,7 @@ class _OrdenesViewState extends State<OrdenesView> {
                                                   IconButton(
                                                     onPressed: () {
                                                       listadoView
-                                                              .selectedTrabajo =
+                                                              .selectedordenTrabajo =
                                                           listado.listaTrabajos[
                                                                   index]
                                                               .copy();

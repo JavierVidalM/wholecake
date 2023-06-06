@@ -8,7 +8,7 @@ class OrdenTrabajoService extends ChangeNotifier {
   String APIPASS = 'test01';
   String BASEURL = '3.85.128.77:8000';
   List<ListTrabajo> listaTrabajos = [];
-  ListTrabajo? selectedTrabajo;
+  ListTrabajo? selectedordenTrabajo;
 
   bool isLoading = true;
   bool isEditCreate = true;
@@ -50,24 +50,24 @@ class OrdenTrabajoService extends ChangeNotifier {
     isEditCreate = false;
   }
 
-  // Future<String> updateOrdenCompra(ListOdc odc) async {
-  //   final url = Uri.http(
-  //     BASEURL,
-  //     'ordendc/ordendc_ordendc_update_rest/',
-  //   );
-  //   String basicAuth =
-  //       'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-  //   final response = await http.post(url, body: odc.toJson(), headers: {
-  //     'authorization': basicAuth,
-  //     'Content-Type': 'application/json; charset=UTF-8',
-  //   });
-  //   final decodeResp = response.body;
-  //   //actualizamos el listado
-  //   // final index = listadoproductos
-  //   //     .indexWhere((element) => element.productoId == product.productoId);
-  //   // listadoproductos[index] = product;
-  //   return '';
-  // }
+  Future<String> updateTrabajo(OrdenTrabajo odt) async {
+    final url = Uri.http(
+      BASEURL,
+      'ordentrabajo/ordentrabajo_edit_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(url, body: odt.toJson(), headers: {
+      'authorization': basicAuth,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final decodeResp = response.body;
+    //actualizamos el listado
+    // final index = listadoproductos
+    //     .indexWhere((element) => element.productoId == product.productoId);
+    // listadoproductos[index] = product;
+    return '';
+  }
 
   // deleteOrdenCompra(String msg) async {
   //   final url = Uri.http(
