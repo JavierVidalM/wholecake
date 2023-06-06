@@ -5,141 +5,169 @@
 import 'dart:convert';
 
 class OrdenTrabajo {
-    List<ListTrabajo> listTrabajos;
+  List<ListTrabajo> listTrabajos;
 
-    OrdenTrabajo({
-        required this.listTrabajos,
-    });
+  OrdenTrabajo({
+    required this.listTrabajos,
+  });
 
-    factory OrdenTrabajo.fromJson(String str) => OrdenTrabajo.fromMap(json.decode(str));
+  factory OrdenTrabajo.fromJson(String str) =>
+      OrdenTrabajo.fromMap(json.decode(str));
 
-    String toJson() => json.encode(toMap());
+  String toJson() => json.encode(toMap());
 
-    factory OrdenTrabajo.fromMap(Map<String, dynamic> json) => OrdenTrabajo(
-        listTrabajos: List<ListTrabajo>.from(json["ListTrabajos"].map((x) => ListTrabajo.fromMap(x))),
-    );
+  factory OrdenTrabajo.fromMap(Map<String, dynamic> json) => OrdenTrabajo(
+        listTrabajos: List<ListTrabajo>.from(
+            json["ListTrabajos"].map((x) => ListTrabajo.fromMap(x))),
+      );
 
-    Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => {
         "ListTrabajos": List<dynamic>.from(listTrabajos.map((x) => x.toMap())),
-    };
+      };
 }
 
 class ListTrabajo {
-    int id;
-    String nombreProducto;
-    int precioProducto;
-    String estadoProducto;
-    int cantidadProducto;
-    String lote;
-    DateTime? fechaElaboracion;
-    DateTime? fechaVencimiento;
-    int categoria;
-    String imagen;
-    List<OrdenesTrabajo> ordenesTrabajo;
+  int id;
+  String nombreProducto;
+  int precioProducto;
+  String estadoProducto;
+  int cantidadProducto;
+  String lote;
+  DateTime? fechaElaboracion;
+  DateTime? fechaVencimiento;
+  int categoria;
+  String imagen;
+  List<OrdenesTrabajo> ordenesTrabajo;
 
-    ListTrabajo({
-        required this.id,
-        required this.nombreProducto,
-        required this.precioProducto,
-        required this.estadoProducto,
-        required this.cantidadProducto,
-        required this.lote,
-        this.fechaElaboracion,
-        this.fechaVencimiento,
-        required this.categoria,
-        required this.imagen,
-        required this.ordenesTrabajo,
-    });
+  ListTrabajo({
+    required this.id,
+    required this.nombreProducto,
+    required this.precioProducto,
+    required this.estadoProducto,
+    required this.cantidadProducto,
+    required this.lote,
+    this.fechaElaboracion,
+    this.fechaVencimiento,
+    required this.categoria,
+    required this.imagen,
+    required this.ordenesTrabajo,
+  });
 
-    factory ListTrabajo.fromJson(String str) => ListTrabajo.fromMap(json.decode(str));
+  factory ListTrabajo.fromJson(String str) =>
+      ListTrabajo.fromMap(json.decode(str));
 
-    String toJson() => json.encode(toMap());
+  String toJson() => json.encode(toMap());
 
-    factory ListTrabajo.fromMap(Map<String, dynamic> json) => ListTrabajo(
+  factory ListTrabajo.fromMap(Map<String, dynamic> json) => ListTrabajo(
         id: json["id"],
         nombreProducto: json["nombre_producto"],
         precioProducto: json["precio_producto"],
         estadoProducto: json["estado_producto"],
         cantidadProducto: json["cantidad_producto"],
         lote: json["lote"],
-        fechaElaboracion: json["fecha_elaboracion"] == null ? null : DateTime.parse(json["fecha_elaboracion"]),
-        fechaVencimiento: json["fecha_vencimiento"] == null ? null : DateTime.parse(json["fecha_vencimiento"]),
+        fechaElaboracion: json["fecha_elaboracion"] == null
+            ? null
+            : DateTime.parse(json["fecha_elaboracion"]),
+        fechaVencimiento: json["fecha_vencimiento"] == null
+            ? null
+            : DateTime.parse(json["fecha_vencimiento"]),
         categoria: json["categoria"],
         imagen: json["imagen"],
-        ordenesTrabajo: List<OrdenesTrabajo>.from(json["ordenes_trabajo"].map((x) => OrdenesTrabajo.fromMap(x))),
-    );
+        ordenesTrabajo: List<OrdenesTrabajo>.from(
+            json["ordenes_trabajo"].map((x) => OrdenesTrabajo.fromMap(x))),
+      );
 
-    Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => {
         "id": id,
         "nombre_producto": nombreProducto,
         "precio_producto": precioProducto,
         "estado_producto": estadoProducto,
         "cantidad_producto": cantidadProducto,
         "lote": lote,
-        "fecha_elaboracion": "${fechaElaboracion!.year.toString().padLeft(4, '0')}-${fechaElaboracion!.month.toString().padLeft(2, '0')}-${fechaElaboracion!.day.toString().padLeft(2, '0')}",
-        "fecha_vencimiento": "${fechaVencimiento!.year.toString().padLeft(4, '0')}-${fechaVencimiento!.month.toString().padLeft(2, '0')}-${fechaVencimiento!.day.toString().padLeft(2, '0')}",
+        "fecha_elaboracion":
+            "${fechaElaboracion!.year.toString().padLeft(4, '0')}-${fechaElaboracion!.month.toString().padLeft(2, '0')}-${fechaElaboracion!.day.toString().padLeft(2, '0')}",
+        "fecha_vencimiento":
+            "${fechaVencimiento!.year.toString().padLeft(4, '0')}-${fechaVencimiento!.month.toString().padLeft(2, '0')}-${fechaVencimiento!.day.toString().padLeft(2, '0')}",
         "categoria": categoria,
         "imagen": imagen,
-        "ordenes_trabajo": List<dynamic>.from(ordenesTrabajo.map((x) => x.toMap())),
-    };
+        "ordenes_trabajo":
+            List<dynamic>.from(ordenesTrabajo.map((x) => x.toMap())),
+      };
+
+  ListTrabajo copy() => ListTrabajo(
+        id: id,
+        nombreProducto: nombreProducto,
+        cantidadProducto: cantidadProducto,
+        precioProducto: precioProducto,
+        estadoProducto: estadoProducto,
+        lote: lote,
+        categoria: categoria,
+        imagen: imagen,
+        ordenesTrabajo: ordenesTrabajo,
+      );
 }
 
 class OrdenesTrabajo {
-    int id;
-    int admin;
-    int? trabajador;
-    List<InsumosUtilizado> insumosUtilizados;
+  int id;
+  int admin;
+  int? trabajador;
+  List<InsumosUtilizado> insumosUtilizados;
 
-    OrdenesTrabajo({
-        required this.id,
-        required this.admin,
-        this.trabajador,
-        required this.insumosUtilizados,
-    });
+  OrdenesTrabajo({
+    required this.id,
+    required this.admin,
+    this.trabajador,
+    required this.insumosUtilizados,
+  });
 
-    factory OrdenesTrabajo.fromJson(String str) => OrdenesTrabajo.fromMap(json.decode(str));
+  factory OrdenesTrabajo.fromJson(String str) =>
+      OrdenesTrabajo.fromMap(json.decode(str));
 
-    String toJson() => json.encode(toMap());
+  String toJson() => json.encode(toMap());
 
-    factory OrdenesTrabajo.fromMap(Map<String, dynamic> json) => OrdenesTrabajo(
+  factory OrdenesTrabajo.fromMap(Map<String, dynamic> json) => OrdenesTrabajo(
         id: json["id"],
         admin: json["admin"],
         trabajador: json["trabajador"],
-        insumosUtilizados: List<InsumosUtilizado>.from(json["insumos_utilizados"].map((x) => InsumosUtilizado.fromMap(x))),
-    );
+        insumosUtilizados: List<InsumosUtilizado>.from(
+            json["insumos_utilizados"].map((x) => InsumosUtilizado.fromMap(x))),
+      );
 
-    Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => {
         "id": id,
         "admin": admin,
         "trabajador": trabajador,
-        "insumos_utilizados": List<dynamic>.from(insumosUtilizados.map((x) => x.toMap())),
-    };
+        "insumos_utilizados":
+            List<dynamic>.from(insumosUtilizados.map((x) => x.toMap())),
+      };
 }
 
 class InsumosUtilizado {
-    int id;
-    String nombre;
-    int cantidadUtilizada;
+  int id;
+  String nombre;
+  int cantidadUtilizada;
 
-    InsumosUtilizado({
-        required this.id,
-        required this.nombre,
-        required this.cantidadUtilizada,
-    });
+  InsumosUtilizado({
+    required this.id,
+    required this.nombre,
+    required this.cantidadUtilizada,
+  });
 
-    factory InsumosUtilizado.fromJson(String str) => InsumosUtilizado.fromMap(json.decode(str));
+  factory InsumosUtilizado.fromJson(String str) =>
+      InsumosUtilizado.fromMap(json.decode(str));
 
-    String toJson() => json.encode(toMap());
+  String toJson() => json.encode(toMap());
 
-    factory InsumosUtilizado.fromMap(Map<String, dynamic> json) => InsumosUtilizado(
+  factory InsumosUtilizado.fromMap(Map<String, dynamic> json) =>
+      InsumosUtilizado(
         id: json["id"],
         nombre: json["nombre"],
         cantidadUtilizada: json["cantidad_utilizada"],
-    );
+      );
 
-    Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => {
         "id": id,
         "nombre": nombre,
         "cantidad_utilizada": cantidadUtilizada,
-    };
+      };
 }

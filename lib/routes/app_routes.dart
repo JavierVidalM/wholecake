@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wholecake/views/login/login.dart';
 import 'package:wholecake/views/home/home.dart';
 import 'package:wholecake/views/ordenes_trabajo/ordenes_trabajo.dart';
+import 'package:wholecake/views/ordenes_trabajo/orden_view.dart';
 import 'package:wholecake/views/productos/products.dart';
 import 'package:wholecake/views/proveedores/suppliers.dart';
 import 'package:wholecake/views/users/user_profile_view.dart';
@@ -10,7 +11,7 @@ import 'package:wholecake/views/users/users.dart';
 import 'package:wholecake/views/utilidades/utilidades.dart';
 import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
 import 'package:wholecake/views/insumos/insumos.dart';
-import 'package:wholecake/views/ordenes_trabajo/ordenes_trabajo.dart';
+import 'package:wholecake/views/ordenes_trabajo/crearorden.dart';
 
 import '../views/login/login_user_form.dart';
 
@@ -43,6 +44,8 @@ class AppRoutes {
     '/PurchaseOrders': (BuildContext context) => const PurchaseOrders(),
     '/PurchaseList': (BuildContext context) => const PurchaseList(),
     '/OrdenAdd': (BuildContext context) => const OrdenAdd(),
+    '/CrearOrdenAdd': (BuildContext context) => const CrearOrdenAddPage(),
+    '/OrdenView': (BuildContext context) => const OrdenesView(),
 
     //Pantallas de ventas
     '/SellsView': (BuildContext context) => SellsView(),

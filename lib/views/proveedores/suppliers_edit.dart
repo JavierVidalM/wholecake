@@ -186,7 +186,7 @@ class _ProductFormState extends State<_ProductForm> {
                         onChanged: (value) => supplier.nombreProveedor = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, ingrese el nombre del producto.';
+                            return 'Por favor, ingrese el nombre del proveedor.';
                           }
                           final nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
                           if (!nameRegExp.hasMatch(value)) {
@@ -206,7 +206,7 @@ class _ProductFormState extends State<_ProductForm> {
                     children: [
                       const Text('RUT'),
                       TextFormField(
-                        initialValue: supplier.nombreProveedor,
+                        initialValue: supplier.rut,
                         onChanged: (value) => supplier.rut = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -281,7 +281,7 @@ class _ProductFormState extends State<_ProductForm> {
                     children: [
                       const Text('Producto'),
                       TextFormField(
-                        initialValue: supplier.telefonoProveedor.toString(),
+                        initialValue: supplier.telefonoProveedor,
                         onChanged: (value) => supplier.nombreProveedor = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {

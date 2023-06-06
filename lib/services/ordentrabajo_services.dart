@@ -35,7 +35,7 @@ class OrdenTrabajoService extends ChangeNotifier {
     notifyListeners();
     final url = Uri.http(
       BASEURL,
-      'ordentrabajo/ordentrabajo_add_rest',
+      'ordentrabajo/ordentrabajo_add_rest/',
     );
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
