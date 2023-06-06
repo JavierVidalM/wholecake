@@ -74,7 +74,7 @@ class _ProductsEditState extends State<ProductsEdit> {
     _categoryController.text = product.categoria.toString();
     _quantityController.text = product.precio.toString();
     _priceController.text = product.precio.toString();
-    _expiryDateController.text = product.fechaVencimiento;
+    _expiryDateController.text = product.fechaVencimiento!;
     _imageController.text = product.imagen;
   }
 

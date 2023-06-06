@@ -35,7 +35,7 @@ class _ToExpireState extends State<ToExpire> {
     final listadoView = Provider.of<ProductService>(context, listen: false);
     final now = DateTime.now();
     productosPorCaducar = listadoView.listadoproductos.where((product) {
-      final fechaVencimiento = DateTime.parse(product.fechaVencimiento);
+      final fechaVencimiento = DateTime.parse(product.fechaVencimiento!);
       final diasRestantes = fechaVencimiento.difference(now).inDays;
       return diasRestantes <= 2;
     }).toList();

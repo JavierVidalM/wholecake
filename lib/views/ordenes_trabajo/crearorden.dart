@@ -47,6 +47,7 @@ class _CrearOrdenAddPageState extends State<CrearOrdenAddPage> {
         'estado_producto': estadoProductoController.text,
         'cantidad_producto': cantidadController.text,
         'imagen': base64,
+        'admin': 11,
       });
       await OrdenTrabajoService().addOrdenTrabajo(msg);
       print('saved');

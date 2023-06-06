@@ -28,8 +28,8 @@ class Productos {
 class Listado {
   int productoId;
   String nombre;
-  String fechaElaboracion;
-  String fechaVencimiento;
+  String? fechaElaboracion;
+  String? fechaVencimiento;
   int precio;
   int categoria;
   String imagen;
@@ -40,8 +40,8 @@ class Listado {
   Listado({
     required this.productoId,
     required this.nombre,
-    required this.fechaElaboracion,
-    required this.fechaVencimiento,
+    this.fechaElaboracion,
+    this.fechaVencimiento,
     required this.precio,
     required this.categoria,
     required this.imagen,
@@ -57,8 +57,8 @@ class Listado {
   factory Listado.fromMap(Map<String, dynamic> json) => Listado(
       productoId: json["id"],
       nombre: json["nombre"],
-      fechaElaboracion: json["fecha_elaboracion"],
-      fechaVencimiento: json["fecha_vencimiento"],
+      fechaElaboracion: json["fecha_elaboracion"] == null ? null : json["fecha_elaboracion"],
+      fechaVencimiento: json["fecha_vencimiento"] == null ? null : json["fecha_vencimiento"],
       precio: json["precio"],
       categoria: json["categoria"],
       imagen: json["imagen"],
