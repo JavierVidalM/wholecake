@@ -74,7 +74,7 @@ class SuppliesList {
       );
 
   Map<String, dynamic> toMap() => {
-        "suppliesId": suppliesId,
+        "id": suppliesId,
         "nombre_insumo": nombreInsumo,
         "fecha_llegada": fechaLlegada,
         "fecha_vencimiento": fechaVencimiento,
@@ -84,7 +84,7 @@ class SuppliesList {
         "tipo_insumo": tipoInsumo,
         "numero_lote": numeroLote,
         "marca_producto": marcaProducto,
-        "cantidad_insumo": cantidad,
+        "cantidad": cantidad,
         "imagen_supplies": imagen_supplies,
       };
   SuppliesList copy() => SuppliesList(

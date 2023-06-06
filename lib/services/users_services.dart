@@ -72,7 +72,6 @@ class UserService extends ChangeNotifier {
         _direccion = responseData['direccion'];
         _local = responseData['local'];
         _ntelefono = responseData['ntelefono'];
-        print(response.body);
 
         notifyListeners();
         return true;
@@ -106,7 +105,6 @@ class UserService extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     } else {
-      print('cago el userlist denuevo');
     }
   }
 
@@ -163,7 +161,6 @@ class UserService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
-    print(response.body);
     return '';
   }
 

@@ -14,7 +14,6 @@ class LoginUser extends StatefulWidget {
 }
 
 class LoginUserState extends State<LoginUser> {
-  bool _rememberMe = false;
   TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -56,7 +55,7 @@ class LoginUserState extends State<LoginUser> {
                   child: TextField(
                     controller: userController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: "Correo electrónico",
                     ),
                   ),
@@ -71,7 +70,7 @@ class LoginUserState extends State<LoginUser> {
                     controller: passwordController,
                     autocorrect: false,
                     obscureText: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: "Contraseña",
                     ),
                   ),
@@ -115,7 +114,7 @@ class LoginUserState extends State<LoginUser> {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.report_gmailerrorred_rounded,
                                   color: Colors.white,
                                   size: 40,
@@ -127,21 +126,21 @@ class LoginUserState extends State<LoginUser> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                      const Text(
                                         "Credenciales incorrectas",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      Text(
+                                      const Text(
                                           "Revisa tu dirección correo electrónico o contraseña"),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
-                            duration: Duration(seconds: 2),
-                            padding: EdgeInsets.all(20),
+                            duration: const Duration(seconds: 2),
+                            padding: const EdgeInsets.all(20),
                           ));
                         }
                       });

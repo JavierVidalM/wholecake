@@ -1,16 +1,12 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/supplies.dart';
-import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
+import 'package:wholecake/services/supplies_services.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
-import 'dart:convert';
-import 'dart:typed_data';
-//////////////////////////////////////////////////////////////////agregar nueva ruta del editar
-// import 'package:wholecake/views/suppliers/suppliers_edit.dart';
-import '../../services/supplies_services.dart';
+import 'package:wholecake/views/insumos/insumos.dart';
 
 class ListadoInsumos extends StatefulWidget {
   const ListadoInsumos({Key? key}) : super(key: key);
@@ -19,19 +15,12 @@ class ListadoInsumos extends StatefulWidget {
   _ListadoInsumosState createState() => _ListadoInsumosState();
 }
 
-Future<void> _refresh() {
-  return Future.delayed(Duration(seconds: 2));
-}
-
-SuppliesList? suppliesSeleccionada;
-
-// void filterProducts(String category) {
-//     final listadoView = Provider.of<SuppliesService>();
-//     listadoView.filterProductsByCategory(category);
-//   }
-
 class _ListadoInsumosState extends State<ListadoInsumos> {
-  int? _selectedCategory = null;
+  Future<void> _refresh() {
+    return Future.delayed(Duration(seconds: 2));
+  }
+
+  SuppliesList? selectedSupplies;
 
   Future<String?> filterPopup(SuppliesService listacat) => showDialog<String>(
         context: context,
@@ -42,10 +31,11 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                    padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.02,
-                  bottom: MediaQuery.of(context).size.height * 0.01,
-                )),
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.02,
+                    bottom: MediaQuery.of(context).size.height * 0.01,
+                  ),
+                ),
               ],
             ),
           ),
@@ -64,7 +54,8 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
         ),
       );
 
-  Future<void> deletePopup(int suppliesId, SuppliesList) async {
+  Future<void> deletePopup(
+      int suppliesId, List<SuppliesList> suppliesList) async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -90,7 +81,7 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
               });
               await SuppliesService().deleteSupplies(msg);
               setState(() {
-                SuppliesList.removeWhere(
+                suppliesList.removeWhere(
                     (supplies) => supplies.suppliesId == suppliesId);
               });
             },
@@ -98,26 +89,6 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
               "Eliminar",
               style: TextStyle(color: Colors.red, fontSize: 18),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> cargandoPantalla() async {
-    await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: const Text("Diálogo sin cierre por el usuario"),
-        content: const Text("Este diálogo no se puede cerrar por el usuario."),
-        actions: [
-          TextButton(
-            onPressed: () {
-              // Acción del botón
-              Navigator.of(context).pop();
-            },
-            child: const Text("Cerrar"),
           ),
         ],
       ),
@@ -143,8 +114,7 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
         ),
         drawer: const SideBar(),
         body: Consumer<SuppliesService>(
-          builder: (context, listado, child) {
-            // final producto = listado.listadoproductos[index];
+          builder: (context, suppliesList, child) {
             return Column(
               children: [
                 Container(
@@ -170,18 +140,6 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
                           ),
                           child: Row(
                             children: [
-                              // Expanded(
-                              //   child: ListTile(
-                              //     title: const Text('Buscar'),
-                              //     onTap: () {
-                              //       showSearch(
-                              //         context: context,
-                              //         delegate: ProductSearch(
-                              //             listadoView.listadosuppliers,),
-                              //       );
-                              //     },
-                              //   ),
-                              // ),
                               IconButton(
                                 onPressed: () {
                                   // Lógica para buscar
@@ -213,12 +171,13 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
                   child: RefreshIndicator(
                     onRefresh: _refresh,
                     child: ListView.builder(
-                      itemCount: listado.suppliesList.length,
+                      itemCount: listadoView.suppliesList.length,
                       itemBuilder: (context, index) {
-                        final supplies = listado.suppliesList[index];
-                          Uint8List bytes = Uint8List.fromList(
-                          base64.decode(supplies.imagen_supplies));
-                      Image image = Image.memory(bytes);
+                        final supplies = listadoView.suppliesList[index];
+                        Uint8List bytes = Uint8List.fromList(
+                          base64.decode(supplies.imagen_supplies),
+                        );
+                        Image image = Image.memory(bytes);
                         return Card(
                           child: Padding(
                             padding: const EdgeInsets.all(12),
@@ -240,9 +199,9 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
                                     borderRadius: BorderRadius.circular(100),
                                     shape: BoxShape.rectangle,
                                     image: DecorationImage(
-                                          image: image.image,
-                                          fit: BoxFit.fill,
-                                        ),
+                                      image: image.image,
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
                                 ),
                                 Expanded(
@@ -265,28 +224,28 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
                                             children: [
                                               IconButton(
                                                 onPressed: () {
-                                                  // listadoView.selectedSupplies =
-                                                  //     listado
-                                                  //         .suppliesList[index]
-                                                  //         .copy();
-                                                  // Navigator.push(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //     builder: (context) =>
-                                                  //         SuppliersEdit(),
-                                                  //   ),
-                                                  // );
+                                                  listadoView.selectedSupplies =
+                                                      listadoView
+                                                          .suppliesList[index]
+                                                          .copy();
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const InputsReciptSupplies(),
+                                                    ),
+                                                  );
                                                 },
-                                                icon: Icon(Icons.edit),
+                                                icon: const Icon(Icons.edit),
                                               ),
                                               IconButton(
                                                 onPressed: () async {
                                                   deletePopup(
                                                     supplies.suppliesId,
-                                                    listado.suppliesList,
+                                                    listadoView.suppliesList,
                                                   );
                                                 },
-                                                icon: Icon(Icons.delete),
+                                                icon: const Icon(Icons.delete),
                                               ),
                                             ],
                                           ),
