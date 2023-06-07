@@ -10,7 +10,7 @@ import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:wholecake/views/ordenes_trabajo/crearorden.dart';
-import 'package:wholecake/views/ordenes_trabajo/editarorden.dart';
+import 'package:wholecake/views/ordenes_trabajo/ordenes_trabajo.dart';
 import 'dart:typed_data';
 import 'package:intl/intl.dart';
 
@@ -139,7 +139,7 @@ class _OrdenesViewState extends State<OrdenesView> {
         child: Scaffold(
             appBar: AppBar(
               title: Text(
-                'Ordenes de Trabajo',
+                'Listado de proveedores',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               toolbarHeight: MediaQuery.of(context).size.height * 0.1,
@@ -279,12 +279,13 @@ class _OrdenesViewState extends State<OrdenesView> {
                                                           listado.listaTrabajos[
                                                                   index]
                                                               .copy();
-                                                      // Navigator.push(
-                                                      //   context,
-                                                      //   MaterialPageRoute(
-                                                      //       builder: (context) =>
-                                                      //           OrdenEdit()),
-                                                      // );
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    OrdenAdd()),
+                                                      );
                                                     },
                                                     icon: Icon(Icons.edit),
                                                   ),
