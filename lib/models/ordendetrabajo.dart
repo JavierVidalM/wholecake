@@ -33,8 +33,8 @@ class ListTrabajo {
   String estadoProducto;
   int cantidadProducto;
   String lote;
-  DateTime? fechaElaboracion;
-  DateTime? fechaVencimiento;
+  String? fechaElaboracion;
+  String? fechaVencimiento;
   int categoria;
   String imagen;
   List<OrdenesTrabajo> ordenesTrabajo;
@@ -65,12 +65,8 @@ class ListTrabajo {
         estadoProducto: json["estado_producto"],
         cantidadProducto: json["cantidad_producto"],
         lote: json["lote"],
-        fechaElaboracion: json["fecha_elaboracion"] == null
-            ? null
-            : DateTime.parse(json["fecha_elaboracion"]),
-        fechaVencimiento: json["fecha_vencimiento"] == null
-            ? null
-            : DateTime.parse(json["fecha_vencimiento"]),
+      fechaElaboracion: json["fecha_elaboracion"] == null ? null : json["fecha_elaboracion"],
+      fechaVencimiento: json["fecha_vencimiento"] == null ? null : json["fecha_vencimiento"],
         categoria: json["categoria"],
         imagen: json["imagen"],
         ordenesTrabajo: List<OrdenesTrabajo>.from(
@@ -84,10 +80,8 @@ class ListTrabajo {
         "estado_producto": estadoProducto,
         "cantidad_producto": cantidadProducto,
         "lote": lote,
-        "fecha_elaboracion":
-            "${fechaElaboracion!.year.toString().padLeft(4, '0')}-${fechaElaboracion!.month.toString().padLeft(2, '0')}-${fechaElaboracion!.day.toString().padLeft(2, '0')}",
-        "fecha_vencimiento":
-            "${fechaVencimiento!.year.toString().padLeft(4, '0')}-${fechaVencimiento!.month.toString().padLeft(2, '0')}-${fechaVencimiento!.day.toString().padLeft(2, '0')}",
+        "fecha_elaboracion": fechaElaboracion,
+        "fecha_vencimiento": fechaVencimiento,
         "categoria": categoria,
         "imagen": imagen,
         "ordenes_trabajo":

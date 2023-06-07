@@ -139,7 +139,7 @@ class _OrdenesViewState extends State<OrdenesView> {
         child: Scaffold(
             appBar: AppBar(
               title: Text(
-                'Listado de proveedores',
+                'Ordenes de Trabajo',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               toolbarHeight: MediaQuery.of(context).size.height * 0.1,
@@ -197,12 +197,12 @@ class _OrdenesViewState extends State<OrdenesView> {
                           ),
                           IconButton(
                             onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) =>
-                              //           const CrearOrdenAddPage()),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CrearOrdenAddPage()),
+                              );
                             },
                             icon: const Icon(Icons.add),
                           ),
