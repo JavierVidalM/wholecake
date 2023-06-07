@@ -44,12 +44,12 @@ class AppRoutes {
     '/PurchaseOrders': (BuildContext context) => const PurchaseOrders(),
     '/PurchaseList': (BuildContext context) => const PurchaseList(),
     '/OrdenAdd': (BuildContext context) => const OrdenAdd(),
-    '/CrearOrdenAdd': (BuildContext context) => const CrearOrdenAddPage(),
+    // '/CrearOrdenAdd': (BuildContext context) => const CrearOrdenAddPage(),
     '/OrdenView': (BuildContext context) => const OrdenesView(),
 
     //Pantallas de ventas
     '/SellsView': (BuildContext context) => SellsView(),
-    '/SellsDetail': (BuildContext context) => SellsDetail(),
+    // '/SellsDetail': (BuildContext context) => SellsDetail(),
 
     //Pantalla de users
     '/UsersList': (BuildContext context) => const UsersViewList(),
