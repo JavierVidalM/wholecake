@@ -16,6 +16,7 @@ import 'package:wholecake/views/proveedores/suppliers.dart';
 import 'package:wholecake/views/users/user_profile_view.dart';
 import 'package:wholecake/views/ventas/sells.dart';
 import '../../services/users_services.dart';
+import '../users/users_list.dart';
 
 class SideBar extends StatefulWidget {
   const SideBar({super.key});
@@ -25,14 +26,6 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
-  // final name = 'ola';
-  // String getUserinfo(BuildContext context) {
-  //   final userService = Provider.of<UserService>(context, listen: true);
-  //   final name = userService.name;
-  //   final cargo = userService.cargo;
-  //   return name;
-  // }
-
   String getProductCount(BuildContext context) {
     final productService = Provider.of<ProductService>(context, listen: false);
     final productCount = productService.listadoproductos.length;
@@ -204,7 +197,7 @@ class _SideBarState extends State<SideBar> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const HomePage()))),
+                                      builder: (context) => const UsersViewList()))),
                       ListTile(
                           leading: const Icon(Icons.inventory_rounded),
                           title: const Text("Órdenes de compra"),
