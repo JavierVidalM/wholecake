@@ -37,13 +37,19 @@ class _OrdenAddState extends State<OrdenAdd> {
   Map<int, SuppliesList> insumosOrden = {};
   List<TextEditingController> cantidadControllers = [];
 
-  Future<void> _guardarOrden(List<Map<String, dynamic>> listadoInsumo) async {
+  Future<void> _guardarOrden(selectedOrdenTrabajo, listadoInsumo) async {
     Map<String, dynamic> jsonData = {
-      'producto_id'
-      'insumo': listadoInsumo,
+      'producto_id': selectedOrdenTrabajo.id,
+      "fecha_elaboracion": selectedOrdenTrabajo.fechaElaboracion,
+      "fecha_vencimiento": selectedOrdenTrabajo.fechaVencimiento,
+      "estado": selectedOrdenTrabajo.estadoProducto,
+      "categoria": selectedOrdenTrabajo.categoria,
+      "trabajador": 1,
+      "insumos": listadoInsumo
     };
 
     final msg = jsonEncode(jsonData);
+    print(msg);
     await OrdenTrabajoService().updateTrabajo(msg);
     Navigator.push(
       context,
@@ -153,32 +159,31 @@ class _OrdenAddState extends State<OrdenAdd> {
     });
   }
 
-  void detalleOrdenTrabajo(
-      BuildContext context, Map<int, SuppliesList> insumo) async {
+  void detalleOrdenTrabajo(BuildContext context, Map<int, SuppliesList> insumo,
+      ListTrabajo? selectedOrdenTrabajo) async {
     List<SuppliesList> insumosOrden = insumo.values.toList();
-    final ordentrabajoService =
-        Provider.of<OrdenTrabajoService>(context, listen: false);
-    final orden = ordentrabajoService.listaTrabajos.firstWhere(
-      (orden) => orden.id == widget,
-      orElse: () => ListTrabajo(
-          id: 0,
-          nombreProducto: '',
-          precioProducto: 0,
-          fechaElaboracion: '',
-          fechaVencimiento: '',
-          categoria: 0,
-          estadoProducto: '',
-          cantidadProducto: 0,
-          lote: '',
-          imagen: '',
-          ordenesTrabajo: []),
-    );
+    // final ordentrabajoService =
+    //     Provider.of<OrdenTrabajoService>(context, listen: false);
+    // final orden = ordentrabajoService.listaTrabajos.firstWhere(
+    //   (orden) => orden.id == widget,
+    //   orElse: () => ListTrabajo(
+    //       id: 0,
+    //       nombreProducto: '',
+    //       precioProducto: 0,
+    //       fechaElaboracion: '',
+    //       fechaVencimiento: '',
+    //       categoria: 0,
+    //       estadoProducto: '',
+    //       cantidadProducto: 0,
+    //       lote: '',
+    //       imagen: '',
+    //       ordenesTrabajo: []),
+    // );
+    // print(selectedOrdenTrabajo!.toJson());
     await showDialog<void>(
-    
       context: context,
       builder: (BuildContext context) {
-            final selectedOrdenTrabajo = _ordenTrabajoService.selectedordenTrabajo;
-        print(selectedOrdenTrabajo?.id);
+        // print(selectedOrdenTrabajo?.id);
         return AlertDialog(
           scrollable: true,
           contentPadding: const EdgeInsets.only(right: 0, left: 0),
@@ -255,19 +260,20 @@ class _OrdenAddState extends State<OrdenAdd> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Estado'),
+                    const Text('Estado'),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: DropdownButtonFormField<String>(
-                        value: 'En elaboración',
+                        value: 'Elaboracion',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Seleccione un estado";
                           }
                         },
-                        onChanged: (value) => orden.estadoProducto = value!,
+                        onChanged: (value) =>
+                            selectedOrdenTrabajo.estadoProducto = value!,
                         items: <String>[
-                          'En elaboración',
+                          'Elaboracion',
                           'Listo',
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
@@ -283,7 +289,7 @@ class _OrdenAddState extends State<OrdenAdd> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('Categoría'),
+                    const Text('Categoría'),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: Consumer<ProductService>(
@@ -298,7 +304,8 @@ class _OrdenAddState extends State<OrdenAdd> {
                               setState(() {
                                 _categoriaController.text =
                                     nuevaCategoria!.categoriaId.toString();
-                                orden.categoria = nuevaCategoria.categoriaId;
+                                selectedOrdenTrabajo.categoria =
+                                    nuevaCategoria.categoriaId;
                               });
                             },
                             items: listacat.listadocategorias.map((categoria) {
@@ -315,39 +322,52 @@ class _OrdenAddState extends State<OrdenAdd> {
                 )
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.02,
-              ),
-              child: Theme(
-                data: SweetCakeTheme.calendarTheme,
-                child: DateTimePicker(
-                  type: DateTimePickerType.date,
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime(2100),
-                  initialValue: selectedOrdenTrabajo.fechaElaboracion,
-                  dateLabelText: 'Fecha de elaboración',
-                  onChanged: (value) => orden.fechaElaboracion = value,
-                  //validator: validateExpirationDate,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    const Text("Fecha de elaboración"),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: Theme(
+                        data: SweetCakeTheme.calendarTheme,
+                        child: DateTimePicker(
+                          type: DateTimePickerType.date,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100),
+                          initialValue: selectedOrdenTrabajo.fechaElaboracion,
+                          dateLabelText: 'Fecha de elaboración',
+                          onChanged: (value) =>
+                              selectedOrdenTrabajo.fechaElaboracion = value,
+                          //validator: validateExpirationDate,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.02,
-              ),
-              child: Theme(
-                data: SweetCakeTheme.calendarTheme,
-                child: DateTimePicker(
-                  type: DateTimePickerType.date,
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime(2100),
-                  initialValue: selectedOrdenTrabajo.fechaVencimiento,
-                  dateLabelText: 'Fecha de vencimiento',
-                  onChanged: (value) => orden.fechaVencimiento = value,
-                  //validator: validateExpirationDate,
-                ),
-              ),
+                Column(
+                  children: [
+                    const Text("Fecha de Vencimiento"),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: Theme(
+                        data: SweetCakeTheme.calendarTheme,
+                        child: DateTimePicker(
+                          type: DateTimePickerType.date,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100),
+                          initialValue: selectedOrdenTrabajo.fechaVencimiento,
+                          dateLabelText: 'Fecha de vencimiento',
+                          onChanged: (value) =>
+                              selectedOrdenTrabajo.fechaVencimiento = value,
+                          //validator: validateExpirationDate,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
             TextButton(
               onPressed: () {
@@ -356,14 +376,14 @@ class _OrdenAddState extends State<OrdenAdd> {
                   var insumo = insumosOrden[i];
                   var controller = cantidadControllers[i];
                   listaInsumos.add({
-                    'id': insumo.suppliesId,
-                    'cantidad': int.parse(controller.text),
+                    'insumo_id': insumo.suppliesId,
+                    'cantidad_utilizada': int.parse(controller.text),
                   });
                 }
-                _guardarOrden(listaInsumos);
+                _guardarOrden(selectedOrdenTrabajo, listaInsumos);
                 Navigator.pop(context);
               },
-              child: const Text("Generar venta"),
+              child: const Text("Actualizar orden"),
             ),
           ],
         );
@@ -385,8 +405,7 @@ class _OrdenAddState extends State<OrdenAdd> {
 
   @override
   Widget build(BuildContext context) {
-
-
+    final selectedOrdenTrabajo = _ordenTrabajoService.selectedordenTrabajo;
     final insumoProvider = Provider.of<SuppliesService>(context);
     final ordentrabajoService = Provider.of<OrdenTrabajoService>(context);
     final orden = ordentrabajoService.listaTrabajos.firstWhere(
@@ -425,9 +444,7 @@ class _OrdenAddState extends State<OrdenAdd> {
                   sinProductos(context);
                 } else {
                   detalleOrdenTrabajo(
-                    context,
-                    insumosOrden,
-                  );
+                      context, insumosOrden, selectedOrdenTrabajo);
                 }
               },
               icon: Stack(

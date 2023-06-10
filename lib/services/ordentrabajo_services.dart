@@ -62,7 +62,7 @@ class OrdenTrabajoService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
-    print(response.body);
+    // print(response.body);
     //actualizamos el listado
     // final index = listadoproductos
     //     .indexWhere((element) => element.productoId == product.productoId);
