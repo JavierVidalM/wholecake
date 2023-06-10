@@ -92,6 +92,8 @@ class ListTrabajo {
         id: id,
         nombreProducto: nombreProducto,
         cantidadProducto: cantidadProducto,
+        fechaElaboracion: fechaElaboracion,
+        fechaVencimiento: fechaVencimiento,
         precioProducto: precioProducto,
         estadoProducto: estadoProducto,
         lote: lote,
