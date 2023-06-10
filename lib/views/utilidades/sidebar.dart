@@ -197,7 +197,8 @@ class _SideBarState extends State<SideBar> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const UsersViewList()))),
+                                      builder: (context) =>
+                                          const UsersViewList()))),
                       ListTile(
                           leading: const Icon(Icons.inventory_rounded),
                           title: const Text("Órdenes de compra"),
@@ -209,7 +210,7 @@ class _SideBarState extends State<SideBar> {
                                       builder: (context) =>
                                           const PurchaseList()))),
                       ListTile(
-                          leading: const Icon(Icons.inventory_rounded),
+                          leading: const Icon(Icons.coffee_maker_outlined),
                           title: const Text("Órdenes de trabajo"),
                           onTap: () =>
                               // Navigator.pushNamed(context, '/OrdenAdd'),

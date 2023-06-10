@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:wholecake/models/users.dart';
+import 'package:wholecake/views/home/home.dart';
 import 'package:wholecake/views/users/users.dart';
 import 'package:wholecake/services/users_services.dart';
 import 'package:wholecake/providers/user_form_provider.dart';
@@ -123,6 +124,15 @@ class _UsersViewListState extends State<UsersViewList> {
       create: (_) => UserService(),
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+            ),
+          ),
           title: Text(
             'Listado de usuarios',
             style: Theme.of(context).textTheme.titleLarge,
