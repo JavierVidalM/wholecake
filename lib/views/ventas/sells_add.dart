@@ -184,7 +184,7 @@ class _SellsAddState extends State<SellsAdd> {
                         height: 50,
                         width: 50,
                         child: TextFormField(
-                          keyboardType: TextInputType.numberWithOptions(),
+                          keyboardType: const TextInputType.numberWithOptions(),
                           controller: controller,
                         ),
                       ),

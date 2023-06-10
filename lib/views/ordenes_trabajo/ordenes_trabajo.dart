@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wholecake/models/ordendetrabajo.dart';
 import 'package:wholecake/models/supplies.dart';
+import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/services/ventas_services.dart';
 import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/insumos/insumos.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:intl/intl.dart';
 import 'package:wholecake/services/supplies_services.dart';
 import 'package:wholecake/services/ordentrabajo_services.dart';
+import 'package:wholecake/models/categoria.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
 class OrdenAdd extends StatefulWidget {
-  const OrdenAdd({Key? key}) : super(key: key);
-
   @override
   _OrdenAddState createState() => _OrdenAddState();
 }
@@ -24,26 +26,72 @@ Future<void> _refresh() async {
 }
 
 class _OrdenAddState extends State<OrdenAdd> {
+  late OrdenTrabajoService _ordenTrabajoService;
+  final TextEditingController _fechaElaboracionController =
+      TextEditingController();
+  final TextEditingController _fechaVencimientoController =
+      TextEditingController();
+  final TextEditingController _categoriaController = TextEditingController();
+  final TextEditingController _estadoController = TextEditingController();
   bool isSelected = false;
   Map<int, SuppliesList> insumosOrden = {};
   List<TextEditingController> cantidadControllers = [];
 
-  Future<void> _guardarOrden(List<Map<String, dynamic>> listadoInsumo) async {
+  Future<void> _guardarOrden(selectedOrdenTrabajo, listadoInsumo) async {
     Map<String, dynamic> jsonData = {
-      'insumo': listadoInsumo,
+      'producto_id': selectedOrdenTrabajo.id,
+      "fecha_elaboracion": selectedOrdenTrabajo.fechaElaboracion,
+      "fecha_vencimiento": selectedOrdenTrabajo.fechaVencimiento,
+      "estado": selectedOrdenTrabajo.estadoProducto,
+      "categoria": selectedOrdenTrabajo.categoria,
+      "trabajador": 1,
+      "insumos": listadoInsumo
     };
 
     final msg = jsonEncode(jsonData);
-    await VentasService().addVentas(msg);
+    print(msg);
+    await OrdenTrabajoService().updateTrabajo(msg);
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const OrdenAdd(),
+        builder: (context) => OrdenAdd(),
       ),
     );
     setState(() {
       insumosOrden = {};
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _ordenTrabajoService =
+        Provider.of<OrdenTrabajoService>(context, listen: false);
+    loadOrdenDetails();
+  }
+
+  void loadOrdenDetails() {
+    final ordentrabajoService =
+        Provider.of<OrdenTrabajoService>(context, listen: false);
+    final orden = ordentrabajoService.listaTrabajos.firstWhere(
+      (orden) => orden.id == widget,
+      orElse: () => ListTrabajo(
+          id: 0,
+          nombreProducto: '',
+          precioProducto: 0,
+          fechaElaboracion: '',
+          fechaVencimiento: '',
+          categoria: 0,
+          estadoProducto: '',
+          cantidadProducto: 0,
+          lote: '',
+          imagen: '',
+          ordenesTrabajo: []),
+    );
+    _fechaVencimientoController.text = orden.fechaVencimiento!;
+    _fechaElaboracionController.text = orden.fechaElaboracion!;
+    _categoriaController.text = orden.categoria.toString();
+    _estadoController.text = orden.estadoProducto;
   }
 
   @override
@@ -69,6 +117,13 @@ class _OrdenAddState extends State<OrdenAdd> {
         );
       },
     );
+  }
+
+  String? validateCategory(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, seleccione una categoría.';
+    }
+    return null;
   }
 
   void confirmarEliminarInsumo(BuildContext context, SuppliesList insumo) {
@@ -104,13 +159,31 @@ class _OrdenAddState extends State<OrdenAdd> {
     });
   }
 
-  void detalleOrdenTrabajo(
-      BuildContext context, Map<int, SuppliesList> insumo) async {
+  void detalleOrdenTrabajo(BuildContext context, Map<int, SuppliesList> insumo,
+      ListTrabajo? selectedOrdenTrabajo) async {
     List<SuppliesList> insumosOrden = insumo.values.toList();
-
+    // final ordentrabajoService =
+    //     Provider.of<OrdenTrabajoService>(context, listen: false);
+    // final orden = ordentrabajoService.listaTrabajos.firstWhere(
+    //   (orden) => orden.id == widget,
+    //   orElse: () => ListTrabajo(
+    //       id: 0,
+    //       nombreProducto: '',
+    //       precioProducto: 0,
+    //       fechaElaboracion: '',
+    //       fechaVencimiento: '',
+    //       categoria: 0,
+    //       estadoProducto: '',
+    //       cantidadProducto: 0,
+    //       lote: '',
+    //       imagen: '',
+    //       ordenesTrabajo: []),
+    // );
+    // print(selectedOrdenTrabajo!.toJson());
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
+        // print(selectedOrdenTrabajo?.id);
         return AlertDialog(
           scrollable: true,
           contentPadding: const EdgeInsets.only(right: 0, left: 0),
@@ -121,7 +194,7 @@ class _OrdenAddState extends State<OrdenAdd> {
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 1,
               ),
-              const Text('Orden de trabajo'),
+              Text(selectedOrdenTrabajo!.nombreProducto),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 10,
@@ -180,6 +253,122 @@ class _OrdenAddState extends State<OrdenAdd> {
             }).toList(),
           ),
           actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Estado'),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: DropdownButtonFormField<String>(
+                        value: 'Elaboracion',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Seleccione un estado";
+                          }
+                        },
+                        onChanged: (value) =>
+                            selectedOrdenTrabajo.estadoProducto = value!,
+                        items: <String>[
+                          'Elaboracion',
+                          'Listo',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text('Categoría'),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: Consumer<ProductService>(
+                        builder: (context, listacat, _) {
+                          ListElement? categoriaSeleccionada;
+                          return DropdownButtonFormField<ListElement>(
+                            validator: (ListElement? value) =>
+                                validateCategory(value?.nombre),
+                            hint: const Text('Selecciona una categoría'),
+                            value: categoriaSeleccionada,
+                            onChanged: (ListElement? nuevaCategoria) {
+                              setState(() {
+                                _categoriaController.text =
+                                    nuevaCategoria!.categoriaId.toString();
+                                selectedOrdenTrabajo.categoria =
+                                    nuevaCategoria.categoriaId;
+                              });
+                            },
+                            items: listacat.listadocategorias.map((categoria) {
+                              return DropdownMenuItem<ListElement>(
+                                value: categoria,
+                                child: Text(categoria.nombre),
+                              );
+                            }).toList(),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    const Text("Fecha de elaboración"),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: Theme(
+                        data: SweetCakeTheme.calendarTheme,
+                        child: DateTimePicker(
+                          type: DateTimePickerType.date,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100),
+                          initialValue: selectedOrdenTrabajo.fechaElaboracion,
+                          dateLabelText: 'Fecha de elaboración',
+                          onChanged: (value) =>
+                              selectedOrdenTrabajo.fechaElaboracion = value,
+                          //validator: validateExpirationDate,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    const Text("Fecha de Vencimiento"),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: Theme(
+                        data: SweetCakeTheme.calendarTheme,
+                        child: DateTimePicker(
+                          type: DateTimePickerType.date,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100),
+                          initialValue: selectedOrdenTrabajo.fechaVencimiento,
+                          dateLabelText: 'Fecha de vencimiento',
+                          onChanged: (value) =>
+                              selectedOrdenTrabajo.fechaVencimiento = value,
+                          //validator: validateExpirationDate,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
             TextButton(
               onPressed: () {
                 List<Map<String, dynamic>> listaInsumos = [];
@@ -187,15 +376,14 @@ class _OrdenAddState extends State<OrdenAdd> {
                   var insumo = insumosOrden[i];
                   var controller = cantidadControllers[i];
                   listaInsumos.add({
-                    'id': insumo.suppliesId,
-                    'cantidad': int.parse(controller.text),
+                    'insumo_id': insumo.suppliesId,
+                    'cantidad_utilizada': int.parse(controller.text),
                   });
                 }
-
-                _guardarOrden(listaInsumos);
+                _guardarOrden(selectedOrdenTrabajo, listaInsumos);
                 Navigator.pop(context);
               },
-              child: const Text("Generar venta"),
+              child: const Text("Actualizar orden"),
             ),
           ],
         );
@@ -217,7 +405,24 @@ class _OrdenAddState extends State<OrdenAdd> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedOrdenTrabajo = _ordenTrabajoService.selectedordenTrabajo;
     final insumoProvider = Provider.of<SuppliesService>(context);
+    final ordentrabajoService = Provider.of<OrdenTrabajoService>(context);
+    final orden = ordentrabajoService.listaTrabajos.firstWhere(
+      (orden) => orden.id == widget,
+      orElse: () => ListTrabajo(
+          id: 0,
+          nombreProducto: '',
+          precioProducto: 0,
+          fechaElaboracion: '',
+          fechaVencimiento: '',
+          categoria: 0,
+          estadoProducto: '',
+          cantidadProducto: 0,
+          lote: '',
+          imagen: '',
+          ordenesTrabajo: []),
+    );
     final listadoInsumos = insumoProvider.suppliesList;
 
     if (insumoProvider.isLoading) return const LoadingScreen();
@@ -238,7 +443,8 @@ class _OrdenAddState extends State<OrdenAdd> {
                 if (insumosOrden.isEmpty) {
                   sinProductos(context);
                 } else {
-                  detalleOrdenTrabajo(context, insumosOrden);
+                  detalleOrdenTrabajo(
+                      context, insumosOrden, selectedOrdenTrabajo);
                 }
               },
               icon: Stack(

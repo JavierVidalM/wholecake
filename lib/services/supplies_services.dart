@@ -46,7 +46,6 @@ class SuppliesService extends ChangeNotifier {
     final suppliesMap = Supplies.fromJson(response.body);
     suppliesList = suppliesMap.suppliesList;
     isLoading = false;
-    notifyListeners();
   }
 
   Future<void> listSuppliesprogreso() async {
@@ -62,10 +61,10 @@ class SuppliesService extends ChangeNotifier {
     final suppliesMap = Supplies.fromJson(response.body);
     suppliesList = suppliesMap.suppliesList;
     isLoading = false;
-    notifyListeners();
   }
 
   Future<String> updateSupplies(SuppliesList supplies) async {
+    notifyListeners();
     final url = Uri.http(
       BASEURL,
       'supplies/supplies_update_rest/',
@@ -77,6 +76,7 @@ class SuppliesService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
+    print(response.body);
     return '';
   }
 

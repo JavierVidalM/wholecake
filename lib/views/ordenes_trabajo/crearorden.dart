@@ -54,7 +54,6 @@ class _CrearOrdenAddPageState extends State<CrearOrdenAddPage> {
         'admin': 11,
       });
       await OrdenTrabajoService().addOrdenTrabajo(msg);
-      print('saved');
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => OrdenesView()),
