@@ -43,7 +43,7 @@ class AppRoutes {
     '/InputsRecipt': (BuildContext context) => const InputsReciptSupplies(),
     '/PurchaseOrders': (BuildContext context) => const PurchaseOrders(),
     '/PurchaseList': (BuildContext context) => const PurchaseList(),
-    '/OrdenAdd': (BuildContext context) => const OrdenAdd(),
+    '/OrdenAdd': (BuildContext context) => OrdenAdd(),
     // '/CrearOrdenAdd': (BuildContext context) => const CrearOrdenAddPage(),
     '/OrdenView': (BuildContext context) => const OrdenesView(),
 
