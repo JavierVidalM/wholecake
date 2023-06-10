@@ -32,7 +32,7 @@ class _SigninUserState extends State<SigninUser> {
   TextEditingController ntelefonoController = TextEditingController();
   TextEditingController nemergenciaController = TextEditingController();
   TextEditingController localController = TextEditingController();
-  File? imagen_user;
+  File? imagenUser;
 
   @override
   void dispose() {
@@ -140,8 +140,7 @@ class _SigninUserState extends State<SigninUser> {
         return;
       }
 
-      final bytes =
-          imagen_user != null ? await imagen_user!.readAsBytes() : null;
+      final bytes = imagenUser != null ? await imagenUser!.readAsBytes() : null;
       final base64 = bytes != null ? base64Encode(bytes) : "";
       final msg = jsonEncode({
         'first_name': userFirstNameController.text,
@@ -209,7 +208,7 @@ class _SigninUserState extends State<SigninUser> {
                                 );
                                 if (result != null) {
                                   setState(() {
-                                    imagen_user =
+                                    imagenUser =
                                         File(result.files.single.path!);
                                   });
                                 }
@@ -222,9 +221,9 @@ class _SigninUserState extends State<SigninUser> {
                                   color: Color(0xFF909090),
                                 ),
                                 child: ClipOval(
-                                  child: imagen_user != null
+                                  child: imagenUser != null
                                       ? Image.file(
-                                          imagen_user!,
+                                          imagenUser!,
                                           width: 80.0,
                                           height: 80.0,
                                           fit: BoxFit.cover,

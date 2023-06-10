@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:wholecake/models/users.dart';
+import 'package:wholecake/views/utilidades/sidebar.dart';
 
 //test@gmail.com
 class UserService extends ChangeNotifier {
@@ -16,7 +17,7 @@ class UserService extends ChangeNotifier {
   bool isEditCreate = true;
   String typeuser = '';
   String authtoken = '';
-  String _name = 'a';
+  String _name = '';
   String _email = '';
   String _cargo = '';
   String _img = '';
@@ -65,6 +66,10 @@ class UserService extends ChangeNotifier {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
 
+        if (responseData['email'] != email) {
+          return false; // El correo electrónico es incorrecto
+        }
+
         _name = responseData['username'];
         _email = responseData['email'];
         _cargo = responseData['tipo'];
@@ -104,8 +109,7 @@ class UserService extends ChangeNotifier {
 
       isLoading = false;
       notifyListeners();
-    } else {
-    }
+    } else {}
   }
 
   resetPassword(String email) async {
@@ -177,6 +181,7 @@ class UserService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
+
     // notifyListeners();
     isEditCreate = false;
   }
@@ -209,6 +214,7 @@ class UserService extends ChangeNotifier {
     });
     final decodeResp = response.body;
     // notifyListeners();
+
     isEditCreate = false;
   }
 }
