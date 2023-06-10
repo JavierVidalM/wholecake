@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wholecake/models/ordendetrabajo.dart';
 import 'package:wholecake/models/supplies.dart';
+import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/services/ventas_services.dart';
 import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/insumos/insumos.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:intl/intl.dart';
 import 'package:wholecake/services/supplies_services.dart';
 import 'package:wholecake/services/ordentrabajo_services.dart';
+import 'package:wholecake/models/categoria.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
 class OrdenAdd extends StatefulWidget {
-  const OrdenAdd({Key? key}) : super(key: key);
-
   @override
   _OrdenAddState createState() => _OrdenAddState();
 }
@@ -24,26 +26,66 @@ Future<void> _refresh() async {
 }
 
 class _OrdenAddState extends State<OrdenAdd> {
+  late OrdenTrabajoService _ordenTrabajoService;
+  final TextEditingController _fechaElaboracionController =
+      TextEditingController();
+  final TextEditingController _fechaVencimientoController =
+      TextEditingController();
+  final TextEditingController _categoriaController = TextEditingController();
+  final TextEditingController _estadoController = TextEditingController();
   bool isSelected = false;
   Map<int, SuppliesList> insumosOrden = {};
   List<TextEditingController> cantidadControllers = [];
 
   Future<void> _guardarOrden(List<Map<String, dynamic>> listadoInsumo) async {
     Map<String, dynamic> jsonData = {
+      'producto_id'
       'insumo': listadoInsumo,
     };
 
     final msg = jsonEncode(jsonData);
-    await VentasService().addVentas(msg);
+    await OrdenTrabajoService().updateTrabajo(msg);
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const OrdenAdd(),
+        builder: (context) => OrdenAdd(),
       ),
     );
     setState(() {
       insumosOrden = {};
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _ordenTrabajoService =
+        Provider.of<OrdenTrabajoService>(context, listen: false);
+    loadOrdenDetails();
+  }
+
+  void loadOrdenDetails() {
+    final ordentrabajoService =
+        Provider.of<OrdenTrabajoService>(context, listen: false);
+    final orden = ordentrabajoService.listaTrabajos.firstWhere(
+      (orden) => orden.id == widget,
+      orElse: () => ListTrabajo(
+          id: 0,
+          nombreProducto: '',
+          precioProducto: 0,
+          fechaElaboracion: '',
+          fechaVencimiento: '',
+          categoria: 0,
+          estadoProducto: '',
+          cantidadProducto: 0,
+          lote: '',
+          imagen: '',
+          ordenesTrabajo: []),
+    );
+    _fechaVencimientoController.text = orden.fechaVencimiento!;
+    _fechaElaboracionController.text = orden.fechaElaboracion!;
+    _categoriaController.text = orden.categoria.toString();
+    _estadoController.text = orden.estadoProducto;
   }
 
   @override
@@ -69,6 +111,13 @@ class _OrdenAddState extends State<OrdenAdd> {
         );
       },
     );
+  }
+
+  String? validateCategory(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, seleccione una categoría.';
+    }
+    return null;
   }
 
   void confirmarEliminarInsumo(BuildContext context, SuppliesList insumo) {
@@ -107,10 +156,29 @@ class _OrdenAddState extends State<OrdenAdd> {
   void detalleOrdenTrabajo(
       BuildContext context, Map<int, SuppliesList> insumo) async {
     List<SuppliesList> insumosOrden = insumo.values.toList();
-
+    final ordentrabajoService =
+        Provider.of<OrdenTrabajoService>(context, listen: false);
+    final orden = ordentrabajoService.listaTrabajos.firstWhere(
+      (orden) => orden.id == widget,
+      orElse: () => ListTrabajo(
+          id: 0,
+          nombreProducto: '',
+          precioProducto: 0,
+          fechaElaboracion: '',
+          fechaVencimiento: '',
+          categoria: 0,
+          estadoProducto: '',
+          cantidadProducto: 0,
+          lote: '',
+          imagen: '',
+          ordenesTrabajo: []),
+    );
     await showDialog<void>(
+    
       context: context,
       builder: (BuildContext context) {
+            final selectedOrdenTrabajo = _ordenTrabajoService.selectedordenTrabajo;
+        print(selectedOrdenTrabajo?.id);
         return AlertDialog(
           scrollable: true,
           contentPadding: const EdgeInsets.only(right: 0, left: 0),
@@ -121,7 +189,7 @@ class _OrdenAddState extends State<OrdenAdd> {
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 1,
               ),
-              const Text('Orden de trabajo'),
+              Text(selectedOrdenTrabajo!.nombreProducto),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 10,
@@ -180,6 +248,107 @@ class _OrdenAddState extends State<OrdenAdd> {
             }).toList(),
           ),
           actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Estado'),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: DropdownButtonFormField<String>(
+                        value: 'En elaboración',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Seleccione un estado";
+                          }
+                        },
+                        onChanged: (value) => orden.estadoProducto = value!,
+                        items: <String>[
+                          'En elaboración',
+                          'Listo',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('Categoría'),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: Consumer<ProductService>(
+                        builder: (context, listacat, _) {
+                          ListElement? categoriaSeleccionada;
+                          return DropdownButtonFormField<ListElement>(
+                            validator: (ListElement? value) =>
+                                validateCategory(value?.nombre),
+                            hint: const Text('Selecciona una categoría'),
+                            value: categoriaSeleccionada,
+                            onChanged: (ListElement? nuevaCategoria) {
+                              setState(() {
+                                _categoriaController.text =
+                                    nuevaCategoria!.categoriaId.toString();
+                                orden.categoria = nuevaCategoria.categoriaId;
+                              });
+                            },
+                            items: listacat.listadocategorias.map((categoria) {
+                              return DropdownMenuItem<ListElement>(
+                                value: categoria,
+                                child: Text(categoria.nombre),
+                              );
+                            }).toList(),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.02,
+              ),
+              child: Theme(
+                data: SweetCakeTheme.calendarTheme,
+                child: DateTimePicker(
+                  type: DateTimePickerType.date,
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime(2100),
+                  initialValue: selectedOrdenTrabajo.fechaElaboracion,
+                  dateLabelText: 'Fecha de elaboración',
+                  onChanged: (value) => orden.fechaElaboracion = value,
+                  //validator: validateExpirationDate,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.02,
+              ),
+              child: Theme(
+                data: SweetCakeTheme.calendarTheme,
+                child: DateTimePicker(
+                  type: DateTimePickerType.date,
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime(2100),
+                  initialValue: selectedOrdenTrabajo.fechaVencimiento,
+                  dateLabelText: 'Fecha de vencimiento',
+                  onChanged: (value) => orden.fechaVencimiento = value,
+                  //validator: validateExpirationDate,
+                ),
+              ),
+            ),
             TextButton(
               onPressed: () {
                 List<Map<String, dynamic>> listaInsumos = [];
@@ -191,7 +360,6 @@ class _OrdenAddState extends State<OrdenAdd> {
                     'cantidad': int.parse(controller.text),
                   });
                 }
-
                 _guardarOrden(listaInsumos);
                 Navigator.pop(context);
               },
@@ -217,7 +385,25 @@ class _OrdenAddState extends State<OrdenAdd> {
 
   @override
   Widget build(BuildContext context) {
+
+
     final insumoProvider = Provider.of<SuppliesService>(context);
+    final ordentrabajoService = Provider.of<OrdenTrabajoService>(context);
+    final orden = ordentrabajoService.listaTrabajos.firstWhere(
+      (orden) => orden.id == widget,
+      orElse: () => ListTrabajo(
+          id: 0,
+          nombreProducto: '',
+          precioProducto: 0,
+          fechaElaboracion: '',
+          fechaVencimiento: '',
+          categoria: 0,
+          estadoProducto: '',
+          cantidadProducto: 0,
+          lote: '',
+          imagen: '',
+          ordenesTrabajo: []),
+    );
     final listadoInsumos = insumoProvider.suppliesList;
 
     if (insumoProvider.isLoading) return const LoadingScreen();
@@ -238,7 +424,10 @@ class _OrdenAddState extends State<OrdenAdd> {
                 if (insumosOrden.isEmpty) {
                   sinProductos(context);
                 } else {
-                  detalleOrdenTrabajo(context, insumosOrden);
+                  detalleOrdenTrabajo(
+                    context,
+                    insumosOrden,
+                  );
                 }
               },
               icon: Stack(
