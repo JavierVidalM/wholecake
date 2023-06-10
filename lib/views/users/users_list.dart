@@ -6,11 +6,10 @@ import 'package:wholecake/views/users/users.dart';
 import 'package:wholecake/services/users_services.dart';
 import 'package:wholecake/providers/user_form_provider.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
-import '../utilidades/sidebar.dart';
+import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'dart:io';
 import 'package:wholecake/theme/theme.dart';
 import 'package:provider/provider.dart';
-import 'package:wholecake/views/users/users.dart';
 
 class UsersViewList extends StatefulWidget {
   const UsersViewList({Key? key}) : super(key: key);
@@ -120,7 +119,6 @@ class _UsersViewListState extends State<UsersViewList> {
     if (listadoView.isLoading) return const LoadingScreen();
     final List<Listado> prod = listadoView.listadousers;
     final listacat = Provider.of<UserService>(context);
-
     return ChangeNotifierProvider(
       create: (_) => UserService(),
       child: Scaffold(
@@ -131,7 +129,6 @@ class _UsersViewListState extends State<UsersViewList> {
           ),
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
         ),
-        drawer: const SideBar(),
         body: Consumer<UserService>(
           builder: (context, listado, child) {
             return Column(
@@ -248,14 +245,14 @@ class _UsersViewListState extends State<UsersViewList> {
                                                     ),
                                                   );
                                                 },
-                                                icon: Icon(Icons.edit),
+                                                icon: const Icon(Icons.edit),
                                               ),
                                               IconButton(
                                                 onPressed: () {
                                                   deletePopup(users.userId,
                                                       listado.listadousers);
                                                 },
-                                                icon: Icon(Icons.delete),
+                                                icon: const Icon(Icons.delete),
                                               ),
                                             ],
                                           ),

@@ -24,6 +24,8 @@ class UserService extends ChangeNotifier {
   String _direccion = '';
   String _local = '';
   String _ntelefono = '';
+  int userId = 0;
+
   String get name => _name;
   String get email => _email;
   String get cargo => _cargo;
@@ -77,6 +79,7 @@ class UserService extends ChangeNotifier {
         _direccion = responseData['direccion'];
         _local = responseData['local'];
         _ntelefono = responseData['ntelefono'];
+        userId = responseData['id'];
 
         notifyListeners();
         return true;
