@@ -41,55 +41,6 @@ class _ToExpireState extends State<ToExpire> {
     }).toList();
   }
 
-  Future<String?> filterPopup(ProductService listacat) => showDialog<String>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Filtro"),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.02,
-                    bottom: MediaQuery.of(context).size.height * 0.01,
-                  ),
-                  child: const Text("Categoría"),
-                ),
-                DropdownButtonFormField<ListElement>(
-                  hint: const Text('Selecciona una categoría'),
-                  value: catSelect,
-                  onChanged: (ListElement? nuevaCategoria) {
-                    setState(() {
-                      _selectedCategory = nuevaCategoria!.categoriaId;
-                      // print('la categoria es ${_selectedCategory}');
-                    });
-                  },
-                  items: listacat.listadocategorias.map((categoria) {
-                    return DropdownMenuItem<ListElement>(
-                      value: categoria,
-                      child: Text(categoria.nombre),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  "Filtrar",
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-
   @override
   Widget build(BuildContext context) {
     final listadoView = Provider.of<ProductService>(context);
@@ -109,55 +60,9 @@ class _ToExpireState extends State<ToExpire> {
         builder: (context, listado, child) {
           return Column(
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.03,
-                  vertical: MediaQuery.of(context).size.height * 0.01,
-                ),
-                child: Row(
-                  children: [
-                    // Botón de filtro
-                    IconButton(
-                      onPressed: () {
-                        filterPopup(listacat);
-                      },
-                      icon: const Icon(Icons.filter_alt_outlined),
-                    ),
-                    // Campo de entrada de texto y botón de búsqueda
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: ListTile(
-                                title: const Text('Buscar'),
-                                onTap: () {
-                                  showSearch(
-                                    context: context,
-                                    delegate: ProductSearch(
-                                        listadoView.listadoproductos),
-                                  );
-                                },
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                // Lógica para buscar
-                              },
-                              icon: const Icon(Icons.search),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              SizedBox(
+                height: 15,
               ),
-              Divider(height: MediaQuery.of(context).size.height * 0.005),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: _refresh,

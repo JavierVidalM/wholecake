@@ -179,7 +179,6 @@ class _OrdenEditState extends State<OrdenEdit> {
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        // print(selectedOrdenTrabajo?.id);
         return AlertDialog(
           scrollable: true,
           contentPadding: const EdgeInsets.only(right: 0, left: 0),
@@ -402,6 +401,7 @@ class _OrdenEditState extends State<OrdenEdit> {
   @override
   Widget build(BuildContext context) {
     final selectedOrdenTrabajo = _ordenTrabajoService.selectedordenTrabajo;
+    print("WAAAAAAAAAA ${selectedOrdenTrabajo?.id}");
     final insumoProvider = Provider.of<SuppliesService>(context);
 
     if (insumoProvider.isLoading) return const LoadingScreen();

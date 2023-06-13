@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wholecake/models/ordendetrabajo.dart';
-import 'package:wholecake/services/ordentrabajo_services.dart';
-import 'package:wholecake/views/ordenes_trabajo/ordenes_edit.dart';
+import 'package:wholecake/services/services.dart';
 import 'dart:convert';
 import 'dart:typed_data';
+import '../../models/supplies.dart';
+import 'insumos.dart';
 
-class OrdenTrabajoSearch extends SearchDelegate<ListTrabajo> {
-  late final List<ListTrabajo> ordenCompra;
+class InsumosSearch extends SearchDelegate<SuppliesList> {
+  late final List<SuppliesList> usr;
 
-  OrdenTrabajoSearch(this.ordenCompra);
+  InsumosSearch(this.usr);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -26,32 +26,36 @@ class OrdenTrabajoSearch extends SearchDelegate<ListTrabajo> {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      onPressed: () {
-        close(
-            context,
-            ListTrabajo(
-                id: 0,
-                nombreProducto: '',
-                precioProducto: 0,
-                estadoProducto: '',
-                cantidadProducto: 0,
-                lote: '',
-                categoria: 0,
-                imagen: '',
-                ordenesTrabajo: []));
-      },
-      icon: const Icon(Icons.arrow_back_ios_new_rounded),
-    );
+        onPressed: () {
+          close(
+              context,
+              SuppliesList(
+                  suppliesId: 0,
+                  nombreInsumo: '',
+                  fechaLlegada: '',
+                  fechaVencimiento: '',
+                  preciounidad: 0,
+                  proveedor: '',
+                  estado: '',
+                  tipoInsumo: '',
+                  numeroLote: '',
+                  marcaProducto: '',
+                  cantidad: 0,
+                  imagen_supplies: ''));
+        },
+        icon: const Icon(Icons.arrow_back_ios_new_rounded));
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    final listadoView = Provider.of<OrdenTrabajoService>(context);
-    final List<ListTrabajo> searchOrdenT = listadoView.listaTrabajos;
-    List<ListTrabajo> matchQuery = [];
-    for (var ordenT in searchOrdenT) {
-      if (ordenT.nombreProducto.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(ordenT);
+    final listadoView = Provider.of<SuppliesService>(context);
+    final List<SuppliesList> searchInsumos = listadoView.suppliesList;
+    List<SuppliesList> matchQuery = [];
+    for (var insumo in searchInsumos) {
+      if (insumo.nombreInsumo.toLowerCase().contains(
+            query.toLowerCase(),
+          )) {
+        matchQuery.add(insumo);
       }
     }
 
@@ -59,15 +63,19 @@ class OrdenTrabajoSearch extends SearchDelegate<ListTrabajo> {
       itemCount: matchQuery.length,
       itemBuilder: (context, index) {
         var result = matchQuery[index];
-        Uint8List bytes = Uint8List.fromList(base64.decode(result.imagen));
-        Image image = Image.memory(bytes, fit: BoxFit.cover);
+        Uint8List bytes = Uint8List.fromList(
+          base64.decode(result.imagen_supplies),
+        );
+        Image image = Image.memory(
+          bytes,
+          fit: BoxFit.cover,
+        );
         return Column(
           children: [
             ListTile(
               contentPadding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.015,
-                horizontal: MediaQuery.of(context).size.width * 0.02,
-              ),
+                  vertical: MediaQuery.of(context).size.height * 0.015,
+                  horizontal: MediaQuery.of(context).size.width * 0.02),
               leading: SizedBox(
                 height: 50,
                 width: 50,
@@ -77,15 +85,14 @@ class OrdenTrabajoSearch extends SearchDelegate<ListTrabajo> {
                 ),
               ),
               title: Text(
-                result.nombreProducto,
+                result.nombreInsumo,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               onTap: () {
-                listadoView.selectedordenTrabajo = matchQuery[index].copy();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrdenEdit(),
+                    builder: (context) => const InputsReciptSupplies(),
                   ),
                 );
               },
@@ -101,12 +108,14 @@ class OrdenTrabajoSearch extends SearchDelegate<ListTrabajo> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final listadoView = Provider.of<OrdenTrabajoService>(context);
-    final List<ListTrabajo> searchOrdenT = listadoView.listaTrabajos;
-    List<ListTrabajo> matchQuery = [];
-    for (var ordenT in searchOrdenT) {
-      if (ordenT.nombreProducto.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(ordenT);
+    final listadoView = Provider.of<SuppliesService>(context);
+    final List<SuppliesList> searchInsumos = listadoView.suppliesList;
+    List<SuppliesList> matchQuery = [];
+    for (var insumo in searchInsumos) {
+      if (insumo.nombreInsumo.toLowerCase().contains(
+            query.toLowerCase(),
+          )) {
+        matchQuery.add(insumo);
       }
     }
 
@@ -114,15 +123,19 @@ class OrdenTrabajoSearch extends SearchDelegate<ListTrabajo> {
       itemCount: matchQuery.length,
       itemBuilder: (context, index) {
         var result = matchQuery[index];
-        Uint8List bytes = Uint8List.fromList(base64.decode(result.imagen));
-        Image image = Image.memory(bytes, fit: BoxFit.cover);
+        Uint8List bytes = Uint8List.fromList(
+          base64.decode(result.imagen_supplies),
+        );
+        Image image = Image.memory(
+          bytes,
+          fit: BoxFit.cover,
+        );
         return Column(
           children: [
             ListTile(
               contentPadding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.015,
-                horizontal: MediaQuery.of(context).size.width * 0.02,
-              ),
+                  vertical: MediaQuery.of(context).size.height * 0.015,
+                  horizontal: MediaQuery.of(context).size.width * 0.02),
               leading: SizedBox(
                 height: 50,
                 width: 50,
@@ -132,15 +145,14 @@ class OrdenTrabajoSearch extends SearchDelegate<ListTrabajo> {
                 ),
               ),
               title: Text(
-                result.nombreProducto,
+                result.nombreInsumo,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               onTap: () {
-                listadoView.selectedordenTrabajo = matchQuery[index].copy();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrdenEdit(),
+                    builder: (context) => const InputsReciptSupplies(),
                   ),
                 );
               },
