@@ -73,7 +73,7 @@ class ProductSearch extends SearchDelegate<Listado> {
                   vertical: MediaQuery.of(context).size.height * 0.015,
                   horizontal: MediaQuery.of(context).size.width * 0.02),
               leading: ClipRRect(
-                borderRadius: BorderRadius.circular(0),
+                borderRadius: BorderRadius.circular(100),
                 child: image,
               ),
               title: Text(result.nombre),
@@ -125,7 +125,7 @@ class ProductSearch extends SearchDelegate<Listado> {
                   vertical: MediaQuery.of(context).size.height * 0.015,
                   horizontal: MediaQuery.of(context).size.width * 0.02),
               leading: ClipRRect(
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(100),
                 child: image,
               ),
               title: Text(result.nombre),

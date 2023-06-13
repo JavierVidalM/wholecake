@@ -12,14 +12,14 @@ import 'package:provider/provider.dart';
 
 import '../../services/productos_services.dart';
 
-class CrearOrdenAddPage extends StatefulWidget {
-  const CrearOrdenAddPage({Key? key}) : super(key: key);
+class OrdenAddPage extends StatefulWidget {
+  const OrdenAddPage({Key? key}) : super(key: key);
 
   @override
-  _CrearOrdenAddPageState createState() => _CrearOrdenAddPageState();
+  _OrdenAddPageState createState() => _OrdenAddPageState();
 }
 
-class _CrearOrdenAddPageState extends State<CrearOrdenAddPage> {
+class _OrdenAddPageState extends State<OrdenAddPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController nombreController = TextEditingController();

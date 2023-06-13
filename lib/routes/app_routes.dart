@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wholecake/views/login/login.dart';
 import 'package:wholecake/views/home/home.dart';
-import 'package:wholecake/views/ordenes_trabajo/ordenes_trabajo.dart';
+import 'package:wholecake/views/ordenes_trabajo/ordenes_edit.dart';
 import 'package:wholecake/views/ordenes_trabajo/orden_view.dart';
 import 'package:wholecake/views/productos/products.dart';
 import 'package:wholecake/views/proveedores/suppliers.dart';
@@ -11,7 +11,7 @@ import 'package:wholecake/views/users/users.dart';
 import 'package:wholecake/views/utilidades/utilidades.dart';
 import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
 import 'package:wholecake/views/insumos/insumos.dart';
-import 'package:wholecake/views/ordenes_trabajo/crearorden.dart';
+import 'package:wholecake/views/ordenes_trabajo/orden_add.dart';
 
 import '../views/login/login_user_form.dart';
 
@@ -43,7 +43,7 @@ class AppRoutes {
     '/InputsRecipt': (BuildContext context) => const InputsReciptSupplies(),
     '/PurchaseOrders': (BuildContext context) => const PurchaseOrders(),
     '/PurchaseList': (BuildContext context) => const PurchaseList(),
-    '/OrdenAdd': (BuildContext context) => OrdenAdd(),
+    '/OrdenEdit': (BuildContext context) => OrdenEdit(),
     // '/CrearOrdenAdd': (BuildContext context) => const CrearOrdenAddPage(),
     '/OrdenView': (BuildContext context) => const OrdenesView(),
 

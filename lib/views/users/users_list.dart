@@ -19,44 +19,115 @@ class UsersViewList extends StatefulWidget {
   _UsersViewListState createState() => _UsersViewListState();
 }
 
-Future<void> _refresh() {
-  return Future.delayed(Duration(seconds: 2));
+Future<void> _refresh() async {
+  await UserService().loadUsers();
 }
 
-Listado? selectedUser;
-
 class _UsersViewListState extends State<UsersViewList> {
-  Future<String?> filterPopop(UserService listacat) => showDialog<String>(
+  List selectedUser = [];
+  String? _cargoSeleccionado;
+  List<String> cargoOptions = ['Cajero', 'Pastelero', 'Admin', 'cajero'];
+
+  Future<String?> filterPopup() => showDialog<String>(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Filtro"),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+        builder: (context) => StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text("Filtro"),
+              content: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.02,
+                        bottom: MediaQuery.of(context).size.height * 0.01,
+                      ),
+                      child: const Text("Cargo"),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: DropdownButtonFormField<String>(
+                            hint: const Text('Selecciona una cargo'),
+                            value: _cargoSeleccionado,
+                            onChanged: (String? nuevoCargo) {
+                              setState(() {
+                                _cargoSeleccionado = nuevoCargo;
+                              });
+                            },
+                            items: ['Cajero', 'Pastelero', 'Admin']
+                                .map((categoria) {
+                              return DropdownMenuItem<String>(
+                                value: categoria,
+                                child: Text(categoria),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            _cargoSeleccionado = null;
+                            clearFilter();
+                            Navigator.of(context).pop();
+                          },
+                          icon: const Icon(Icons.filter_alt_off_outlined),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
                 Padding(
                   padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.02,
                     bottom: MediaQuery.of(context).size.height * 0.01,
+                    right: MediaQuery.of(context).size.width * 0.01,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text(
+                          "Cancelar",
+                          style: TextStyle(color: Colors.red, fontSize: 18),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            updateCargoUsers();
+                          });
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text(
+                          "Filtrar",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  "Filtrar",
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-          ],
+            );
+          },
         ),
       );
+
+  void updateCargoUsers() {
+    selectedUser.clear();
+    if (_cargoSeleccionado != null) {
+      selectedUser.add(_cargoSeleccionado!);
+    }
+    setState(() {});
+  }
+
+  void clearFilter() {
+    selectedUser.clear();
+    setState(() {});
+  }
 
   Future<void> deletePopup(int userId, List<Listado> list) async {
     await showDialog(
@@ -118,8 +189,6 @@ class _UsersViewListState extends State<UsersViewList> {
   Widget build(BuildContext context) {
     final listadoView = Provider.of<UserService>(context);
     if (listadoView.isLoading) return const LoadingScreen();
-    final List<Listado> prod = listadoView.listadousers;
-    final listacat = Provider.of<UserService>(context);
     return ChangeNotifierProvider(
       create: (_) => UserService(),
       child: Scaffold(
@@ -141,6 +210,9 @@ class _UsersViewListState extends State<UsersViewList> {
         ),
         body: Consumer<UserService>(
           builder: (context, listado, child) {
+            final filterUser = listado.listadousers.where((user) {
+              return selectedUser.isEmpty || selectedUser.contains(user.tipo);
+            }).toList();
             return Column(
               children: [
                 Container(
@@ -152,7 +224,7 @@ class _UsersViewListState extends State<UsersViewList> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          filterPopop(listacat);
+                          filterPopup();
                         },
                         icon: const Icon(Icons.filter_alt_outlined),
                       ),
@@ -164,8 +236,26 @@ class _UsersViewListState extends State<UsersViewList> {
                           ),
                           child: Row(
                             children: [
+                              Expanded(
+                                child: ListTile(
+                                  title: const Text('Buscar'),
+                                  onTap: () {
+                                    showSearch(
+                                      context: context,
+                                      delegate:
+                                          UserSearch(listadoView.listadousers),
+                                    );
+                                  },
+                                ),
+                              ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  showSearch(
+                                    context: context,
+                                    delegate:
+                                        UserSearch(listadoView.listadousers),
+                                  );
+                                },
                                 icon: const Icon(Icons.search),
                               ),
                             ],
@@ -191,12 +281,12 @@ class _UsersViewListState extends State<UsersViewList> {
                   child: RefreshIndicator(
                     onRefresh: _refresh,
                     child: ListView.builder(
-                      itemCount: listado.listadousers.length,
+                      itemCount: filterUser.length,
                       itemBuilder: (context, index) {
-                        final users = listado.listadousers[index];
+                        final users = filterUser[index];
                         Uint8List bytes =
                             Uint8List.fromList(base64Decode(users.imagen_user));
-                        Image image = Image.memory(bytes);
+                        Image image = Image.memory(bytes, fit: BoxFit.cover);
                         return Card(
                           child: Padding(
                             padding: const EdgeInsets.all(12),
@@ -251,7 +341,9 @@ class _UsersViewListState extends State<UsersViewList> {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          UsersEdit(),
+                                                          UsersEdit(
+                                                        userId: users.userId,
+                                                      ),
                                                     ),
                                                   );
                                                 },
@@ -268,16 +360,16 @@ class _UsersViewListState extends State<UsersViewList> {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 10),
+                                      const SizedBox(height: 10),
                                       Text(
                                           'Nombre ${users.userName.toString().padRight(10)}'),
-                                      SizedBox(height: 10),
+                                      const SizedBox(height: 10),
                                       Text(
                                           'Correo ${users.userEmail.toString().padRight(10)}'),
-                                      SizedBox(height: 10),
+                                      const SizedBox(height: 10),
                                       Text(
                                           'Cargo ${users.tipo.toString().padRight(10)}'),
-                                      SizedBox(height: 10),
+                                      const SizedBox(height: 10),
                                       Text(
                                           'Número telefono ${users.ntelefono.toString().padRight(10)}'),
                                     ],

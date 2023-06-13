@@ -1,15 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
-
-import 'package:wholecake/models/users.dart';
-import 'package:wholecake/providers/user_form_provider.dart';
 import 'package:wholecake/services/users_services.dart';
-import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:wholecake/views/users/users.dart';
 import '../utilidades/sidebar.dart';
@@ -134,11 +127,29 @@ class _UsersAddPageState extends State<UsersAddPage> {
         'imagen_user': base64,
       });
       await UserService().addUsers(msg);
-      print('saved');
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => UsersViewList()),
-      );
+      {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoadingScreen(),
+          ),
+        );
+
+        Future.delayed(
+          const Duration(
+            milliseconds: 2300,
+          ),
+          () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const UsersViewList(),
+              ),
+            );
+          },
+        );
+      }
+      ;
     }
   }
 
@@ -159,7 +170,7 @@ class _UsersAddPageState extends State<UsersAddPage> {
       ),
       drawer: const SideBar(),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Form(
           key: _formKey,
           child: Column(
@@ -321,13 +332,13 @@ class _UsersAddPageState extends State<UsersAddPage> {
                       children: [
                         ElevatedButton(
                           onPressed: _saveData,
-                          child: const Text('Guardar'),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(
                               (MediaQuery.of(context).size.width * 0.6),
                               (MediaQuery.of(context).size.height * 0.07),
                             ),
                           ),
+                          child: const Text('Guardar'),
                         ),
                         const SizedBox(height: 20),
                         ElevatedButton(
@@ -335,8 +346,22 @@ class _UsersAddPageState extends State<UsersAddPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const UsersViewList(),
+                                builder: (context) => const LoadingScreen(),
                               ),
+                            );
+
+                            Future.delayed(
+                              const Duration(
+                                milliseconds: 1300,
+                              ),
+                              () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const UsersViewList(),
+                                  ),
+                                );
+                              },
                             );
                           },
                           style: ElevatedButton.styleFrom(

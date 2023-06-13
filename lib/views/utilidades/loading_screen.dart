@@ -11,7 +11,6 @@ class LoadingScreen extends StatelessWidget {
         title: const Text(""),
         toolbarHeight: MediaQuery.of(context).size.height * 0.1,
       ),
-      drawer: const SideBar(),
       body: const Center(
         child: CircularProgressIndicator(),
       ),
