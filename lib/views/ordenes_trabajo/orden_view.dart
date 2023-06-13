@@ -9,6 +9,8 @@ import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'dart:typed_data';
 
+import '../../services/users_services.dart';
+
 class OrdenesView extends StatefulWidget {
   const OrdenesView({Key? key}) : super(key: key);
 
@@ -28,6 +30,10 @@ ListSup? supplierSeleccionada;
 //   }
 
 class _OrdenesViewState extends State<OrdenesView> {
+    String getUserId(BuildContext context) {
+    final user= Provider.of<UserService>(context, listen: false);
+    return user.cargo;
+  }
   Future<String?> filterPopup(OrdenTrabajoService listaorden) =>
       showDialog<String>(
         context: context,
@@ -234,6 +240,7 @@ class _OrdenesViewState extends State<OrdenesView> {
                                           ),
                                           Row(
                                             children: [
+                                              
                                               IconButton(
                                                 onPressed: () {
                                                   listadoView

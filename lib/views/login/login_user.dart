@@ -134,16 +134,16 @@ class LoginUserState extends State<LoginUser> {
                             }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
+                              SnackBar(
                                 content: Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.report_gmailerrorred_rounded,
                                       color: Colors.white,
                                       size: 40,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(
+                                      padding: const EdgeInsets.only(
                                         left: 10.0,
                                       ),
                                       child: Column(

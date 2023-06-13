@@ -46,40 +46,7 @@ class VentasService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
-    // notifyListeners();
+    notifyListeners();
     isEditCreate = false;
   }
-
-  // Future<String> updateSupplier(ListSup supplier) async {
-  //   final url = Uri.http(
-  //     BASEURL,
-  //     'suppliers/suppliers_suppliers_update_rest/',
-  //   );
-  //   String basicAuth =
-  //       'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-  //   final response = await http.post(url, body: supplier.toJson(), headers: {
-  //     'authorization': basicAuth,
-  //     'Content-Type': 'application/json; charset=UTF-8',
-  //   });
-  //   final decodeResp = response.body;
-  //   //actualizamos el listado
-  //   // final index = listadoproductos
-  //   //     .indexWhere((element) => element.productoId == product.productoId);
-  //   // listadoproductos[index] = product;
-  //   return '';
-  // }
-
-  // deleteSupplier(String msg) async {
-  //   final url = Uri.http(
-  //     BASEURL,
-  //     'suppliers/suppliers_suppliers_delete_rest/',
-  //   );
-  //   String basicAuth =
-  //       'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
-  //   final response = await http.post(url, body: msg, headers: {
-  //     'authorization': basicAuth,
-  //     'Content-Type': 'application/json; charset=UTF-8',
-  //   });
-  //   final decodeResp = response.body;
-  // }
 }

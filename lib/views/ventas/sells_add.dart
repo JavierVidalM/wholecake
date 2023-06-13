@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/productos.dart';
+import 'package:wholecake/services/services.dart';
 import 'package:wholecake/services/ventas_services.dart';
 import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
@@ -22,6 +23,10 @@ Future<void> _refresh() async {
 }
 
 class _SellsAddState extends State<SellsAdd> {
+  int getUserId(BuildContext context) {
+    final user= Provider.of<UserService>(context, listen: false);
+    return user.userId;
+  }
   bool isSelected = false;
   List selectedCategories = [];
   Map<int, Listado> productosCarrito = {};
@@ -29,6 +34,7 @@ class _SellsAddState extends State<SellsAdd> {
 
   Future<void> _guardarVenta(List<Map<String, dynamic>> listadoVenta) async {
     Map<String, dynamic> jsonData = {
+      'vendedor':getUserId(context),
       'productos': listadoVenta,
     };
 

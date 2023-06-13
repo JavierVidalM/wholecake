@@ -66,12 +66,12 @@ class _SellsViewState extends State<SellsView> {
                     },
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Icon(Icons.calendar_month_rounded),
-                          Text("   Filtrar por fecha"),
-                        ],
-                      ),
+                      // child: Row(
+                      //   children: [
+                      //     Icon(Icons.calendar_month_rounded),
+                      //     Text("   Filtrar por fecha"),
+                      //   ],
+                      // ),
                     ),
                   ),
                 ),
@@ -90,14 +90,14 @@ class _SellsViewState extends State<SellsView> {
                                 SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.3,
-                                  child: const Column(
+                                  child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
                                       Text('Vendedor asignado',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600)),
-                                      Text("Nico Robin")
+                                      Text(venta.vendedor)
                                     ],
                                   ),
                                 ),
