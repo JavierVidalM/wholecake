@@ -52,7 +52,7 @@ class SuppliersService extends ChangeNotifier {
     final decodeResp = response.body;
     final ListSup supplier = ListSup.fromJson(decodeResp);
     listadosuppliers.add(supplier);
-    // notifyListeners();
+    notifyListeners();
     isEditCreate = false;
   }
 

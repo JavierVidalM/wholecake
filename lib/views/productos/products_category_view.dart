@@ -46,7 +46,7 @@ class _CategoryViewState extends State<CategoryView> {
     // Navigator.of(context).pop();
   }
 
-  Future deletePopup() => showDialog(
+  Future deletePopup(id,listadocategorias) => showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text(
@@ -64,7 +64,17 @@ class _CategoryViewState extends State<CategoryView> {
               ),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                final msg = jsonEncode({
+                  'id': id,
+                });
+                await ProductService().deleteCategoria(msg);
+                setState(() {
+                  listadocategorias.removeWhere(
+                      (product) => product.categoriaId== id);
+                });
+              },
               child: const Text(
                 "Eliminar",
                 style: TextStyle(color: Colors.red, fontSize: 18),
@@ -250,7 +260,7 @@ class _CategoryViewState extends State<CategoryView> {
                                               ),
                                               IconButton(
                                                 onPressed: () async {
-                                                  deletePopup();
+                                                  deletePopup(category.categoriaId,list.listadocategorias);
                                                 },
                                                 icon: const Icon(Icons.delete),
                                               ),

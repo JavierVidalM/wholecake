@@ -80,7 +80,6 @@ class UserService extends ChangeNotifier {
         _local = responseData['local'];
         _ntelefono = responseData['ntelefono'];
         userId = responseData['id'];
-        print(userId);
 
         notifyListeners();
         return true;

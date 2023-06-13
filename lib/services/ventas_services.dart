@@ -49,4 +49,18 @@ class VentasService extends ChangeNotifier {
     notifyListeners();
     isEditCreate = false;
   }
+  deleteVentas(String msg) async {
+    final url = Uri.http(
+      BASEURL,
+      'ventas/ventas_ventas_delete_rest/',
+    );
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+    final response = await http.post(url, body: msg, headers: {
+      'authorization': basicAuth,
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    final decodeResp = response.body;
+    notifyListeners();
+  }
 }
