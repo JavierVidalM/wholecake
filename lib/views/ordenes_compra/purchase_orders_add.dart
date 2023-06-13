@@ -20,7 +20,6 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
   TextEditingController proveedorController = TextEditingController();
   TextEditingController costotalController = TextEditingController();
 
-  get categoriaSeleccionada => null;
 
   @override
   void dispose() {
@@ -51,8 +50,9 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
 
   @override
   Widget build(BuildContext context) {
-    final listaprov = Provider.of<SuppliersService>(context);
-    return Scaffold(
+    return ChangeNotifierProvider(
+        create: (_) => SuppliersService(),
+    child: Scaffold(
       appBar: AppBar(
         title: const Text(
           'Crear Orden de Compra',
@@ -85,23 +85,28 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
                 Padding(
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.02),
-                  child: DropdownButtonFormField<ListSup>(
+                  child:Consumer<SuppliersService>(
+                  builder:(context,listacat,__){
+                    ListSup? proveedorSeleccionado;
+                  return DropdownButtonFormField<ListSup>(
                     validator: (ListSup? value) =>
                         validateProveedor(value?.nombreProveedor),
                     hint: const Text('Selecciona un Proveedor'),
-                    value: categoriaSeleccionada,
+                    value: proveedorSeleccionado,
                     onChanged: (ListSup? nuevoSup) {
                       setState(() {
                         proveedorController.text =
                             nuevoSup!.supplierId.toString();
                       });
                     },
-                    items: listaprov.listadosuppliers.map((proveedor) {
+                    items: listacat.listadosuppliers.map((proveedor) {
                       return DropdownMenuItem<ListSup>(
                         value: proveedor,
                         child: Text(proveedor.nombreProveedor),
                       );
                     }).toList(),
+                  );
+                  },
                   ),
                 ),
                 Padding(
@@ -164,6 +169,7 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
           ],
         ),
       ),
+    )
     );
   }
 }
