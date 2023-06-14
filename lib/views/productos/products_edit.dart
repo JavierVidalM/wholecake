@@ -224,6 +224,14 @@ class _ProductsEditState extends State<ProductsEdit> {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () async {
+                final bytes = imageSelected != null
+                              ? await imageSelected!.readAsBytes()
+                              : null;
+                          final base64 =
+                              bytes != null ? base64Encode(bytes) : "";
+                          if(imageSelected!=null){
+                            product.imagen = base64;
+                          }
                 await productService.editOrCreateProduct(product);
                 // print(product.toJson());
                 Navigator.push(
