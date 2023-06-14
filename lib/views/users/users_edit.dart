@@ -423,6 +423,14 @@ class _UsersEditState extends State<UsersEdit> {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
+                                        final bytes = imageSelected != null
+                              ? await imageSelected!.readAsBytes()
+                              : null;
+                          final base64 =
+                              bytes != null ? base64Encode(bytes) : "";
+                          if(imageSelected!=null){
+                            user.imagen_user = base64;
+                          }
                         await usersService.updateUsers(user);
                         Navigator.push(
                           context,
