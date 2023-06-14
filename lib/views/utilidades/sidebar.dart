@@ -117,8 +117,8 @@ class _SideBarState extends State<SideBar> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                        width: 90,
-                                        height: 90,
+                                        width: 80,
+                                        height: 80,
                                         margin: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
                                           borderRadius:

@@ -94,7 +94,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.15),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.7,
                     width: MediaQuery.of(context).size.width * 0.95,
                     child: Card(
                       elevation: 5,
