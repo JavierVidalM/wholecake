@@ -6,6 +6,7 @@ import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/productos/products.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:intl/intl.dart';
 import '../../models/categoria.dart';
 
 import 'dart:typed_data';
@@ -39,6 +40,59 @@ class _ProductsEditState extends State<ProductsEdit> {
   String? validateCategory(String? value) {
     if (value == null || value.isEmpty) {
       return 'Por favor, seleccione una categoría.';
+    }
+    return null;
+  }
+
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el nombre del producto.';
+    }
+    final nameRegExp = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$');
+    if (!nameRegExp.hasMatch(value)) {
+      return 'El nombre no debe contener números ni símbolos.';
+    }
+    return null;
+  }
+
+  String? validatePrice(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el precio del producto.';
+    }
+    final priceRegExp = RegExp(r'^\d+(\.\d+)?$');
+    if (!priceRegExp.hasMatch(value)) {
+      return 'El precio debe ser un número válido.';
+    }
+    final price = double.parse(value);
+    if (price < 0) {
+      return 'El precio no puede ser negativo.';
+    }
+    return null;
+  }
+
+  String? validateQuantity(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese la cantidad del producto.';
+    }
+    final quantityRegExp = RegExp(r'^\d+$');
+    if (!quantityRegExp.hasMatch(value)) {
+      return 'La cantidad debe ser un número entero.';
+    }
+    final quantity = int.parse(value);
+    if (quantity < 0) {
+      return 'La cantidad no puede ser negativa.';
+    }
+    return null;
+  }
+
+  String? validateExpirationDate(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, seleccione una fecha de vencimiento.';
+    }
+    final selectedDate = DateFormat('yyyy-MM-dd').parse(value);
+    final currentDate = DateTime.now();
+    if (selectedDate.isBefore(currentDate)) {
+      return 'La fecha de vencimiento no puede ser anterior a la fecha actual.';
     }
     return null;
   }
@@ -119,11 +173,7 @@ class _ProductsEditState extends State<ProductsEdit> {
                 TextFormField(
                   initialValue: product.nombre,
                   onChanged: (value) => product.nombre = value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'El nombre es obligatorio';
-                    }
-                  },
+                  validator: validateName,
                   decoration: const InputDecoration(
                     hintText: 'Nombre del producto',
                   ),
@@ -175,6 +225,7 @@ class _ProductsEditState extends State<ProductsEdit> {
                     firstDate: DateTime(2000),
                     lastDate: DateTime(2100),
                     onChanged: (value) => product.fechaVencimiento = value,
+                    validator: validateExpirationDate,
                   ),
                 ),
               ],
@@ -194,6 +245,7 @@ class _ProductsEditState extends State<ProductsEdit> {
                       product.cantidad = int.parse(value);
                     }
                   },
+                  validator: validateQuantity,
                   decoration: const InputDecoration(
                     hintText: 'Cantidad',
                   ),
@@ -215,8 +267,9 @@ class _ProductsEditState extends State<ProductsEdit> {
                       product.precio = int.parse(value);
                     }
                   },
+                  validator: validatePrice,
                   decoration: const InputDecoration(
-                    hintText: 'Nombre del producto',
+                    hintText: 'Precio del producto',
                   ),
                 ),
               ],
@@ -225,13 +278,12 @@ class _ProductsEditState extends State<ProductsEdit> {
             ElevatedButton(
               onPressed: () async {
                 final bytes = imageSelected != null
-                              ? await imageSelected!.readAsBytes()
-                              : null;
-                          final base64 =
-                              bytes != null ? base64Encode(bytes) : "";
-                          if(imageSelected!=null){
-                            product.imagen = base64;
-                          }
+                    ? await imageSelected!.readAsBytes()
+                    : null;
+                final base64 = bytes != null ? base64Encode(bytes) : "";
+                if (imageSelected != null) {
+                  product.imagen = base64;
+                }
                 await productService.editOrCreateProduct(product);
                 // print(product.toJson());
                 Navigator.push(
