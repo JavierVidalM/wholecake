@@ -24,9 +24,11 @@ Future<void> _refresh() async {
 
 class _SellsAddState extends State<SellsAdd> {
   int getUserId(BuildContext context) {
-    final user= Provider.of<UserService>(context, listen: false);
+    final user = Provider.of<UserService>(context, listen: false);
     return user.userId;
   }
+  final TextEditingController _email = TextEditingController();
+  bool deseaBoleta = false;
   bool isSelected = false;
   List selectedCategories = [];
   Map<int, Listado> productosCarrito = {};
@@ -34,7 +36,8 @@ class _SellsAddState extends State<SellsAdd> {
 
   Future<void> _guardarVenta(List<Map<String, dynamic>> listadoVenta) async {
     Map<String, dynamic> jsonData = {
-      'vendedor':getUserId(context),
+      'email':_email.text,
+      'vendedor': getUserId(context),
       'productos': listadoVenta,
     };
 
@@ -115,116 +118,177 @@ class _SellsAddState extends State<SellsAdd> {
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          scrollable: true,
-          contentPadding: const EdgeInsets.only(right: 0, left: 0),
-          insetPadding: const EdgeInsets.all(0),
-          title: Column(
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 1,
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              scrollable: true,
+              titlePadding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.02,
+                bottom: MediaQuery.of(context).size.height * 0.03,
               ),
-              const Text('Carrito de compras'),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 10,
+              contentPadding: const EdgeInsets.only(right: 0, left: 0),
+              insetPadding: const EdgeInsets.all(0),
+              title: Column(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 1,
+                  ),
+                  const Text('Carrito de compras'),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 10,
+                  ),
+                ],
               ),
-            ],
-          ),
-          content: Column(
-            children: productosCarrito.map((item) {
-              int quantityInCart = productosCarrito
-                  .where((product) => product.productoId == item.productoId)
-                  .length;
-              Uint8List bytes = Uint8List.fromList(base64.decode(item.imagen));
-              Image imagenProducto = Image.memory(bytes);
-              int index = productosCarrito.indexOf(item);
-              TextEditingController controller = cantidadControllers[index];
-
-              return ListTile(
-                leading: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(200),
-                    shape: BoxShape.rectangle,
-                    image: DecorationImage(
-                      image: imagenProducto.image,
-                      fit: BoxFit.cover,
+              content: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.06,
+                      right: MediaQuery.of(context).size.width * 0.06,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).size.height * 0.007,
+                          ),
+                          child: const Text(
+                              '¿Desea recibir la boleta en su correo?'),
+                        ),
+                        Row(
+                          children: [
+                            Switch(
+                              value: deseaBoleta,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  deseaBoleta = value;
+                                });
+                              },
+                              activeColor: SweetCakeTheme.pink2,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child: TextFormField(
+                                enabled: deseaBoleta,
+                                controller: _email,
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: const InputDecoration(
+                                  hintText: 'cliente@correo.cl',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                title: Text(item.nombre),
-                subtitle: Text(
-                  NumberFormat.currency(
-                    locale: 'es',
-                    symbol: '\$',
-                    decimalDigits: 0,
-                    customPattern: '\$ #,##0',
-                  ).format(
-                    double.parse(
-                      item.precio.toString(),
-                    ),
+                  const Divider(
+                    height: 20,
+                    thickness: 1,
                   ),
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      NumberFormat.currency(
-                        locale: 'es',
-                        symbol: '\$',
-                        decimalDigits: 0,
-                        customPattern: '\$ #,##0',
-                      ).format(
-                        double.parse(
-                          (quantityInCart * item.precio).toString(),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      // child: Text(quantityInCart.toString()),
-                      child: Container(
-                        height: 50,
-                        width: 50,
-                        child: TextFormField(
-                          keyboardType: const TextInputType.numberWithOptions(),
-                          controller: controller,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        confirmarEliminarProducto(context, item);
-                      },
-                      icon: const Icon(Icons.delete),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                List<Map<String, dynamic>> listaProductos = [];
-                for (var i = 0; i < productosCarrito.length; i++) {
-                  var product = productosCarrito[i];
-                  var controller = cantidadControllers[i];
-                  listaProductos.add({
-                    'id': product.productoId,
-                    'cantidad': int.parse(controller.text),
-                  });
-                }
+                  Column(
+                    children: productosCarrito.map((item) {
+                      int quantityInCart = productosCarrito
+                          .where((product) =>
+                              product.productoId == item.productoId)
+                          .length;
+                      Uint8List bytes =
+                          Uint8List.fromList(base64.decode(item.imagen));
+                      Image imagenProducto = Image.memory(bytes);
+                      int index = productosCarrito.indexOf(item);
+                      TextEditingController controller =
+                          cantidadControllers[index];
 
-                _guardarVenta(listaProductos);
-                Navigator.pop(context);
-              },
-              child: const Text("Generar venta"),
-            ),
-          ],
+                      return ListTile(
+                        leading: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(200),
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                              image: imagenProducto.image,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        title: Text(item.nombre),
+                        subtitle: Text(
+                          NumberFormat.currency(
+                            locale: 'es',
+                            symbol: '\$',
+                            decimalDigits: 0,
+                            customPattern: '\$ #,##0',
+                          ).format(
+                            double.parse(
+                              item.precio.toString(),
+                            ),
+                          ),
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              NumberFormat.currency(
+                                locale: 'es',
+                                symbol: '\$',
+                                decimalDigits: 0,
+                                customPattern: '\$ #,##0',
+                              ).format(
+                                double.parse(
+                                  (quantityInCart * item.precio).toString(),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                child: TextFormField(
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(),
+                                  controller: controller,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                confirmarEliminarProducto(context, item);
+                              },
+                              icon: const Icon(Icons.delete),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    List<Map<String, dynamic>> listaProductos = [];
+                    for (var i = 0; i < productosCarrito.length; i++) {
+                      var product = productosCarrito[i];
+                      var controller = cantidadControllers[i];
+                      listaProductos.add({
+                        'id': product.productoId,
+                        'cantidad': int.parse(controller.text),
+                      });
+                    }
+
+                    _guardarVenta(listaProductos);
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Generar venta"),
+                ),
+              ],
+            );
+          },
         );
       },
     );
