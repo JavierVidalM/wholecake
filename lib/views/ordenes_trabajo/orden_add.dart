@@ -21,10 +21,11 @@ class OrdenAddPage extends StatefulWidget {
 }
 
 class _OrdenAddPageState extends State<OrdenAddPage> {
-    int getUserId() {
-    final user= Provider.of<UserService>(context, listen: false);
+  int getUserId() {
+    final user = Provider.of<UserService>(context, listen: false);
     return user.userId;
   }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController nombreController = TextEditingController();
@@ -69,6 +70,64 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
   String? validateCategory(String? value) {
     if (value == null || value.isEmpty) {
       return 'Por favor, seleccione una categoría.';
+    }
+    return null;
+  }
+
+  String? validateNombre(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el nombre del producto.';
+    }
+    final nameRegExp = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$');
+    if (!nameRegExp.hasMatch(value)) {
+      return 'El nombre no debe contener números ni símbolos.';
+    }
+    return null;
+  }
+
+  String? validatePrecio(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el precio del producto.';
+    }
+    final priceRegExp = RegExp(r'^\d+(\.\d+)?$');
+    if (!priceRegExp.hasMatch(value)) {
+      return 'El precio debe ser un número válido.';
+    }
+    final price = double.parse(value);
+    if (price < 0) {
+      return 'El precio no puede ser negativo.';
+    }
+    return null;
+  }
+
+  String? validateEstado(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el estado del producto.';
+    }
+
+    final pattern = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$');
+    if (!pattern.hasMatch(value)) {
+      return 'El estado no debe contener números ni símbolos.';
+    }
+
+    if (value.toLowerCase() != 'elaboracion') {
+      return 'El estado debe ser "Elaboracion".';
+    }
+
+    return null;
+  }
+
+  String? validateQuantity(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese la cantidad del producto.';
+    }
+    final quantityRegExp = RegExp(r'^\d+$');
+    if (!quantityRegExp.hasMatch(value)) {
+      return 'La cantidad debe ser un número entero.';
+    }
+    final quantity = int.parse(value);
+    if (quantity < 0) {
+      return 'La cantidad no puede ser negativa.';
     }
     return null;
   }
@@ -137,6 +196,7 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
                         top: MediaQuery.of(context).size.height * 0.02),
                     child: TextFormField(
                       controller: nombreController,
+                      validator: validateNombre,
                       decoration: const InputDecoration(hintText: 'Nombre'),
                     ),
                   ),
@@ -144,7 +204,7 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
                     padding: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height * 0.02),
                     child: TextFormField(
-                      //validator: validateRut,
+                      validator: validatePrecio,
                       controller: precioController,
                       decoration: const InputDecoration(hintText: 'Precio'),
                     ),
@@ -180,8 +240,8 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
                     padding: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height * 0.02),
                     child: TextFormField(
-                      //validator: validateEmail,
                       controller: estadoProductoController,
+                      validator: validateEstado,
                       decoration: const InputDecoration(hintText: 'Estado'),
                     ),
                   ),
@@ -189,6 +249,7 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
                     padding: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height * 0.02),
                     child: TextFormField(
+                      validator: validateQuantity,
                       controller: cantidadController,
                       decoration: const InputDecoration(hintText: 'Cantidad'),
                     ),
