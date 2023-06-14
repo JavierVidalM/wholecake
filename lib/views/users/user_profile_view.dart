@@ -19,11 +19,11 @@ Future<void> logoutPopup(BuildContext context, user) async {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(
+          title: const Text(
             "Estás a punto de cerrar sesión",
             style: TextStyle(color: SweetCakeTheme.pink3),
           ),
-          content: Text("¿Estás seguro de que quieres cerrar la sesión?"),
+          content: const Text("¿Estás seguro de que quieres cerrar la sesión?"),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 10.0, bottom: 5.0),
@@ -41,8 +41,6 @@ Future<void> logoutPopup(BuildContext context, user) async {
                   ),
                   TextButton(
                     onPressed: () {
-                      // user.logout();
-                      // Navigator.pushNamed(context, '/LoginUser');
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -138,7 +136,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 25.0),
+                            padding: const EdgeInsets.only(top: 25.0),
                             child: Text(
                               "Email : ${user.email}",
                               style: const TextStyle(
@@ -185,69 +183,32 @@ class _UserProfileViewState extends State<UserProfileView> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.8,
-                    left: MediaQuery.of(context).size.width * 0.05),
+                  top: MediaQuery.of(context).size.height * 0.9,
+                ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
                           bottom: MediaQuery.of(context).size.height * 0.05),
                       child: GestureDetector(
                         onTap: () {
-                          print("No sé alguna wea hará esto");
+                          logoutPopup(context, user);
                         },
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05),
-                              child: const Icon(
-                                Icons.edit,
-                              ),
+                            const Icon(
+                              Icons.logout,
                             ),
                             Padding(
                               padding: EdgeInsets.only(
                                   left:
-                                      MediaQuery.of(context).size.width * 0.05),
+                                      MediaQuery.of(context).size.width * 0.03),
                               child: const Text(
-                                "Editar perfil",
+                                "Cerrar sesión",
                                 style: TextStyle(fontSize: 20),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).size.height * 0.05),
-                      child: GestureDetector(
-                        onTap: () {
-                          print("No sé alguna wea hará esto");
-                        },
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05),
-                              child: const Icon(
-                                Icons.logout,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05),
-                              child: GestureDetector(
-                                onTap: () {
-                                  logoutPopup(context, user);
-                                },
-                                child: Text(
-                                  "Cerrar sesión",
-                                  style: TextStyle(fontSize: 20),
-                                ),
                               ),
                             )
                           ],

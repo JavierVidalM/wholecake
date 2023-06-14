@@ -134,6 +134,7 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
 
   @override
   Widget build(BuildContext context) {
+    estadoProductoController.text = 'En elaboracion';
     return Scaffold(
       appBar: AppBar(
         title: const Text(
