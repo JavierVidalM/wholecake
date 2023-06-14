@@ -76,7 +76,7 @@ class SuppliesService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
-    print(response.body);
+    
     return '';
   }
 

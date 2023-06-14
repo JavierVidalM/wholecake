@@ -90,21 +90,6 @@ class _ProductFormState extends State<_ProductForm> {
     return null;
   }
 
-  String? validateFechallegada(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Por favor, ingrese los datos correspondientes.';
-    }
-
-    final currentDate = DateTime.now();
-    final selectedDate = DateTime.parse(value);
-
-    if (selectedDate.isAtSameMomentAs(currentDate)) {
-      return 'La fecha de llegada no puede ser la misma que la fecha actual.';
-    }
-
-    return null;
-  }
-
   Future<void> seleccionarImagen() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
     if (result != null) {
@@ -150,11 +135,11 @@ class _ProductFormState extends State<_ProductForm> {
       final expirationDate = DateTime.parse(supplies.fechaVencimiento);
 
       if (selectedDate.isAtSameMomentAs(DateTime.now())) {
-        return 'La fecha de llegada no puede ser la misma que la fecha actual.';
+        return 'La fecha de llegada no puede ser la misma que la fecha de la creación de la orden de compra o la misma que la fecha de vencimiento.';
       }
 
       if (selectedDate.isAtSameMomentAs(expirationDate)) {
-        return 'La fecha de llegada no puede ser la misma que la fecha de vencimiento.';
+        return 'La fecha de llegada no puede ser la misma que la fecha de la creación de la orden de compra o la misma que la fecha de vencimiento..';
       }
 
       return null;
