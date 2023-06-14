@@ -278,7 +278,7 @@ class _UsersAddPageState extends State<UsersAddPage> {
                               bottom: MediaQuery.of(context).size.height * 0.01,
                             ),
                             child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.6,
+                              width: MediaQuery.of(context).size.width * 0.5,
                               child: TextFormField(
                                 controller: userFirstNameController,
                                 decoration: const InputDecoration(
@@ -293,7 +293,7 @@ class _UsersAddPageState extends State<UsersAddPage> {
                                 top:
                                     MediaQuery.of(context).size.height * 0.005),
                             child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.6,
+                              width: MediaQuery.of(context).size.width * 0.5,
                               child: TextFormField(
                                 controller: userLastNameController,
                                 decoration: const InputDecoration(
@@ -442,51 +442,55 @@ class _UsersAddPageState extends State<UsersAddPage> {
                 padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.03,
                 ),
-                child: Column(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                      onPressed: _saveData,
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(
-                          (MediaQuery.of(context).size.width * 0.6),
-                          (MediaQuery.of(context).size.height * 0.07),
-                        ),
-                      ),
-                      child: const Text('Guardar'),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoadingScreen(),
-                          ),
-                        );
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoadingScreen(),
+                            ),
+                          );
 
-                        Future.delayed(
-                          const Duration(
-                            milliseconds: 1300,
+                          Future.delayed(
+                            const Duration(
+                              milliseconds: 1300,
+                            ),
+                            () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const UsersViewList(),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(
+                            (MediaQuery.of(context).size.width * 0.6),
+                            (MediaQuery.of(context).size.height * 0.07),
                           ),
-                          () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const UsersViewList(),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(
-                          (MediaQuery.of(context).size.width * 0.6),
-                          (MediaQuery.of(context).size.height * 0.07),
                         ),
+                        child: const Text('Volver'),
                       ),
-                      child: const Text('Volver'),
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _saveData,
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(
+                            (MediaQuery.of(context).size.width * 0.6),
+                            (MediaQuery.of(context).size.height * 0.07),
+                          ),
+                        ),
+                        child: const Text('Guardar'),
+                      ),
                     ),
                   ],
                 ),

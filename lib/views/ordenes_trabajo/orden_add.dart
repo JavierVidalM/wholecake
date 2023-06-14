@@ -136,16 +136,11 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
     estadoProductoController.text = 'En elaboracion';
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Crear Orden de Trabajo',
-          style: TextStyle(
-            color: Color(0xFF5D2A42),
-            fontSize: 24,
-          ),
+          style: Theme.of(context).textTheme.titleLarge,
         ),
-        backgroundColor: const Color(0xFFFFB5D7),
-        centerTitle: true,
-        titleSpacing: 0,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.1,
       ),
       drawer: const SideBar(),
       body: SingleChildScrollView(

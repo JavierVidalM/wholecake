@@ -34,16 +34,6 @@ class _CategoryViewState extends State<CategoryView> {
       'nombre': nombreController.text,
     });
     await ProductService().addCategoria(msg);
-    // Navigator.of(context).pop();
-  }
-
-  Future<void> _editData(id) async {
-    // final editmsg = jsonEncode({
-    //   'id': id,
-    //   'nombre': nombreController.text,
-    // });
-    // await ProductService().updateCategoria(editmsg);
-    // Navigator.of(context).pop();
   }
 
   Future deletePopup(id, listadocategorias) => showDialog(
@@ -105,7 +95,6 @@ class _CategoryViewState extends State<CategoryView> {
             ),
             TextButton(
               onPressed: () {
-                _editData(categoryid);
                 final msg = jsonEncode({
                   'id': categoryid,
                   'nombre': nombreController.text,
@@ -173,52 +162,23 @@ class _CategoryViewState extends State<CategoryView> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 15.0),
+              child: IconButton(
+                onPressed: () {
+                  addCategoryPopup();
+                },
+                icon: const Icon(Icons.add),
+              ),
+            ),
+          ],
         ),
         drawer: const SideBar(),
         body: Consumer<ProductService>(
           builder: (context, list, child) {
             return Column(
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.03,
-                    vertical: MediaQuery.of(context).size.height * 0.01,
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: ListTile(
-                                  title: const Text('Buscar'),
-                                  onTap: () {},
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  // Lógica para buscar
-                                },
-                                icon: const Icon(Icons.search),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          addCategoryPopup();
-                        },
-                        icon: const Icon(Icons.add),
-                      ),
-                    ],
-                  ),
-                ),
                 Divider(height: MediaQuery.of(context).size.height * 0.005),
                 Expanded(
                   child: RefreshIndicator(

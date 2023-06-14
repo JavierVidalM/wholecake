@@ -28,7 +28,7 @@ Future<void> _refresh() async {
 ListSup? supplierSeleccionada;
 
 class _OrdenesViewState extends State<OrdenesView> {
-  String getUserId(BuildContext context) {
+  String getUserType(BuildContext context) {
     final user = Provider.of<UserService>(context, listen: false);
     return user.cargo;
   }
@@ -319,15 +319,18 @@ class _OrdenesViewState extends State<OrdenesView> {
                                                   },
                                                   icon: const Icon(Icons.edit),
                                                 ),
-                                                IconButton(
-                                                  onPressed: () async {
-                                                    deletePopup(
-                                                        ordendetrabajo.id,
-                                                        listado.listaTrabajos);
-                                                  },
-                                                  icon:
-                                                      const Icon(Icons.delete),
-                                                ),
+                                                if (getUserType(context) ==
+                                                    'Pastelero')
+                                                  IconButton(
+                                                    onPressed: () async {
+                                                      deletePopup(
+                                                          ordendetrabajo.id,
+                                                          listado
+                                                              .listaTrabajos);
+                                                    },
+                                                    icon: const Icon(
+                                                        Icons.delete),
+                                                  ),
                                               ],
                                             ),
                                           ],
