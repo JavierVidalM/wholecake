@@ -112,14 +112,12 @@ class _ProductForm extends StatefulWidget {
 
 class _ProductFormState extends State<_ProductForm> {
   File? imageSelected;
-  bool shouldUpdateImage = false;
 
   Future<void> seleccionarImagen() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
     if (result != null) {
       setState(() {
         imageSelected = File(result.files.single.path!);
-        shouldUpdateImage = true;
       });
     }
   }
@@ -131,11 +129,11 @@ class _ProductFormState extends State<_ProductForm> {
 
     ImageProvider? image;
 
-    if (shouldUpdateImage && imageSelected != null) {
+    if (imageSelected != null) {
       image = FileImage(imageSelected!);
-    } else if (supplier.imagen_insumo != null &&
-        supplier.imagen_insumo.isNotEmpty) {
-      Uint8List bytes = base64.decode(supplier.imagen_insumo);
+    } else if (supplier.imagen_insumo.isNotEmpty) {
+      Uint8List bytes =
+          Uint8List.fromList(base64.decode(supplier.imagen_insumo));
       image = MemoryImage(bytes);
     } else {
       image = const AssetImage('assets/images/default.png');
@@ -165,7 +163,7 @@ class _ProductFormState extends State<_ProductForm> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: image!,
+                            image: image,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -315,7 +313,9 @@ class _ProductFormState extends State<_ProductForm> {
                               : null;
                           final base64 =
                               bytes != null ? base64Encode(bytes) : "";
-                          supplier.imagen_insumo = base64;
+                          if(imageSelected!=null){
+                            supplier.imagen_insumo = base64;
+                          }
                           if (!supplierForm.isValidForm()) return;
                           await widget.productService.updateSupplier(supplier);
                           Navigator.push(
