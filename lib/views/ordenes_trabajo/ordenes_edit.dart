@@ -412,7 +412,7 @@ class _OrdenEditState extends State<OrdenEdit> {
               icon: Stack(
                 children: [
                   const Icon(
-                    Icons.shopping_cart_outlined,
+                    Icons.inventory_sharp,
                     size: 35,
                   ),
                   Visibility(
