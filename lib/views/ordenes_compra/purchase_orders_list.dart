@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wholecake/models/ordendecompra.dart';
 import 'package:wholecake/models/suppliers.dart';
-import 'package:wholecake/views/ordenes_compra/suppliers_purchase_edit.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
@@ -20,41 +18,7 @@ class PurchaseList extends StatefulWidget {
 }
 
 class _PurchaseListState extends State<PurchaseList> {
-  final int? _selectedCategory = null;
-  Future<String?> filterPopup(OrdencompraService listacat) =>
-      showDialog<String>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Filtro"),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.02,
-                    bottom: MediaQuery.of(context).size.height * 0.01,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  "Filtrar",
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-
-  Future<void> deletePopup(int ordenId, ListOdc) async {
+  Future<void> deletePopup(int ordenId, listOdc) async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -80,8 +44,8 @@ class _PurchaseListState extends State<PurchaseList> {
               });
               await OrdencompraService().deleteOrdenCompra(msg);
               setState(() {
-                ListOdc.removeWhere(
-                    (OrdenDeCompa) => OrdenDeCompa.ordenId == ordenId);
+                listOdc.removeWhere(
+                    (ordenDeCompa) => ordenDeCompa.ordenId == ordenId);
               });
             },
             child: const Text(
@@ -98,8 +62,6 @@ class _PurchaseListState extends State<PurchaseList> {
   Widget build(BuildContext context) {
     final listadoView = Provider.of<OrdencompraService>(context);
     if (listadoView.isLoading) return const LoadingScreen();
-    final List<ListOdc> prod = listadoView.listaOrdenes;
-    final listacat = Provider.of<OrdencompraService>(context);
 
     return ChangeNotifierProvider(
       create: (_) => OrdencompraService(),
@@ -110,42 +72,38 @@ class _PurchaseListState extends State<PurchaseList> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 15.0),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PurchaseOrders(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.add),
+              ),
+            ),
+          ],
         ),
         drawer: const SideBar(),
         body: Consumer<OrdencompraService>(
           builder: (context, listado, child) {
             return Column(
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.03,
-                    vertical: MediaQuery.of(context).size.height * 0.01,
-                  ),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const PurchaseOrders(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.add),
-                      ),
-                    ],
-                  ),
+                const SizedBox(
+                  height: 20,
                 ),
-                Divider(height: MediaQuery.of(context).size.height * 0.005),
                 Expanded(
                   child: ListView.builder(
                     itemCount: listado.listaOrdenes.length,
                     itemBuilder: (context, index) {
                       final listaOdc = listado.listaOrdenes[index];
-                      print(listaOdc.fecha);
                       final listaprov = Provider.of<SuppliersService>(context);
-                      ListSup nombrecat = ListSup(
+                      ListSup proveedor = ListSup(
                           supplierId: 0,
                           nombreProveedor: '',
                           rut: '',
@@ -153,19 +111,17 @@ class _PurchaseListState extends State<PurchaseList> {
                           correoProveedor: '',
                           telefonoProveedor: '',
                           imagen_insumo: '');
-                      for (var categoria in listaprov.listadosuppliers) {
-                        if (categoria.supplierId == listaOdc.proveedor) {
-                          nombrecat = categoria;
+                      for (var prov in listaprov.listadosuppliers) {
+                        if (prov.supplierId == listaOdc.proveedor) {
+                          proveedor = prov;
                           break;
                         }
                       }
-                      // Convertir la fecha original a un objeto DateTime
                       DateTime fecha = DateTime.parse(listaOdc.fecha);
-
-                      // Formatear la fecha en el formato deseado
-                      String fechaFormateada = DateFormat('dd/MM/yyyy-HH:mm:ss').format(fecha);
+                      String fechaFormateada =
+                          DateFormat('dd/MM/yyyy - HH:mm:ss').format(fecha);
                       Uint8List bytes = Uint8List.fromList(
-                          base64.decode(nombrecat.imagen_insumo));
+                          base64.decode(proveedor.imagen_insumo));
                       Image image = Image.memory(bytes);
                       return Card(
                         child: Padding(
@@ -174,8 +130,8 @@ class _PurchaseListState extends State<PurchaseList> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: 100,
-                                height: 100,
+                                width: 110,
+                                height: 110,
                                 margin: EdgeInsets.only(
                                   right:
                                       MediaQuery.of(context).size.width * 0.03,
@@ -185,7 +141,7 @@ class _PurchaseListState extends State<PurchaseList> {
                                       MediaQuery.of(context).size.height * 0.01,
                                 ),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(100),
                                   shape: BoxShape.rectangle,
                                   image: DecorationImage(
                                     image: image.image,
@@ -203,7 +159,7 @@ class _PurchaseListState extends State<PurchaseList> {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            'Proveedor a cargo:${nombrecat.nombreProveedor}',
+                                            'Proveedor a cargo:${proveedor.nombreProveedor}',
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -219,11 +175,11 @@ class _PurchaseListState extends State<PurchaseList> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        PurchaseEdit(),
+                                                        const PurchaseEdit(),
                                                   ),
                                                 );
                                               },
-                                              icon: Icon(Icons.edit),
+                                              icon: const Icon(Icons.edit),
                                             ),
                                             IconButton(
                                               onPressed: () async {
@@ -232,29 +188,38 @@ class _PurchaseListState extends State<PurchaseList> {
                                                   listado.listaOrdenes,
                                                 );
                                               },
-                                              icon: Icon(Icons.delete),
+                                              icon: const Icon(Icons.delete),
                                             ),
                                           ],
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5),
+                                    const SizedBox(height: 5),
                                     Text(
-                                      'Insumo: ${nombrecat.tipoInsumo.toString().padRight(10)}',
+                                      'Insumo: ${proveedor.tipoInsumo.toString().padRight(10)}',
                                     ),
-                                    SizedBox(height: 5),
-                                                                        Text(
+                                    const SizedBox(height: 5),
+                                    Text(
                                       'Cantidad: ${listaOdc.cantidad}',
                                     ),
-                                    SizedBox(height: 5),
-                                                                        Text(
-                                      'Costo Total: ${listaOdc.costotal.toString().padRight(10)}',
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      NumberFormat.currency(
+                                        locale: 'es',
+                                        symbol: '\$',
+                                        decimalDigits: 0,
+                                        customPattern: '\$ #,##0',
+                                      ).format(
+                                        double.parse(
+                                          listaOdc.costotal.toString(),
+                                        ),
+                                      ),
                                     ),
-                                    SizedBox(height: 5),
+                                    const SizedBox(height: 5),
                                     Text(
                                       'Fecha: ${fechaFormateada.padRight(10)}',
                                     ),
-                                    SizedBox(height: 10),
+                                    const SizedBox(height: 10),
                                   ],
                                 ),
                               ),

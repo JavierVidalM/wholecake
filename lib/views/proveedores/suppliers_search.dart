@@ -1,9 +1,6 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/suppliers.dart';
-import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/services/suppliers_services.dart';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -79,15 +76,13 @@ class SupplierSearch extends SearchDelegate<ListSup> {
               ),
               title: Text(result.nombreProveedor),
               onTap: () {
-                // // result.copy();
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => SuppliersEdit(
-                //         // supplierId: result.supplierId,
-                //         ),
-                //   ),
-                // );
+                listadoView.selectedSupplier = result;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SuppliersEdit(),
+                  ),
+                );
               },
             ),
             const Divider(
@@ -131,14 +126,13 @@ class SupplierSearch extends SearchDelegate<ListSup> {
               ),
               title: Text(result.nombreProveedor),
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => SuppliersEdit(
-                //         // supplierId: result.supplierId,
-                //         ),
-                //   ),
-                // );
+                listadoView.selectedSupplier = result;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SuppliersEdit(),
+                  ),
+                );
               },
             ),
             const Divider(

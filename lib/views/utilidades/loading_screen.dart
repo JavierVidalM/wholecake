@@ -8,10 +8,10 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const Text(''),
         title: const Text(""),
         toolbarHeight: MediaQuery.of(context).size.height * 0.1,
       ),
-      drawer: const SideBar(),
       body: const Center(
         child: CircularProgressIndicator(),
       ),

@@ -76,6 +76,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                 height: MediaQuery.of(context).size.height * 0.3,
                 child: AppBar(
                   elevation: 0,
+                  toolbarHeight: MediaQuery.of(context).size.height * 0.1,
                 ),
               ),
               SizedBox(

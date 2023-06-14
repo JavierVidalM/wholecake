@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
@@ -45,8 +44,7 @@ class _PurchaseEditState extends State<PurchaseEdit> {
 class _ProductForm extends StatefulWidget {
   final OrdencompraService ordenService;
 
-  const _ProductForm({Key? key, required this.ordenService})
-      : super(key: key);
+  const _ProductForm({Key? key, required this.ordenService}) : super(key: key);
 
   @override
   State<_ProductForm> createState() => _ProductFormState();

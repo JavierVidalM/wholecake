@@ -4,7 +4,7 @@ import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/login/login_main.dart';
 import 'package:wholecake/views/home/home_page.dart';
 import 'package:wholecake/views/login/login_password_recover.dart';
-
+import 'package:wholecake/views/utilidades/utilidades.dart';
 import '../../services/users_services.dart';
 
 class LoginUser extends StatefulWidget {
@@ -35,17 +35,18 @@ class LoginUserState extends State<LoginUser> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.1),
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/logo_SW.png',
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          // width: 150, // ajusta el ancho a tu preferencia
-                        ),
-                      ],
-                    )),
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.1,
+                  ),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/images/logo_SW.png',
+                        height: MediaQuery.of(context).size.height * 0.15,
+                      ),
+                    ],
+                  ),
+                ),
                 Padding(
                   padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.12,
@@ -85,15 +86,18 @@ class LoginUserState extends State<LoginUser> {
                     ),
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const PassRecover()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PassRecover(),
+                        ),
+                      );
                     },
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.08),
+                    top: MediaQuery.of(context).size.height * 0.08,
+                  ),
                   child: ElevatedButton(
                     onPressed: () {
                       // Llamada al método de inicio de sesión en el servicio del usuario
@@ -102,48 +106,73 @@ class LoginUserState extends State<LoginUser> {
                         userController.text.toString(),
                         passwordController.text.toString(),
                       )
-                          .then((loggedIn) {
-                        if (loggedIn) {
-                          // Si las credenciales son correctas, redirigir al HomePage
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomePage()),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Row(
-                              children: [
-                                const Icon(
-                                  Icons.report_gmailerrorred_rounded,
-                                  color: Colors.white,
-                                  size: 40,
+                          .then(
+                        (loggedIn) {
+                          if (loggedIn) {
+                            // Si las credenciales son correctas, redirigir al HomePage
+                            {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LoadingScreen(),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        "Credenciales incorrectas",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
+                              );
+
+                              Future.delayed(
+                                const Duration(
+                                  milliseconds: 1500,
+                                ),
+                                () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const HomePage(),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.report_gmailerrorred_rounded,
+                                      color: Colors.white,
+                                      size: 40,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 10.0,
                                       ),
-                                      const Text(
-                                          "Revisa tu dirección correo electrónico o contraseña"),
-                                    ],
-                                  ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Credenciales incorrectas",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                              "Revisa tu dirección correo electrónico o contraseña"),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            duration: const Duration(seconds: 2),
-                            padding: const EdgeInsets.all(20),
-                          ));
-                        }
-                      });
+                                duration: Duration(seconds: 2),
+                                padding: EdgeInsets.all(20),
+                              ),
+                            );
+                          }
+                        },
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(
@@ -158,20 +187,23 @@ class LoginUserState extends State<LoginUser> {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.01),
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginMain()));
-                      },
-                      child: Text(
-                        "Regresar",
-                        style: SweetCakeTheme.loginTheme.textTheme.bodyMedium,
-                      ),
-                    )),
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.01),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginMain(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Regresar",
+                      style: SweetCakeTheme.loginTheme.textTheme.bodyMedium,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

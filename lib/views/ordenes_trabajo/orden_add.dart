@@ -11,15 +11,20 @@ import 'package:wholecake/models/categoria.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/productos_services.dart';
+import '../../services/users_services.dart';
 
-class CrearOrdenAddPage extends StatefulWidget {
-  const CrearOrdenAddPage({Key? key}) : super(key: key);
+class OrdenAddPage extends StatefulWidget {
+  const OrdenAddPage({Key? key}) : super(key: key);
 
   @override
-  _CrearOrdenAddPageState createState() => _CrearOrdenAddPageState();
+  _OrdenAddPageState createState() => _OrdenAddPageState();
 }
 
-class _CrearOrdenAddPageState extends State<CrearOrdenAddPage> {
+class _OrdenAddPageState extends State<OrdenAddPage> {
+    int getUserId() {
+    final user= Provider.of<UserService>(context, listen: false);
+    return user.userId;
+  }
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController nombreController = TextEditingController();
@@ -51,7 +56,7 @@ class _CrearOrdenAddPageState extends State<CrearOrdenAddPage> {
         'estado_producto': estadoProductoController.text,
         'cantidad_producto': cantidadController.text,
         'imagen': base64,
-        'admin': 11,
+        'admin': getUserId(),
       });
       await OrdenTrabajoService().addOrdenTrabajo(msg);
       Navigator.push(

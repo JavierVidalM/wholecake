@@ -3,29 +3,26 @@ import 'package:provider/provider.dart';
 import 'package:wholecake/models/ordendetrabajo.dart';
 import 'package:wholecake/models/supplies.dart';
 import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/services/ventas_services.dart';
 import 'package:wholecake/theme/theme_constant.dart';
-import 'package:wholecake/views/insumos/insumos.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
-import 'package:intl/intl.dart';
 import 'package:wholecake/services/supplies_services.dart';
 import 'package:wholecake/services/ordentrabajo_services.dart';
 import 'package:wholecake/models/categoria.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
-class OrdenAdd extends StatefulWidget {
+class OrdenEdit extends StatefulWidget {
   @override
-  _OrdenAddState createState() => _OrdenAddState();
+  _OrdenEditState createState() => _OrdenEditState();
 }
 
 Future<void> _refresh() async {
   await SuppliesService().loadSupplies();
 }
 
-class _OrdenAddState extends State<OrdenAdd> {
+class _OrdenEditState extends State<OrdenEdit> {
   late OrdenTrabajoService _ordenTrabajoService;
   final TextEditingController _fechaElaboracionController =
       TextEditingController();
@@ -49,12 +46,11 @@ class _OrdenAddState extends State<OrdenAdd> {
     };
 
     final msg = jsonEncode(jsonData);
-    print(msg);
     await OrdenTrabajoService().updateTrabajo(msg);
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => OrdenAdd(),
+        builder: (context) => OrdenEdit(),
       ),
     );
     setState(() {
@@ -183,7 +179,6 @@ class _OrdenAddState extends State<OrdenAdd> {
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        // print(selectedOrdenTrabajo?.id);
         return AlertDialog(
           scrollable: true,
           contentPadding: const EdgeInsets.only(right: 0, left: 0),
@@ -406,24 +401,8 @@ class _OrdenAddState extends State<OrdenAdd> {
   @override
   Widget build(BuildContext context) {
     final selectedOrdenTrabajo = _ordenTrabajoService.selectedordenTrabajo;
+    print("WAAAAAAAAAA ${selectedOrdenTrabajo?.id}");
     final insumoProvider = Provider.of<SuppliesService>(context);
-    final ordentrabajoService = Provider.of<OrdenTrabajoService>(context);
-    final orden = ordentrabajoService.listaTrabajos.firstWhere(
-      (orden) => orden.id == widget,
-      orElse: () => ListTrabajo(
-          id: 0,
-          nombreProducto: '',
-          precioProducto: 0,
-          fechaElaboracion: '',
-          fechaVencimiento: '',
-          categoria: 0,
-          estadoProducto: '',
-          cantidadProducto: 0,
-          lote: '',
-          imagen: '',
-          ordenesTrabajo: []),
-    );
-    final listadoInsumos = insumoProvider.suppliesList;
 
     if (insumoProvider.isLoading) return const LoadingScreen();
     bool cartWithProducts = insumosOrden.isNotEmpty;

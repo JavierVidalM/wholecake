@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/supplies.dart';
 import 'package:wholecake/services/supplies_services.dart';
+import 'package:wholecake/views/insumos/insumos_search.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:wholecake/views/insumos/insumos.dart';
@@ -16,43 +17,11 @@ class ListadoInsumos extends StatefulWidget {
 }
 
 class _ListadoInsumosState extends State<ListadoInsumos> {
-  Future<void> _refresh() {
-    return Future.delayed(Duration(seconds: 2));
+  Future<void> _refresh() async {
+    await SuppliesService().loadSupplies();
   }
 
-  SuppliesList? selectedSupplies;
-
-  Future<String?> filterPopup(SuppliesService listacat) => showDialog<String>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Filtro"),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.02,
-                    bottom: MediaQuery.of(context).size.height * 0.01,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  "Filtrar",
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+  bool ordenDescendiente = false;
 
   Future<void> deletePopup(
       int suppliesId, List<SuppliesList> suppliesList) async {
@@ -99,8 +68,7 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
   Widget build(BuildContext context) {
     final listadoView = Provider.of<SuppliesService>(context);
     if (listadoView.isLoading) return const LoadingScreen();
-    final List<SuppliesList> prod = listadoView.suppliesList;
-    final listacat = Provider.of<SuppliesService>(context);
+    final listaInsumos = listadoView.suppliesList;
 
     return ChangeNotifierProvider(
       create: (_) => SuppliesService(),
@@ -115,6 +83,12 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
         drawer: const SideBar(),
         body: Consumer<SuppliesService>(
           builder: (context, suppliesList, child) {
+            final listadoDescendiente = listaInsumos
+              ..sort(
+                (insumo1, insumo2) => ordenDescendiente
+                    ? insumo1.cantidad.compareTo(insumo2.cantidad)
+                    : insumo2.cantidad.compareTo(insumo1.cantidad),
+              );
             return Column(
               children: [
                 Container(
@@ -124,14 +98,15 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
                   ),
                   child: Row(
                     children: [
-                      // Botón de filtro
                       IconButton(
                         onPressed: () {
-                          filterPopup(listacat);
+                          setState(
+                              () => ordenDescendiente = !ordenDescendiente);
                         },
-                        icon: const Icon(Icons.filter_alt_outlined),
+                        icon: ordenDescendiente
+                            ? const Icon(Icons.arrow_downward_rounded)
+                            : const Icon(Icons.arrow_upward_rounded),
                       ),
-                      // Campo de entrada de texto y botón de búsqueda
                       Expanded(
                         child: Container(
                           decoration: BoxDecoration(
@@ -140,26 +115,29 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
                           ),
                           child: Row(
                             children: [
+                              Expanded(
+                                child: ListTile(
+                                  title: const Text('Buscar'),
+                                  onTap: () {
+                                    showSearch(
+                                      context: context,
+                                      delegate: InsumosSearch(listaInsumos),
+                                    );
+                                  },
+                                ),
+                              ),
                               IconButton(
                                 onPressed: () {
-                                  // Lógica para buscar
+                                  showSearch(
+                                    context: context,
+                                    delegate: InsumosSearch(listaInsumos),
+                                  );
                                 },
                                 icon: const Icon(Icons.search),
                               ),
                             ],
                           ),
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => const SuppliersAddPage(),
-                          //   ),
-                          // );
-                        },
-                        icon: const Icon(Icons.add),
                       ),
                     ],
                   ),
@@ -171,9 +149,9 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
                   child: RefreshIndicator(
                     onRefresh: _refresh,
                     child: ListView.builder(
-                      itemCount: listadoView.suppliesList.length,
+                      itemCount: listaInsumos.length,
                       itemBuilder: (context, index) {
-                        final supplies = listadoView.suppliesList[index];
+                        final supplies = listadoDescendiente[index];
                         Uint8List bytes = Uint8List.fromList(
                           base64.decode(supplies.imagen_supplies),
                         );
@@ -251,17 +229,21 @@ class _ListadoInsumosState extends State<ListadoInsumos> {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 10),
+                                      const SizedBox(height: 10),
                                       Text(
                                         'Insumo: ${supplies.nombreInsumo.toString().padRight(10)}',
                                       ),
-                                      SizedBox(height: 5),
+                                      const SizedBox(height: 5),
                                       Text(
                                         'Estado: ${supplies.estado.toString().padRight(10)}',
                                       ),
-                                      SizedBox(height: 10),
+                                      const SizedBox(height: 10),
                                       Text(
                                         'Fecha Llegada: ${supplies.fechaLlegada.toString().padRight(10)}',
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        'Cantidad: ${supplies.cantidad.toString().padRight(10)}',
                                       ),
                                     ],
                                   ),

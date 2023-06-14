@@ -7,6 +7,7 @@ import 'package:wholecake/models/categoria.dart';
 import 'package:wholecake/models/suppliers.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/theme/theme.dart';
+import 'package:wholecake/views/proveedores/suppliers.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:wholecake/views/proveedores/suppliers_add.dart';
@@ -157,13 +158,6 @@ class _SuppliersViewState extends State<SuppliersView> {
                       ),
                       child: Row(
                         children: [
-                          // Botón de filtro
-                          IconButton(
-                            onPressed: () {
-                              filterPopup(listacat);
-                            },
-                            icon: const Icon(Icons.filter_alt_outlined),
-                          ),
                           // Campo de entrada de texto y botón de búsqueda
                           Expanded(
                             child: Container(
@@ -173,21 +167,25 @@ class _SuppliersViewState extends State<SuppliersView> {
                               ),
                               child: Row(
                                 children: [
-                                  // Expanded(
-                                  //   child: ListTile(
-                                  //     title: const Text('Buscar'),
-                                  //     onTap: () {
-                                  //       showSearch(
-                                  //         context: context,
-                                  //         delegate: ProductSearch(
-                                  //             listadoView.listadosuppliers,),
-                                  //       );
-                                  //     },
-                                  //   ),
-                                  // ),
+                                  Expanded(
+                                    child: ListTile(
+                                      title: const Text('Buscar'),
+                                      onTap: () {
+                                        showSearch(
+                                          context: context,
+                                          delegate: SupplierSearch(
+                                              listadoView.listadosuppliers),
+                                        );
+                                      },
+                                    ),
+                                  ),
                                   IconButton(
                                     onPressed: () {
-                                      // Lógica para buscar
+                                      showSearch(
+                                        context: context,
+                                        delegate: SupplierSearch(
+                                            listadoView.listadosuppliers),
+                                      );
                                     },
                                     icon: const Icon(Icons.search),
                                   ),
