@@ -288,7 +288,8 @@ class _ProductFormState extends State<_ProductForm> {
                       const Text('Producto'),
                       TextFormField(
                         initialValue: supplier.telefonoProveedor,
-                        onChanged: (value) => supplier.nombreProveedor = value,
+                        onChanged: (value) =>
+                            supplier.telefonoProveedor = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingrese el número de teléfono.';
