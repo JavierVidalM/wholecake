@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/ventas.dart';
-
-import 'package:wholecake/services/users_services.dart';
-// import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/services/ventas_services.dart';
-import 'package:wholecake/views/login/login.dart';
-import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/theme/theme.dart';
 
@@ -29,13 +24,6 @@ class HomePageState extends State<HomePage> {
   String totalDomingo = '';
 
   bool cargando = true;
-  Future _carga() async {
-    if (UserService().isLoading != false) {
-      return const LoadingScreen();
-    } else {
-      cargando = false;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,23 +106,6 @@ class HomePageState extends State<HomePage> {
                               DateTime.sunday,
                             ),
                           ),
-//                           child: MyBarGraph(
-//   maxY: maxY.toDouble(),
-//   monAmount: obtenerVentaDia(ventasSemana, DateTime.monday),
-//   tueAmount: obtenerVentaDia(ventasSemana, DateTime.tuesday),
-//   wedAmount: obtenerVentaDia(ventasSemana, DateTime.wednesday),
-//   thuAmount: obtenerVentaDia(ventasSemana, DateTime.thursday),
-//   friAmount: obtenerVentaDia(ventasSemana, DateTime.friday),
-//   satAmount: obtenerVentaDia(ventasSemana, DateTime.saturday),
-//   sunAmount: obtenerVentaDia(ventasSemana, DateTime.sunday),
-//   totalLunes: totalLunes,
-//   totalMartes: totalMartes,
-//   totalMiercoles: totalMiercoles,
-//   totalJueves: totalJueves,
-//   totalViernes: totalViernes,
-//   totalSabado: totalSabado,
-//   totalDomingo: totalDomingo,
-// ),
                         ),
                       ),
                     ),
@@ -153,7 +124,7 @@ List<Listventa> obtenerVentasSemana(List<Listventa> listadoVentas) {
   final fechaActual = DateTime.now();
   final inicioSemana =
       fechaActual.subtract(Duration(days: fechaActual.weekday - 1));
-  final finSemana = inicioSemana.add(Duration(days: 6));
+  final finSemana = inicioSemana.add(const Duration(days: 6));
   return listadoVentas.where((venta) {
     return venta.fecha.isAfter(inicioSemana) && venta.fecha.isBefore(finSemana);
   }).toList();

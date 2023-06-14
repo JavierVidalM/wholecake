@@ -80,7 +80,7 @@ class SupplierSearch extends SearchDelegate<ListSup> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SuppliersEdit(),
+                    builder: (context) => const SuppliersEdit(),
                   ),
                 );
               },
@@ -130,7 +130,7 @@ class SupplierSearch extends SearchDelegate<ListSup> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SuppliersEdit(),
+                    builder: (context) => const SuppliersEdit(),
                   ),
                 );
               },

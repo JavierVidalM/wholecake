@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_new, camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:wholecake/models/ordendetrabajo.dart';
 

@@ -1,18 +1,12 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'dart:io';
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:wholecake/models/users.dart';
-import 'package:provider/provider.dart';
-import 'package:wholecake/views/users/users.dart';
 import 'package:wholecake/services/users_services.dart';
 import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/login/login.dart';
-import 'package:wholecake/views/home/home_page.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:wholecake/views/users/users.dart';
-import 'package:wholecake/models/users.dart';
-import 'package:wholecake/views/utilidades/loading_screen.dart';
 
 class SigninUser extends StatefulWidget {
   const SigninUser({Key? key}) : super(key: key);
@@ -116,6 +110,7 @@ class _SigninUserState extends State<SigninUser> {
     if (value == null || value.isEmpty) {
       return 'Por favor, ingrese los datos correspondientes.';
     }
+    return null;
   }
 
   Future<void> _saveData() async {
@@ -159,7 +154,7 @@ class _SigninUserState extends State<SigninUser> {
       await UserService().addUsersadmin(msg);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => LoginUser()),
+        MaterialPageRoute(builder: (context) => const LoginUser()),
       );
     }
   }

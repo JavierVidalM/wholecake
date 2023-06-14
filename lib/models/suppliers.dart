@@ -2,6 +2,8 @@
 //
 //     final suppliers = suppliersFromMap(jsonString);
 
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
 class Suppliers {
@@ -48,14 +50,13 @@ class ListSup {
   String toJson() => json.encode(toMap());
 
   factory ListSup.fromMap(Map<String, dynamic> json) => ListSup(
-        supplierId: json["id"],
-        nombreProveedor: json["nombre_proveedor"],
-        rut: json["rut"],
-        tipoInsumo: json["tipo_insumo"],
-        correoProveedor: json["correo_proveedor"],
-        telefonoProveedor: json["telefono_proveedor"],
-        imagen_insumo: json["imagen_insumo"]
-      );
+      supplierId: json["id"],
+      nombreProveedor: json["nombre_proveedor"],
+      rut: json["rut"],
+      tipoInsumo: json["tipo_insumo"],
+      correoProveedor: json["correo_proveedor"],
+      telefonoProveedor: json["telefono_proveedor"],
+      imagen_insumo: json["imagen_insumo"]);
 
   Map<String, dynamic> toMap() => {
         "supplierId": supplierId,

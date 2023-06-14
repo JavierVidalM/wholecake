@@ -1,9 +1,10 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, unused_local_variable
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../../services/supplies_services.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:wholecake/models/supplies.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/providers/supplies_form_provider.dart';
 import 'package:wholecake/theme/theme_constant.dart';
@@ -199,6 +200,7 @@ class _ProductFormState extends State<_ProductForm> {
                           if (value == null || value.isEmpty) {
                             return 'El tipo de insumo es obligatorio';
                           }
+                          return null;
                         },
                         decoration: const InputDecoration(
                           hintText: 'Tipo Insumo',

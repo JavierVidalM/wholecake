@@ -85,7 +85,7 @@ class OrdenTrabajoSearch extends SearchDelegate<ListTrabajo> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrdenEdit(),
+                    builder: (context) => const OrdenEdit(),
                   ),
                 );
               },
@@ -140,7 +140,7 @@ class OrdenTrabajoSearch extends SearchDelegate<ListTrabajo> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrdenEdit(),
+                    builder: (context) => const OrdenEdit(),
                   ),
                 );
               },

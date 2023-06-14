@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/users.dart';
 import 'package:wholecake/services/services.dart';
-import 'package:wholecake/services/suppliers_services.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -165,7 +164,6 @@ class UserSearch extends SearchDelegate<Listado> {
                 style: const TextStyle(fontWeight: FontWeight.normal),
               ),
               onTap: () {
-                print(result.userId);
                 Navigator.push(
                   context,
                   MaterialPageRoute(

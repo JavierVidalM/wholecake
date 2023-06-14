@@ -2,6 +2,8 @@
 //
 //     final ordenTrabajo = ordenTrabajoFromMap(jsonString);
 
+// ignore_for_file: prefer_if_null_operators
+
 import 'dart:convert';
 
 class OrdenTrabajo {
@@ -65,8 +67,12 @@ class ListTrabajo {
         estadoProducto: json["estado_producto"],
         cantidadProducto: json["cantidad_producto"],
         lote: json["lote"],
-      fechaElaboracion: json["fecha_elaboracion"] == null ? null : json["fecha_elaboracion"],
-      fechaVencimiento: json["fecha_vencimiento"] == null ? null : json["fecha_vencimiento"],
+        fechaElaboracion: json["fecha_elaboracion"] == null
+            ? null
+            : json["fecha_elaboracion"],
+        fechaVencimiento: json["fecha_vencimiento"] == null
+            ? null
+            : json["fecha_vencimiento"],
         categoria: json["categoria"],
         imagen: json["imagen"],
         ordenesTrabajo: List<OrdenesTrabajo>.from(

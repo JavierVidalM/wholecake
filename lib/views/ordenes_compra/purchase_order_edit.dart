@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
@@ -64,102 +66,118 @@ class _ProductFormState extends State<_ProductForm> {
           child: Form(
             key: ordenForm.formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).size.height * 0.04,
-                  ),
-                  child: Column(
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * 0.04,
+              ),
+              child: Column(
+                children: [
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Cantidad'),
-                      TextFormField(
-                        initialValue: orden.cantidad.toString(),
-                        onChanged: (value) =>
-                            orden.cantidad = int.tryParse(value) ?? 0,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'La cantidad es obligatoria';
-                          }
-                          return null;
-                        },
-                        decoration: const InputDecoration(
-                          hintText: 'Cantidad',
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.01,
+                            left: MediaQuery.of(context).size.width * 0.01),
+                        child: const Text('Cantidad del pedido'),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.005,
+                        ),
+                        child: TextFormField(
+                          initialValue: orden.cantidad.toString(),
+                          onChanged: (value) =>
+                              orden.cantidad = int.tryParse(value) ?? 0,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'La cantidad es obligatoria';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            hintText: orden.cantidad.toString(),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.01,
+                            left: MediaQuery.of(context).size.width * 0.01),
+                        child: const Text('Costo total'),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.005,
+                        ),
+                        child: TextFormField(
+                          initialValue: orden.costotal.toString(),
+                          onChanged: (value) =>
+                              orden.costotal = int.tryParse(value) ?? 0,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'El costo es obligatorio';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            hintText: orden.costotal.toString(),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Costo'),
-                    TextFormField(
-                      initialValue: orden.costotal.toString(),
-                      onChanged: (value) =>
-                          orden.costotal = int.tryParse(value) ?? 0,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'El costo es obligatorio';
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        hintText: 'Costo',
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (!ordenForm.isValidForm()) return;
-                        await widget.ordenService.updateOrdenCompra(orden);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PurchaseList()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(
-                          (MediaQuery.of(context).size.width * 0.6),
-                          (MediaQuery.of(context).size.height * 0.07),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.02),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (!ordenForm.isValidForm()) return;
+                              await widget.ordenService
+                                  .updateOrdenCompra(orden);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const PurchaseList()),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(
+                                (MediaQuery.of(context).size.width * 0.6),
+                                (MediaQuery.of(context).size.height * 0.07),
+                              ),
+                            ),
+                            child: const Text('Guardar'),
+                          ),
                         ),
-                      ),
-                      child: const Text('Guardar'),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const PurchaseList()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(
-                          (MediaQuery.of(context).size.width * 0.6),
-                          (MediaQuery.of(context).size.height * 0.07),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const PurchaseList()),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(
+                                (MediaQuery.of(context).size.width * 0.6),
+                                (MediaQuery.of(context).size.height * 0.07),
+                              ),
+                            ),
+                            child: const Text('Volver'),
+                          ),
                         ),
-                      ),
-                      child: const Text('Volver'),
+                      ],
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

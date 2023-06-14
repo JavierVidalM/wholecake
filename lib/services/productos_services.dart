@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings, unused_local_variable, unnecessary_this, non_constant_identifier_names, unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -151,11 +153,6 @@ class ProductService extends ChangeNotifier {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
-    print(response.body);
-    //actualizamos el listado
-    // final index = listadoproductos
-    //     .indexWhere((element) => element.productoId == product.productoId);
-    // listadoproductos[index] = product;
     return '';
   }
 

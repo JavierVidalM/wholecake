@@ -1,15 +1,14 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
-import 'package:wholecake/theme/theme.dart';
-import 'package:wholecake/views/home/home.dart';
 import 'package:wholecake/views/ordenes_trabajo/orden_view.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:wholecake/services/ordentrabajo_services.dart';
 import 'package:wholecake/models/categoria.dart';
 import 'package:provider/provider.dart';
-
 import '../../services/productos_services.dart';
 import '../../services/users_services.dart';
 
@@ -62,7 +61,7 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
       await OrdenTrabajoService().addOrdenTrabajo(msg);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => OrdenesView()),
+        MaterialPageRoute(builder: (context) => const OrdenesView()),
       );
     }
   }
@@ -150,7 +149,7 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
       ),
       drawer: const SideBar(),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Form(
           key: _formKey,
           child: Column(

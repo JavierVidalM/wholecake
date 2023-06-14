@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/theme/theme.dart';
@@ -136,14 +138,14 @@ class LoginUserState extends State<LoginUser> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Row(
-                                  children: [
-                                    const Icon(
+                                  children: const [
+                                    Icon(
                                       Icons.report_gmailerrorred_rounded,
                                       color: Colors.white,
                                       size: 40,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(
+                                      padding: EdgeInsets.only(
                                         left: 10.0,
                                       ),
                                       child: Column(

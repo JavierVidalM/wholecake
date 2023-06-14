@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'dart:convert';
@@ -5,13 +7,12 @@ import 'package:provider/provider.dart';
 import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/models/categoria.dart';
 import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/views/productos/products.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'dart:typed_data';
 import 'package:intl/intl.dart';
 
 class ToExpire extends StatefulWidget {
-  const ToExpire({Key? key});
+  const ToExpire({super.key});
 
   @override
   _ToExpireState createState() => _ToExpireState();
@@ -24,7 +25,6 @@ Future<void> _refresh() {
 ListElement? catSelect;
 
 class _ToExpireState extends State<ToExpire> {
-  int? _selectedCategory;
   List<Listado> productosPorCaducar =
       []; // Lista para almacenar los productos filtrados
 
@@ -60,7 +60,7 @@ class _ToExpireState extends State<ToExpire> {
         builder: (context, listado, child) {
           return Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Expanded(

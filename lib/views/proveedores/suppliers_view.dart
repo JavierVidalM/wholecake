@@ -1,19 +1,13 @@
+// ignore_for_file: avoid_types_as_parameter_names, non_constant_identifier_names, library_private_types_in_public_api
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wholecake/models/productos.dart';
 import 'package:wholecake/models/suppliers.dart';
-import 'package:wholecake/models/categoria.dart';
-import 'package:wholecake/models/suppliers.dart';
-import 'package:wholecake/services/productos_services.dart';
-import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/proveedores/suppliers.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
-import 'package:wholecake/views/proveedores/suppliers_add.dart';
-import 'package:wholecake/views/proveedores/suppliers_edit.dart';
 import 'dart:typed_data';
-import 'package:intl/intl.dart';
 import '../../services/suppliers_services.dart';
 
 class SuppliersView extends StatefulWidget {
@@ -23,8 +17,8 @@ class SuppliersView extends StatefulWidget {
   _SuppliersViewState createState() => _SuppliersViewState();
 }
 
-Future<void> _refresh() {
-  return Future.delayed(Duration(seconds: 2));
+Future<void> _refresh() async {
+  await SuppliersService().loadSuppliers();
 }
 
 ListSup? supplierSeleccionada;
@@ -35,8 +29,6 @@ ListSup? supplierSeleccionada;
 //   }
 
 class _SuppliersViewState extends State<SuppliersView> {
-  int? _selectedCategory = null;
-
   Future<String?> filterPopup(SuppliersService listacat) => showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
@@ -132,8 +124,6 @@ class _SuppliersViewState extends State<SuppliersView> {
   Widget build(BuildContext context) {
     final listadoView = Provider.of<SuppliersService>(context);
     if (listadoView.isLoading) return const LoadingScreen();
-    final List<ListSup> prod = listadoView.listadosuppliers;
-    final listacat = Provider.of<SuppliersService>(context);
 
     return ChangeNotifierProvider(
         create: (_) => SuppliersService(),
@@ -215,7 +205,6 @@ class _SuppliersViewState extends State<SuppliersView> {
                           itemCount: listado.listadosuppliers.length,
                           itemBuilder: (context, index) {
                             final suppliers = listado.listadosuppliers[index];
-                            String nombrecat = '';
                             Uint8List bytes = Uint8List.fromList(
                                 base64.decode(suppliers.imagen_insumo));
                             Image image = Image.memory(bytes);
@@ -282,10 +271,11 @@ class _SuppliersViewState extends State<SuppliersView> {
                                                         context,
                                                         MaterialPageRoute(
                                                             builder: (context) =>
-                                                                SuppliersEdit()),
+                                                                const SuppliersEdit()),
                                                       );
                                                     },
-                                                    icon: Icon(Icons.edit),
+                                                    icon:
+                                                        const Icon(Icons.edit),
                                                   ),
                                                   IconButton(
                                                     onPressed: () async {
@@ -294,21 +284,22 @@ class _SuppliersViewState extends State<SuppliersView> {
                                                           listado
                                                               .listadosuppliers);
                                                     },
-                                                    icon: Icon(Icons.delete),
+                                                    icon: const Icon(
+                                                        Icons.delete),
                                                   ),
                                                 ],
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 10),
                                           Text(
                                             'Insumo: ${suppliers.tipoInsumo.toString().padRight(10)}',
                                           ),
-                                          SizedBox(height: 5),
+                                          const SizedBox(height: 5),
                                           Text(
                                             'Correo: ${suppliers.correoProveedor.toString().padRight(10)}',
                                           ),
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 10),
                                           Text(
                                             'Número: ${suppliers.telefonoProveedor.toString().padRight(10)}',
                                           ),

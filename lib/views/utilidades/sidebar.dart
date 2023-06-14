@@ -467,77 +467,77 @@ class _SideBarState extends State<SideBar> {
                         );
                       },
                     ),
-                    // if (user.cargo == 'Cajero')
-                    ExpansionTile(
-                      leading: const Icon(Icons.point_of_sale),
-                      title: const Text("Módulo de ventas"),
-                      children: [
-                        // PANTALLA DE CREAR VENTAS
+                    if (user.cargo == 'Cajero')
+                      ExpansionTile(
+                        leading: const Icon(Icons.point_of_sale),
+                        title: const Text("Módulo de ventas"),
+                        children: [
+                          // PANTALLA DE CREAR VENTAS
 
-                        Padding(
-                          padding: const EdgeInsets.only(left: 25),
-                          child: ListTile(
-                            leading:
-                                const Icon(Icons.add_shopping_cart_rounded),
-                            title: const Text("Generar Ventas"),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const LoadingScreen(),
-                                ),
-                              );
+                          Padding(
+                            padding: const EdgeInsets.only(left: 25),
+                            child: ListTile(
+                              leading:
+                                  const Icon(Icons.add_shopping_cart_rounded),
+                              title: const Text("Generar Ventas"),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoadingScreen(),
+                                  ),
+                                );
 
-                              Future.delayed(
-                                const Duration(
-                                  milliseconds: 2300,
-                                ),
-                                () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const SellsAdd(),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
+                                Future.delayed(
+                                  const Duration(
+                                    milliseconds: 2300,
+                                  ),
+                                  () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const SellsAdd(),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           ),
-                        ),
 
-                        // PANTALLA DE LISTADO DE VENTAS
+                          // PANTALLA DE LISTADO DE VENTAS
 
-                        Padding(
-                          padding: const EdgeInsets.only(left: 25),
-                          child: ListTile(
-                            leading: const Icon(Icons.checklist_rounded),
-                            title: const Text("Listado de ventas"),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const LoadingScreen(),
-                                ),
-                              );
+                          Padding(
+                            padding: const EdgeInsets.only(left: 25),
+                            child: ListTile(
+                              leading: const Icon(Icons.checklist_rounded),
+                              title: const Text("Listado de ventas"),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoadingScreen(),
+                                  ),
+                                );
 
-                              Future.delayed(
-                                const Duration(
-                                  milliseconds: 2300,
-                                ),
-                                () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SellsView(),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
+                                Future.delayed(
+                                  const Duration(
+                                    milliseconds: 2300,
+                                  ),
+                                  () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const SellsView(),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
                   ],
                 ),
                 Column(

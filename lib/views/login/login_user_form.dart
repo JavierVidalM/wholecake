@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/login/login.dart';
-import 'package:wholecake/views/login/login_main.dart';
-import 'package:wholecake/views/home/home_page.dart';
 import 'package:wholecake/services/users_services.dart';
 
 class PasswordRecoveryScreen extends StatefulWidget {
@@ -185,7 +183,7 @@ class PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LoginMain(),
+                          builder: (context) => const LoginMain(),
                         ),
                       );
                     },

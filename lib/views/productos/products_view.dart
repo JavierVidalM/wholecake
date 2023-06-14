@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/categoria.dart';
@@ -385,8 +387,8 @@ class _ProductsViewState extends State<ProductsView> {
                             child: Row(
                               children: [
                                 Container(
-                                  width: 130,
-                                  height: 130,
+                                  width: 110,
+                                  height: 110,
                                   margin: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(100),
@@ -485,7 +487,7 @@ class _ProductsViewState extends State<ProductsView> {
                                             icon: const Icon(Icons.edit),
                                           ),
                                         ),
-                                        Container(
+                                        SizedBox(
                                           width: 40,
                                           height: 50,
                                           child: IconButton(

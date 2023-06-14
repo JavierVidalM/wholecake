@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +21,6 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
   TextEditingController cantidadController = TextEditingController();
   TextEditingController proveedorController = TextEditingController();
   TextEditingController costotalController = TextEditingController();
-
 
   @override
   void dispose() {
@@ -52,124 +53,138 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => SuppliersService(),
-    child: Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Crear Orden de Compra',
-          style: TextStyle(
-            color: Color(0xFF5D2A42),
-            fontSize: 24,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Crear Orden de Compra',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            toolbarHeight: MediaQuery.of(context).size.height * 0.1,
           ),
-        ),
-        backgroundColor: const Color(0xFFFFB5D7),
-        centerTitle: true,
-        titleSpacing: 0,
-      ),
-      drawer: const SideBar(),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          drawer: const SideBar(),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.02),
-                  child: TextField(
-                    controller: cantidadController,
-                    decoration:
-                        const InputDecoration(hintText: 'Cantidad del Pedido'),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.02),
-                  child:Consumer<SuppliersService>(
-                  builder:(context,listacat,__){
-                    ListSup? proveedorSeleccionado;
-                  return DropdownButtonFormField<ListSup>(
-                    validator: (ListSup? value) =>
-                        validateProveedor(value?.nombreProveedor),
-                    hint: const Text('Selecciona un Proveedor'),
-                    value: proveedorSeleccionado,
-                    onChanged: (ListSup? nuevoSup) {
-                      setState(() {
-                        proveedorController.text =
-                            nuevoSup!.supplierId.toString();
-                      });
-                    },
-                    items: listacat.listadosuppliers.map((proveedor) {
-                      return DropdownMenuItem<ListSup>(
-                        value: proveedor,
-                        child: Text(proveedor.nombreProveedor),
-                      );
-                    }).toList(),
-                  );
-                  },
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.02),
-                  child: TextField(
-                    controller: costotalController,
-                    decoration: const InputDecoration(hintText: 'Costo Total'),
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.02),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _saveData();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(
-                              (MediaQuery.of(context).size.width * 0.6),
-                              (MediaQuery.of(context).size.height * 0.07),
-                            ),
-                          ),
-                          child: const Text('Guardar'),
-                        ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.01,
+                          left: MediaQuery.of(context).size.width * 0.01),
+                      child: const Text('Cantidad del pedido'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.005),
+                      child: TextField(
+                        controller: cantidadController,
+                        decoration: const InputDecoration(
+                            hintText: 'Cantidad del Pedido'),
                       ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PurchaseList(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.01,
+                          left: MediaQuery.of(context).size.width * 0.01),
+                      child: const Text('Proveedor'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.005),
+                      child: Consumer<SuppliersService>(
+                        builder: (context, listacat, __) {
+                          ListSup? proveedorSeleccionado;
+                          return DropdownButtonFormField<ListSup>(
+                            validator: (ListSup? value) =>
+                                validateProveedor(value?.nombreProveedor),
+                            hint: const Text('Selecciona un Proveedor'),
+                            value: proveedorSeleccionado,
+                            onChanged: (ListSup? nuevoSup) {
+                              setState(() {
+                                proveedorController.text =
+                                    nuevoSup!.supplierId.toString();
+                              });
+                            },
+                            items: listacat.listadosuppliers.map((proveedor) {
+                              return DropdownMenuItem<ListSup>(
+                                value: proveedor,
+                                child: Text(proveedor.nombreProveedor),
+                              );
+                            }).toList(),
+                          );
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.01,
+                          left: MediaQuery.of(context).size.width * 0.01),
+                      child: const Text('Costo total'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.005,
+                      ),
+                      child: TextField(
+                        controller: costotalController,
+                        decoration:
+                            const InputDecoration(hintText: 'Costo Total'),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.02),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _saveData();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(
+                                  (MediaQuery.of(context).size.width * 0.6),
+                                  (MediaQuery.of(context).size.height * 0.07),
+                                ),
                               ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(
-                              (MediaQuery.of(context).size.width * 0.6),
-                              (MediaQuery.of(context).size.height * 0.07),
+                              child: const Text('Guardar'),
                             ),
                           ),
-                          child: const Text('Volver'),
-                        ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const PurchaseList(),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(
+                                  (MediaQuery.of(context).size.width * 0.6),
+                                  (MediaQuery.of(context).size.height * 0.07),
+                                ),
+                              ),
+                              child: const Text('Volver'),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-    )
-    );
+          ),
+        ));
   }
 }

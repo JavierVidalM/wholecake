@@ -11,10 +11,12 @@ import 'package:wholecake/services/ventas_services.dart';
 import 'package:wholecake/theme/theme.dart';
 
 void main() {
-  runApp(ProviderState());
+  runApp(const ProviderState());
 }
 
 class ProviderState extends StatelessWidget {
+  const ProviderState({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

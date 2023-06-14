@@ -1,32 +1,29 @@
+// ignore_for_file: avoid_function_literals_in_foreach_calls, unrelated_type_equality_checks, use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/models/ordendetrabajo.dart';
 import 'package:wholecake/models/supplies.dart';
-import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/services/services.dart';
 import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
-import 'package:wholecake/services/supplies_services.dart';
 import 'package:wholecake/services/ordentrabajo_services.dart';
 import 'package:wholecake/models/categoria.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
 class OrdenEdit extends StatefulWidget {
+  const OrdenEdit({super.key});
+
   @override
   _OrdenEditState createState() => _OrdenEditState();
-}
-
-Future<void> _refresh() async {
-  await SuppliesService().loadSupplies();
 }
 
 class _OrdenEditState extends State<OrdenEdit> {
   int getUserId(BuildContext context) {
     final user = Provider.of<UserService>(context, listen: false);
-    print('userid:${user.userId}');
     return user.userId;
   }
 
@@ -57,7 +54,7 @@ class _OrdenEditState extends State<OrdenEdit> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => OrdenEdit(),
+        builder: (context) => const OrdenEdit(),
       ),
     );
     setState(() {
@@ -187,9 +184,6 @@ class _OrdenEditState extends State<OrdenEdit> {
           ),
           content: Column(
             children: insumosOrden.map((item) {
-              int quantityInCart = insumosOrden
-                  .where((insumo) => insumo.suppliesId == item.suppliesId)
-                  .length;
               Uint8List bytes =
                   Uint8List.fromList(base64.decode(item.imagen_supplies));
               Image imagenInsumo = Image.memory(bytes);
@@ -216,11 +210,11 @@ class _OrdenEditState extends State<OrdenEdit> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       // child: Text(quantityInCart.toString()),
-                      child: Container(
+                      child: SizedBox(
                         height: 50,
                         width: 50,
                         child: TextFormField(
-                          keyboardType: TextInputType.numberWithOptions(),
+                          keyboardType: const TextInputType.numberWithOptions(),
                           controller: controller,
                         ),
                       ),
@@ -245,7 +239,7 @@ class _OrdenEditState extends State<OrdenEdit> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('Estado'),
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: DropdownButtonFormField<String>(
                         value: 'Elaboracion',
@@ -253,6 +247,7 @@ class _OrdenEditState extends State<OrdenEdit> {
                           if (value == null || value.isEmpty) {
                             return "Seleccione un estado";
                           }
+                          return null;
                         },
                         onChanged: (value) =>
                             selectedOrdenTrabajo.estadoProducto = value!,
@@ -274,7 +269,7 @@ class _OrdenEditState extends State<OrdenEdit> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text('Categoría'),
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: Consumer<ProductService>(
                         builder: (context, listacat, _) {
@@ -312,7 +307,7 @@ class _OrdenEditState extends State<OrdenEdit> {
                 Column(
                   children: [
                     const Text("Fecha de elaboración"),
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: Theme(
                         data: SweetCakeTheme.calendarTheme,
@@ -333,7 +328,7 @@ class _OrdenEditState extends State<OrdenEdit> {
                 Column(
                   children: [
                     const Text("Fecha de Vencimiento"),
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: Theme(
                         data: SweetCakeTheme.calendarTheme,

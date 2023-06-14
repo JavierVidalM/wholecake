@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:provider/provider.dart';
@@ -10,7 +12,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:intl/intl.dart';
 import '../../models/categoria.dart';
-import '../utilidades/loading_screen.dart';
 
 class ProductsAdd extends StatelessWidget {
   const ProductsAdd({Key? key}) : super(key: key);

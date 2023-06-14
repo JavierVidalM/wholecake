@@ -1,16 +1,19 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:wholecake/services/suppliers_services.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/providers/suppliers_form_provider.dart';
 import 'package:wholecake/views/proveedores/suppliers.dart';
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:typed_data';
 import 'dart:convert';
 import 'dart:io';
 
 class SuppliersEdit extends StatefulWidget {
+  const SuppliersEdit({super.key});
+
   @override
   _SuppliersEditState createState() => _SuppliersEditState();
 }
@@ -313,7 +316,7 @@ class _ProductFormState extends State<_ProductForm> {
                               : null;
                           final base64 =
                               bytes != null ? base64Encode(bytes) : "";
-                          if(imageSelected!=null){
+                          if (imageSelected != null) {
                             supplier.imagen_insumo = base64;
                           }
                           if (!supplierForm.isValidForm()) return;
@@ -321,7 +324,7 @@ class _ProductFormState extends State<_ProductForm> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SuppliersView()),
+                                builder: (context) => const SuppliersView()),
                           );
                         },
                         style: ElevatedButton.styleFrom(

@@ -1,8 +1,9 @@
+// ignore_for_file: non_constant_identifier_names, unused_local_variable, unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:wholecake/models/users.dart';
-import 'package:wholecake/views/utilidades/sidebar.dart';
 
 //test@gmail.com
 class UserService extends ChangeNotifier {
@@ -98,7 +99,7 @@ class UserService extends ChangeNotifier {
     );
 
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.get(
       url,
       headers: {
@@ -124,7 +125,7 @@ class UserService extends ChangeNotifier {
     );
 
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.post(
       url,
       body: email,
@@ -144,7 +145,7 @@ class UserService extends ChangeNotifier {
     );
 
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.post(
       url,
       body: datos,
@@ -162,7 +163,7 @@ class UserService extends ChangeNotifier {
       'accounts/user_user_update_rest/',
     );
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.post(url, body: user.toJson(), headers: {
       'authorization': basicAuth,
       'Content-Type': 'application/json; charset=UTF-8',
@@ -178,7 +179,7 @@ class UserService extends ChangeNotifier {
       'accounts/user_user_add_rest/',
     );
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.post(url, body: msg, headers: {
       'authorization': basicAuth,
       'Content-Type': 'application/json; charset=UTF-8',
@@ -195,7 +196,7 @@ class UserService extends ChangeNotifier {
       'accounts/user_user_delete_rest/',
     );
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.post(url, body: msg, headers: {
       'authorization': basicAuth,
       'Content-Type': 'application/json; charset=UTF-8',
@@ -210,13 +211,11 @@ class UserService extends ChangeNotifier {
       'accounts/user_admin_add_rest/',
     );
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.post(url, body: msg, headers: {
       'authorization': basicAuth,
       'Content-Type': 'application/json; charset=UTF-8',
     });
-    final decodeResp = response.body;
-    // notifyListeners();
 
     isEditCreate = false;
   }

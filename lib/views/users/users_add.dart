@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, body_might_complete_normally_nullable
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -190,7 +192,6 @@ class _UsersAddPageState extends State<UsersAddPage> {
           },
         );
       }
-      ;
     }
   }
 

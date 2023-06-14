@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, body_might_complete_normally_nullable
+
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -8,7 +10,6 @@ import 'package:wholecake/services/users_services.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:wholecake/views/utilidades/sidebar.dart';
 
 import '../utilidades/utilidades.dart';
 
@@ -423,14 +424,13 @@ class _UsersEditState extends State<UsersEdit> {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                                        final bytes = imageSelected != null
-                              ? await imageSelected!.readAsBytes()
-                              : null;
-                          final base64 =
-                              bytes != null ? base64Encode(bytes) : "";
-                          if(imageSelected!=null){
-                            user.imagen_user = base64;
-                          }
+                        final bytes = imageSelected != null
+                            ? await imageSelected!.readAsBytes()
+                            : null;
+                        final base64 = bytes != null ? base64Encode(bytes) : "";
+                        if (imageSelected != null) {
+                          user.imagen_user = base64;
+                        }
                         await usersService.updateUsers(user);
                         Navigator.push(
                           context,

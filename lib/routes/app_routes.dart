@@ -5,14 +5,11 @@ import 'package:wholecake/views/ordenes_trabajo/ordenes_edit.dart';
 import 'package:wholecake/views/ordenes_trabajo/orden_view.dart';
 import 'package:wholecake/views/productos/products.dart';
 import 'package:wholecake/views/proveedores/suppliers.dart';
-import 'package:wholecake/views/users/user_profile_view.dart';
 import 'package:wholecake/views/ventas/sells.dart';
 import 'package:wholecake/views/users/users.dart';
 import 'package:wholecake/views/utilidades/utilidades.dart';
 import 'package:wholecake/views/ordenes_compra/purchase_orders.dart';
 import 'package:wholecake/views/insumos/insumos.dart';
-import 'package:wholecake/views/ordenes_trabajo/orden_add.dart';
-
 import '../views/login/login_user_form.dart';
 
 class AppRoutes {
@@ -43,12 +40,12 @@ class AppRoutes {
     '/InputsRecipt': (BuildContext context) => const InputsReciptSupplies(),
     '/PurchaseOrders': (BuildContext context) => const PurchaseOrders(),
     '/PurchaseList': (BuildContext context) => const PurchaseList(),
-    '/OrdenEdit': (BuildContext context) => OrdenEdit(),
+    '/OrdenEdit': (BuildContext context) => const OrdenEdit(),
     // '/CrearOrdenAdd': (BuildContext context) => const CrearOrdenAddPage(),
     '/OrdenView': (BuildContext context) => const OrdenesView(),
 
     //Pantallas de ventas
-    '/SellsView': (BuildContext context) => SellsView(),
+    '/SellsView': (BuildContext context) => const SellsView(),
     // '/SellsDetail': (BuildContext context) => SellsDetail(),
 
     //Pantalla de users

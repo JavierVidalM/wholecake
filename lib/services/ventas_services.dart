@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -25,7 +27,7 @@ class VentasService extends ChangeNotifier {
       'ventas/ventas_ventas_list_rest/',
     );
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.get(url, headers: {'authorization': basicAuth});
     final suppliersMap = Ventas.fromJson(response.body);
     listadoventas = suppliersMap.listventas;
@@ -40,7 +42,7 @@ class VentasService extends ChangeNotifier {
       'ventas/ventas_ventas_add_rest/',
     );
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.post(url, body: msg, headers: {
       'authorization': basicAuth,
       'Content-Type': 'application/json; charset=UTF-8',
@@ -49,13 +51,14 @@ class VentasService extends ChangeNotifier {
     notifyListeners();
     isEditCreate = false;
   }
+
   deleteVentas(String msg) async {
     final url = Uri.http(
       BASEURL,
       'ventas/ventas_ventas_delete_rest/',
     );
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.post(url, body: msg, headers: {
       'authorization': basicAuth,
       'Content-Type': 'application/json; charset=UTF-8',

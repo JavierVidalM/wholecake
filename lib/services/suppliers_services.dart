@@ -1,11 +1,9 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings, non_constant_identifier_names, unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:wholecake/models/ordendecompra.dart';
-import 'package:wholecake/models/productos.dart';
-import 'package:wholecake/models/categoria.dart';
 import 'package:wholecake/models/suppliers.dart';
-import 'package:wholecake/models/supplies.dart';
 
 class SuppliersService extends ChangeNotifier {
   String APIUSER = 'test';

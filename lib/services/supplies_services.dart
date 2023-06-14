@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -24,7 +26,7 @@ class SuppliesService extends ChangeNotifier {
 
     var url = Uri.http(BASEURL, 'supplies/supplies_list_rest');
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
 
     final response = await http.get(url, headers: {'authorization': basicAuth});
     final suppliesMap = Supplies.fromJson(response.body);
@@ -41,7 +43,7 @@ class SuppliesService extends ChangeNotifier {
       'supplies/supplies_list_rest_estadocorrecto',
     );
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.get(url, headers: {'authorization': basicAuth});
     final suppliesMap = Supplies.fromJson(response.body);
     suppliesList = suppliesMap.suppliesList;
@@ -56,7 +58,7 @@ class SuppliesService extends ChangeNotifier {
       'supplies/supplies_list_rest_estadoprogreso',
     );
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.get(url, headers: {'authorization': basicAuth});
     final suppliesMap = Supplies.fromJson(response.body);
     suppliesList = suppliesMap.suppliesList;
@@ -70,13 +72,13 @@ class SuppliesService extends ChangeNotifier {
       'supplies/supplies_update_rest/',
     );
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.post(url, body: supplies.toJson(), headers: {
       'authorization': basicAuth,
       'Content-Type': 'application/json; charset=UTF-8',
     });
     final decodeResp = response.body;
-    
+
     return '';
   }
 
@@ -86,7 +88,7 @@ class SuppliesService extends ChangeNotifier {
       'supplies/supplies_delete_rest/',
     );
     String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$APIUSER:$APIPASS'));
+        'Basic ${base64Encode(utf8.encode('$APIUSER:$APIPASS'))}';
     final response = await http.post(url, body: msg, headers: {
       'authorization': basicAuth,
       'Content-Type': 'application/json; charset=UTF-8',

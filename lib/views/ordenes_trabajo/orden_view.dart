@@ -1,9 +1,12 @@
+// ignore_for_file: avoid_types_as_parameter_names, non_constant_identifier_names, library_private_types_in_public_api
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wholecake/models/suppliers.dart';
 import 'package:wholecake/models/ordendetrabajo.dart';
+import 'package:wholecake/models/suppliers.dart';
 import 'package:wholecake/services/ordentrabajo_services.dart';
+import 'package:wholecake/theme/theme.dart';
 import 'package:wholecake/views/ordenes_trabajo/ordentrabajo.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
@@ -24,16 +27,12 @@ Future<void> _refresh() async {
 
 ListSup? supplierSeleccionada;
 
-// void filterProducts(String category) {
-//     final listadoView = Provider.of<ProductService>();
-//     listadoView.filterProductsByCategory(category);
-//   }
-
 class _OrdenesViewState extends State<OrdenesView> {
-    String getUserId(BuildContext context) {
-    final user= Provider.of<UserService>(context, listen: false);
+  String getUserId(BuildContext context) {
+    final user = Provider.of<UserService>(context, listen: false);
     return user.cargo;
   }
+
   Future<String?> filterPopup(OrdenTrabajoService listaorden) =>
       showDialog<String>(
         context: context,
@@ -81,6 +80,65 @@ class _OrdenesViewState extends State<OrdenesView> {
             onPressed: () => Navigator.of(context).pop(),
             child: const Text(
               "Cancelar",
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> insumoPopup(
+      ListTrabajo ordenDeTrabajo, List<OrdenesTrabajo> ordenesTrabajo) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        scrollable: true,
+        title: const Text("Detalles de la orden de trabajo"),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Nombre del producto: ${ordenDeTrabajo.nombreProducto}',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text('Estado del producto: ${ordenDeTrabajo.estadoProducto}'),
+            Text('Precio del producto: ${ordenDeTrabajo.precioProducto}'),
+            const SizedBox(height: 10),
+            const Text(
+              'Insumos utilizados:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const Divider(
+              color: SweetCakeTheme.blue2,
+            ),
+            for (final orden in ordenesTrabajo)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (final insumo in orden.insumosUtilizados)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Nombre: ${insumo.nombre}',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('Cantidad: ${insumo.cantidadUtilizada}'),
+                        const Divider(
+                          color: SweetCakeTheme.blue2,
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              "Cerrar",
               style: TextStyle(fontSize: 18),
             ),
           ),
@@ -196,94 +254,101 @@ class _OrdenesViewState extends State<OrdenesView> {
                         Uint8List bytes = Uint8List.fromList(
                             base64.decode(ordendetrabajo.imagen));
                         Image image = Image.memory(bytes);
-                        return Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 100,
-                                  height: 100,
-                                  margin: EdgeInsets.only(
-                                      right: MediaQuery.of(context).size.width *
-                                          0.03,
-                                      top: MediaQuery.of(context).size.height *
-                                          0.01,
-                                      bottom:
-                                          MediaQuery.of(context).size.height *
-                                              0.01),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100),
-                                    shape: BoxShape.rectangle,
-                                    image: DecorationImage(
-                                      image: image.image,
-                                      fit: BoxFit.fill,
+                        return GestureDetector(
+                          onTap: () => insumoPopup(
+                              ordendetrabajo, ordendetrabajo.ordenesTrabajo),
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 100,
+                                    height: 100,
+                                    margin: EdgeInsets.only(
+                                        right:
+                                            MediaQuery.of(context).size.width *
+                                                0.03,
+                                        top:
+                                            MediaQuery.of(context).size.height *
+                                                0.01,
+                                        bottom:
+                                            MediaQuery.of(context).size.height *
+                                                0.01),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      shape: BoxShape.rectangle,
+                                      image: DecorationImage(
+                                        image: image.image,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              ordendetrabajo.nombreProducto,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                ordendetrabajo.nombreProducto,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              
-                                              IconButton(
-                                                onPressed: () {
-                                                  listadoView
-                                                          .selectedordenTrabajo =
-                                                      listado
-                                                          .listaTrabajos[index]
-                                                          .copy();
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            OrdenEdit()),
-                                                  );
-                                                },
-                                                icon: const Icon(Icons.edit),
-                                              ),
-                                              IconButton(
-                                                onPressed: () async {
-                                                  deletePopup(ordendetrabajo.id,
-                                                      listado.listaTrabajos);
-                                                },
-                                                icon: const Icon(Icons.delete),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Text(
-                                        'Nombre: ${ordendetrabajo.nombreProducto.toString().padRight(10)}',
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        'Estado: ${ordendetrabajo.estadoProducto.toString().padRight(10)}',
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Text(
-                                        'Precio: ${ordendetrabajo.precioProducto.toString().padRight(10)}',
-                                      ),
-                                    ],
+                                            Row(
+                                              children: [
+                                                IconButton(
+                                                  onPressed: () {
+                                                    listadoView
+                                                            .selectedordenTrabajo =
+                                                        listado.listaTrabajos[
+                                                                index]
+                                                            .copy();
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const OrdenEdit()),
+                                                    );
+                                                  },
+                                                  icon: const Icon(Icons.edit),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () async {
+                                                    deletePopup(
+                                                        ordendetrabajo.id,
+                                                        listado.listaTrabajos);
+                                                  },
+                                                  icon:
+                                                      const Icon(Icons.delete),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          'Nombre: ${ordendetrabajo.nombreProducto.toString().padRight(10)}',
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          'Estado: ${ordendetrabajo.estadoProducto.toString().padRight(10)}',
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          'Precio: ${ordendetrabajo.precioProducto.toString().padRight(10)}',
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         );

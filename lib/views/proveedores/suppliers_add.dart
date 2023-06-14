@@ -1,16 +1,12 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:wholecake/services/users_services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:wholecake/views/proveedores/suppliers.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
-import 'package:wholecake/theme/theme.dart';
-import 'package:wholecake/views/home/home.dart';
+import '../../services/suppliers_services.dart';
 import 'dart:convert';
 import 'dart:io';
-import 'package:wholecake/views/users/users_list.dart';
-
-import '../../services/productos_services.dart';
-import '../../services/suppliers_services.dart';
 
 class SuppliersAddPage extends StatefulWidget {
   const SuppliersAddPage({Key? key}) : super(key: key);
@@ -53,10 +49,9 @@ class _SuppliersAddPageState extends State<SuppliersAddPage> {
         'imagen_insumo': base64,
       });
       await SuppliersService().addSupplier(msg);
-      print('saved');
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => SuppliersView()),
+        MaterialPageRoute(builder: (context) => const SuppliersView()),
       );
     }
   }
@@ -136,7 +131,7 @@ class _SuppliersAddPageState extends State<SuppliersAddPage> {
       ),
       drawer: const SideBar(),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Form(
           key: _formKey,
           child: Column(

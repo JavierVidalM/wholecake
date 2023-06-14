@@ -1,11 +1,11 @@
-import 'dart:convert';
+// ignore_for_file: library_private_types_in_public_api
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wholecake/services/productos_services.dart';
 import 'package:wholecake/views/utilidades/sidebar.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
-import 'package:wholecake/models/categoria.dart';
 
 class CategoryView extends StatefulWidget {
   const CategoryView({Key? key}) : super(key: key);
@@ -46,7 +46,7 @@ class _CategoryViewState extends State<CategoryView> {
     // Navigator.of(context).pop();
   }
 
-  Future deletePopup(id,listadocategorias) => showDialog(
+  Future deletePopup(id, listadocategorias) => showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text(
@@ -71,8 +71,8 @@ class _CategoryViewState extends State<CategoryView> {
                 });
                 await ProductService().deleteCategoria(msg);
                 setState(() {
-                  listadocategorias.removeWhere(
-                      (product) => product.categoriaId== id);
+                  listadocategorias
+                      .removeWhere((product) => product.categoriaId == id);
                 });
               },
               child: const Text(
@@ -260,7 +260,9 @@ class _CategoryViewState extends State<CategoryView> {
                                               ),
                                               IconButton(
                                                 onPressed: () async {
-                                                  deletePopup(category.categoriaId,list.listadocategorias);
+                                                  deletePopup(
+                                                      category.categoriaId,
+                                                      list.listadocategorias);
                                                 },
                                                 icon: const Icon(Icons.delete),
                                               ),

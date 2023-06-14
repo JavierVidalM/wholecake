@@ -2,6 +2,8 @@
 //
 //     final productos = productosFromMap(jsonString);
 
+// ignore_for_file: prefer_if_null_operators
+
 import 'dart:convert';
 
 class Productos {
@@ -57,8 +59,10 @@ class Listado {
   factory Listado.fromMap(Map<String, dynamic> json) => Listado(
       productoId: json["id"],
       nombre: json["nombre"],
-      fechaElaboracion: json["fecha_elaboracion"] == null ? null : json["fecha_elaboracion"],
-      fechaVencimiento: json["fecha_vencimiento"] == null ? null : json["fecha_vencimiento"],
+      fechaElaboracion:
+          json["fecha_elaboracion"] == null ? null : json["fecha_elaboracion"],
+      fechaVencimiento:
+          json["fecha_vencimiento"] == null ? null : json["fecha_vencimiento"],
       precio: json["precio"],
       categoria: json["categoria"],
       imagen: json["imagen"],
