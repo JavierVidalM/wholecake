@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:wholecake/models/ordendetrabajo.dart';
 import 'package:wholecake/models/supplies.dart';
 import 'package:wholecake/services/productos_services.dart';
+import 'package:wholecake/services/services.dart';
 import 'package:wholecake/theme/theme_constant.dart';
 import 'package:wholecake/views/utilidades/loading_screen.dart';
 import 'package:date_time_picker/date_time_picker.dart';
@@ -23,6 +24,12 @@ Future<void> _refresh() async {
 }
 
 class _OrdenEditState extends State<OrdenEdit> {
+  int getUserId(BuildContext context) {
+    final user = Provider.of<UserService>(context, listen: false);
+    print('userid:${user.userId}');
+    return user.userId;
+  }
+
   late OrdenTrabajoService _ordenTrabajoService;
   final TextEditingController _fechaElaboracionController =
       TextEditingController();
@@ -41,7 +48,7 @@ class _OrdenEditState extends State<OrdenEdit> {
       "fecha_vencimiento": selectedOrdenTrabajo.fechaVencimiento,
       "estado": selectedOrdenTrabajo.estadoProducto,
       "categoria": selectedOrdenTrabajo.categoria,
-      "trabajador": 1,
+      "trabajador": getUserId(context),
       "insumos": listadoInsumo
     };
 
@@ -158,24 +165,6 @@ class _OrdenEditState extends State<OrdenEdit> {
   void detalleOrdenTrabajo(BuildContext context, Map<int, SuppliesList> insumo,
       ListTrabajo? selectedOrdenTrabajo) async {
     List<SuppliesList> insumosOrden = insumo.values.toList();
-    // final ordentrabajoService =
-    //     Provider.of<OrdenTrabajoService>(context, listen: false);
-    // final orden = ordentrabajoService.listaTrabajos.firstWhere(
-    //   (orden) => orden.id == widget,
-    //   orElse: () => ListTrabajo(
-    //       id: 0,
-    //       nombreProducto: '',
-    //       precioProducto: 0,
-    //       fechaElaboracion: '',
-    //       fechaVencimiento: '',
-    //       categoria: 0,
-    //       estadoProducto: '',
-    //       cantidadProducto: 0,
-    //       lote: '',
-    //       imagen: '',
-    //       ordenesTrabajo: []),
-    // );
-    // print(selectedOrdenTrabajo!.toJson());
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -401,7 +390,6 @@ class _OrdenEditState extends State<OrdenEdit> {
   @override
   Widget build(BuildContext context) {
     final selectedOrdenTrabajo = _ordenTrabajoService.selectedordenTrabajo;
-    print("WAAAAAAAAAA ${selectedOrdenTrabajo?.id}");
     final insumoProvider = Provider.of<SuppliesService>(context);
 
     if (insumoProvider.isLoading) return const LoadingScreen();
