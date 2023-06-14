@@ -467,7 +467,7 @@ class _SideBarState extends State<SideBar> {
                         );
                       },
                     ),
-                    if (user.cargo == 'Cajero')
+                    // if (user.cargo == 'Cajero')
                       ExpansionTile(
                         leading: const Icon(Icons.point_of_sale),
                         title: const Text("Módulo de ventas"),
