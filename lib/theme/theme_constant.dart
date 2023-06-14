@@ -164,29 +164,33 @@ class SweetCakeTheme {
     ),
     //Estilo de las entradas de texto
     inputDecorationTheme: InputDecorationTheme(
-      hintStyle: const TextStyle(
-        color: hint,
-        fontSize: 14,
-      ),
-      fillColor: Colors.white,
-      filled: true,
-      border: OutlineInputBorder(
-        borderSide: BorderSide.none,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide.none,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide.none,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide.none,
-        borderRadius: BorderRadius.circular(10),
-      ),
-    ),
+        hintStyle: const TextStyle(
+          color: hint,
+          fontSize: 14,
+        ),
+        fillColor: Colors.white,
+        filled: true,
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.grey.shade300,
+            ),
+            borderRadius: BorderRadius.circular(10))),
     iconTheme: const IconThemeData(color: blue2),
     progressIndicatorTheme: const ProgressIndicatorThemeData(color: pink2),
     // Estilo para el AlertDialog (PopUP)
