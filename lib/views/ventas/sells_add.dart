@@ -27,7 +27,7 @@ class _SellsAddState extends State<SellsAdd> {
     final user = Provider.of<UserService>(context, listen: false);
     return user.userId;
   }
-
+  final TextEditingController _email = TextEditingController();
   bool deseaBoleta = false;
   bool isSelected = false;
   List selectedCategories = [];
@@ -36,6 +36,7 @@ class _SellsAddState extends State<SellsAdd> {
 
   Future<void> _guardarVenta(List<Map<String, dynamic>> listadoVenta) async {
     Map<String, dynamic> jsonData = {
+      'email':_email.text,
       'vendedor': getUserId(context),
       'productos': listadoVenta,
     };
@@ -172,6 +173,7 @@ class _SellsAddState extends State<SellsAdd> {
                               width: MediaQuery.of(context).size.width * 0.6,
                               child: TextFormField(
                                 enabled: deseaBoleta,
+                                controller: _email,
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: const InputDecoration(
                                   hintText: 'cliente@correo.cl',
