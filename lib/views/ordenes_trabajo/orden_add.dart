@@ -53,7 +53,7 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
         'nombre_producto': nombreController.text,
         'precio_producto': precioController.text,
         'categoria': categoriaController.text,
-        'estado_producto': estadoProductoController.text,
+        'estado_producto': 'Elaboracion',
         'cantidad_producto': cantidadController.text,
         'imagen': base64,
         'admin': getUserId(),
@@ -99,22 +99,22 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
     return null;
   }
 
-  String? validateEstado(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Por favor, ingrese el estado del producto.';
-    }
+  // String? validateEstado(String? value) {
+  //   if (value == null || value.isEmpty) {
+  //     return 'Por favor, ingrese el estado del producto.';
+  //   }
 
-    final pattern = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$');
-    if (!pattern.hasMatch(value)) {
-      return 'El estado no debe contener números ni símbolos.';
-    }
+  //   final pattern = RegExp(r'^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$');
+  //   if (!pattern.hasMatch(value)) {
+  //     return 'El estado no debe contener números ni símbolos.';
+  //   }
 
-    if (value.toLowerCase() != 'elaboracion') {
-      return 'El estado debe ser "Elaboracion".';
-    }
+  //   if (value.toLowerCase() != 'Elaboracion') {
+  //     return 'El estado debe ser "Elaboracion".';
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
   String? validateQuantity(String? value) {
     if (value == null || value.isEmpty) {
@@ -133,7 +133,7 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
 
   @override
   Widget build(BuildContext context) {
-    estadoProductoController.text = 'En elaboracion';
+    estadoProductoController.text = 'Elaboracion';
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -236,7 +236,6 @@ class _OrdenAddPageState extends State<OrdenAddPage> {
                         top: MediaQuery.of(context).size.height * 0.02),
                     child: TextFormField(
                       controller: estadoProductoController,
-                      validator: validateEstado,
                       decoration: const InputDecoration(hintText: 'Estado'),
                     ),
                   ),

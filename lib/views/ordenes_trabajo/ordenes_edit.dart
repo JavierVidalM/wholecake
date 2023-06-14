@@ -45,7 +45,7 @@ class _OrdenEditState extends State<OrdenEdit> {
       "fecha_vencimiento": selectedOrdenTrabajo.fechaVencimiento,
       "estado": selectedOrdenTrabajo.estadoProducto,
       "categoria": selectedOrdenTrabajo.categoria,
-      "trabajador": getUserId(context),
+      "trabajador": 2,
       "insumos": listadoInsumo
     };
 
