@@ -204,7 +204,7 @@ class SweetCakeTheme {
       checkmarkColor: pink3,
       labelStyle: TextStyle(color: pink3, fontWeight: FontWeight.w600),
     ),
-    datePickerTheme: DatePickerThemeData(
+      datePickerTheme: DatePickerThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       backgroundColor: blue,
       dayForegroundColor: MaterialStateProperty.all<Color>(gray),

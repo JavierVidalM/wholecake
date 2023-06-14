@@ -114,7 +114,7 @@ class PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                   child: TextField(
                     controller: newPasswordController,
                     obscureText: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: "Nueva contraseña",
                     ),
                   ),

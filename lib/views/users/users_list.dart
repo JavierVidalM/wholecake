@@ -26,7 +26,7 @@ Future<void> _refresh() async {
 class _UsersViewListState extends State<UsersViewList> {
   List selectedUser = [];
   String? _cargoSeleccionado;
-  List<String> cargoOptions = ['Cajero', 'Pastelero', 'Admin', 'cajero'];
+  List<String> cargoOptions = ['Cajero', 'Pastelero', 'Admin'];
 
   Future<String?> filterPopup() => showDialog<String>(
         context: context,

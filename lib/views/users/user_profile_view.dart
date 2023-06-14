@@ -19,11 +19,11 @@ Future<void> logoutPopup(BuildContext context, user) async {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(
+          title: const  Text(
             "Estás a punto de cerrar sesión",
             style: TextStyle(color: SweetCakeTheme.pink3),
           ),
-          content: Text("¿Estás seguro de que quieres cerrar la sesión?"),
+          content: const Text("¿Estás seguro de que quieres cerrar la sesión?"),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 10.0, bottom: 5.0),
@@ -138,7 +138,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 25.0),
+                            padding: const EdgeInsets.only(top: 25.0),
                             child: Text(
                               "Email : ${user.email}",
                               style: const TextStyle(
@@ -194,7 +194,6 @@ class _UserProfileViewState extends State<UserProfileView> {
                           bottom: MediaQuery.of(context).size.height * 0.05),
                       child: GestureDetector(
                         onTap: () {
-                          print("No sé alguna wea hará esto");
                         },
                         child: Row(
                           children: [
@@ -224,7 +223,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                           bottom: MediaQuery.of(context).size.height * 0.05),
                       child: GestureDetector(
                         onTap: () {
-                          print("No sé alguna wea hará esto");
+                          
                         },
                         child: Row(
                           children: [
@@ -244,7 +243,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                 onTap: () {
                                   logoutPopup(context, user);
                                 },
-                                child: Text(
+                                child: const Text(
                                   "Cerrar sesión",
                                   style: TextStyle(fontSize: 20),
                                 ),
